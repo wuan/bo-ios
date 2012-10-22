@@ -12,7 +12,7 @@
 		A93B063C1633001F007AB25A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B063B1633001F007AB25A /* CoreGraphics.framework */; };
 		A93B06421633001F007AB25A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A93B06401633001F007AB25A /* InfoPlist.strings */; };
 		A93B06441633001F007AB25A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A93B06431633001F007AB25A /* main.m */; };
-		A93B06481633001F007AB25A /* BoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A93B06471633001F007AB25A /* BoAppDelegate.m */; };
+		A93B06481633001F007AB25A /* BoViewerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A93B06471633001F007AB25A /* BoViewerAppDelegate.m */; };
 		A93B064A1633001F007AB25A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B06491633001F007AB25A /* Default.png */; };
 		A93B064C1633001F007AB25A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B064B1633001F007AB25A /* Default@2x.png */; };
 		A93B064E1633001F007AB25A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B064D1633001F007AB25A /* Default-568h@2x.png */; };
@@ -21,6 +21,10 @@
 		A93B06581633001F007AB25A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06391633001F007AB25A /* Foundation.framework */; };
 		A93B06601633001F007AB25A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A93B065E1633001F007AB25A /* InfoPlist.strings */; };
 		A93B06631633001F007AB25A /* viewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A93B06621633001F007AB25A /* viewerTests.m */; };
+		A93B066D1633018C007AB25A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B066C1633018C007AB25A /* MapKit.framework */; };
+		A93B066F16330195007AB25A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B066E16330195007AB25A /* CoreLocation.framework */; };
+		A95CBB6D1634838D0052BE53 /* Viewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A95CBB6C1634838D0052BE53 /* Viewer.storyboard */; };
+		A95CBBBD1634871A0052BE53 /* BoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A95CBBBC1634871A0052BE53 /* BoViewerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,8 +46,8 @@
 		A93B06411633001F007AB25A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A93B06431633001F007AB25A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A93B06451633001F007AB25A /* viewer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "viewer-Prefix.pch"; sourceTree = "<group>"; };
-		A93B06461633001F007AB25A /* BoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoAppDelegate.h; sourceTree = "<group>"; };
-		A93B06471633001F007AB25A /* BoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoAppDelegate.m; sourceTree = "<group>"; };
+		A93B06461633001F007AB25A /* BoViewerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoViewerAppDelegate.h; sourceTree = "<group>"; };
+		A93B06471633001F007AB25A /* BoViewerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoViewerAppDelegate.m; sourceTree = "<group>"; };
 		A93B06491633001F007AB25A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A93B064B1633001F007AB25A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A93B064D1633001F007AB25A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -53,6 +57,11 @@
 		A93B065F1633001F007AB25A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A93B06611633001F007AB25A /* viewerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = viewerTests.h; sourceTree = "<group>"; };
 		A93B06621633001F007AB25A /* viewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = viewerTests.m; sourceTree = "<group>"; };
+		A93B066C1633018C007AB25A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A93B066E16330195007AB25A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A95CBB6C1634838D0052BE53 /* Viewer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Viewer.storyboard; sourceTree = "<group>"; };
+		A95CBBBB1634871A0052BE53 /* BoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoViewerViewController.h; sourceTree = "<group>"; };
+		A95CBBBC1634871A0052BE53 /* BoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoViewerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +69,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A93B066F16330195007AB25A /* CoreLocation.framework in Frameworks */,
+				A93B066D1633018C007AB25A /* MapKit.framework in Frameworks */,
 				A93B06381633001F007AB25A /* UIKit.framework in Frameworks */,
 				A93B063A1633001F007AB25A /* Foundation.framework in Frameworks */,
 				A93B063C1633001F007AB25A /* CoreGraphics.framework in Frameworks */,
@@ -82,6 +93,8 @@
 		A93B06281633001F007AB25A = {
 			isa = PBXGroup;
 			children = (
+				A93B066E16330195007AB25A /* CoreLocation.framework */,
+				A93B066C1633018C007AB25A /* MapKit.framework */,
 				A93B063D1633001F007AB25A /* viewer */,
 				A93B065B1633001F007AB25A /* viewerTests */,
 				A93B06361633001F007AB25A /* Frameworks */,
@@ -112,9 +125,12 @@
 		A93B063D1633001F007AB25A /* viewer */ = {
 			isa = PBXGroup;
 			children = (
-				A93B06461633001F007AB25A /* BoAppDelegate.h */,
-				A93B06471633001F007AB25A /* BoAppDelegate.m */,
+				A93B06461633001F007AB25A /* BoViewerAppDelegate.h */,
+				A93B06471633001F007AB25A /* BoViewerAppDelegate.m */,
 				A93B063E1633001F007AB25A /* Supporting Files */,
+				A95CBB6C1634838D0052BE53 /* Viewer.storyboard */,
+				A95CBBBB1634871A0052BE53 /* BoViewerViewController.h */,
+				A95CBBBC1634871A0052BE53 /* BoViewerViewController.m */,
 			);
 			path = viewer;
 			sourceTree = "<group>";
@@ -228,6 +244,7 @@
 				A93B064A1633001F007AB25A /* Default.png in Resources */,
 				A93B064C1633001F007AB25A /* Default@2x.png in Resources */,
 				A93B064E1633001F007AB25A /* Default-568h@2x.png in Resources */,
+				A95CBB6D1634838D0052BE53 /* Viewer.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +280,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A93B06441633001F007AB25A /* main.m in Sources */,
-				A93B06481633001F007AB25A /* BoAppDelegate.m in Sources */,
+				A93B06481633001F007AB25A /* BoViewerAppDelegate.m in Sources */,
+				A95CBBBD1634871A0052BE53 /* BoViewerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +450,7 @@
 				A93B06681633001F007AB25A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A93B06691633001F007AB25A /* Build configuration list for PBXNativeTarget "viewerTests" */ = {
 			isa = XCConfigurationList;
@@ -440,6 +459,7 @@
 				A93B066B1633001F007AB25A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

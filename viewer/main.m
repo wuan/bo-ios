@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BoAppDelegate.h"
+#import "BoViewerAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BoAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BoViewerAppDelegate class]));
     }
 }
