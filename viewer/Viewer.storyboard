@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ZNC-dQ-fVf">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+    </dependencies>
+    <scenes>
+        <!--Bo Viewer View Controller-->
+        <scene sceneID="7cs-l0-3HO">
+            <objects>
+                <viewController storyboardIdentifier="MainView" id="ZNC-dQ-fVf" customClass="BoViewerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NxE-P5-JEH">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="s8v-QM-wHK"/>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="s8v-QM-wHK" firstAttribute="trailing" secondItem="NxE-P5-JEH" secondAttribute="trailing" type="default" id="2Hs-VY-hh6"/>
+                            <constraint firstItem="s8v-QM-wHK" firstAttribute="bottom" secondItem="NxE-P5-JEH" secondAttribute="bottom" type="default" id="30g-yt-OOU"/>
+                            <constraint firstItem="s8v-QM-wHK" firstAttribute="top" secondItem="NxE-P5-JEH" secondAttribute="top" type="default" id="BwV-F2-POQ"/>
+                            <constraint firstItem="s8v-QM-wHK" firstAttribute="leading" secondItem="NxE-P5-JEH" secondAttribute="leading" type="default" id="oeG-c7-S8N"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="locationManager" destination="geP-0M-GNz" id="rvU-qd-qHf"/>
+                        <outlet property="mapView" destination="s8v-QM-wHK" id="xiN-ZE-t6E"/>
+                        <outlet property="timer" destination="H4P-wB-yuY" id="fZA-ud-2KD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jMC-Qh-86p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="geP-0M-GNz" customClass="CLLocationManager"/>
+                <customObject id="H4P-wB-yuY" customClass="NSTimer"/>
+            </objects>
+            <point key="canvasLocation" x="3" y="46"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
