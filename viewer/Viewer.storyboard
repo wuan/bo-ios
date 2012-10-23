@@ -13,28 +13,50 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="s8v-QM-wHK"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTf-2x-7xq" userLabel="StatusText">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="s8v-QM-wHK" firstAttribute="trailing" secondItem="NxE-P5-JEH" secondAttribute="trailing" type="default" id="2Hs-VY-hh6"/>
                             <constraint firstItem="s8v-QM-wHK" firstAttribute="bottom" secondItem="NxE-P5-JEH" secondAttribute="bottom" type="default" id="30g-yt-OOU"/>
                             <constraint firstItem="s8v-QM-wHK" firstAttribute="top" secondItem="NxE-P5-JEH" secondAttribute="top" type="default" id="BwV-F2-POQ"/>
+                            <constraint firstItem="ZTf-2x-7xq" firstAttribute="top" secondItem="NxE-P5-JEH" secondAttribute="top" type="default" id="UhN-qn-FBD"/>
+                            <constraint firstItem="ZTf-2x-7xq" firstAttribute="leading" secondItem="NxE-P5-JEH" secondAttribute="leading" type="default" id="WrH-vX-LB3"/>
                             <constraint firstItem="s8v-QM-wHK" firstAttribute="leading" secondItem="NxE-P5-JEH" secondAttribute="leading" type="default" id="oeG-c7-S8N"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="locationManager" destination="geP-0M-GNz" id="rvU-qd-qHf"/>
                         <outlet property="mapView" destination="s8v-QM-wHK" id="xiN-ZE-t6E"/>
-                        <outlet property="timer" destination="H4P-wB-yuY" id="fZA-ud-2KD"/>
+                        <outlet property="statusText" destination="ZTf-2x-7xq" id="4R4-Op-vrF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jMC-Qh-86p" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="geP-0M-GNz" customClass="CLLocationManager"/>
-                <customObject id="H4P-wB-yuY" customClass="NSTimer"/>
             </objects>
             <point key="canvasLocation" x="3" y="46"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="BoViewerViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BoViewerViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="locationManager" candidateClass="CLLocationManager"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="statusText" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="CLLocationManager" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CLLocationManager.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

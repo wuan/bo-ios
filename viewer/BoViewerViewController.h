@@ -11,9 +11,14 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface BoViewerViewController : UIViewController
+{
+    NSTimer *pollingTimer;
+    NSDate *lastUpdate;
+    int timerPeriod;
+}
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet CLLocationManager *locationManager;
-@property (strong, nonatomic) IBOutlet NSTimer *timer;
+@property (weak, nonatomic) IBOutlet UILabel *statusText;
 
 @end

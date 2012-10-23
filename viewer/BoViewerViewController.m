@@ -17,13 +17,43 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    timerPeriod = 20;
+    
+    pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                    target:self
+                                                  selector:@selector(timerTick)
+                                                  userInfo:nil
+                                                   repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (void)timerTick
+{
+    boolean_t update = false;
+
+    int timeInterval;
+    
+    if (lastUpdate == nil) {
+        update = true;
+    } else {
+        timeInterval = -[lastUpdate timeIntervalSinceNow];
+    
+        if (timeInterval >= timerPeriod)
+        {
+            update = true;
+        }
+    }
+    
+    if (update) {
+        lastUpdate = [NSDate date];
+    }
+    
+    [_statusText setText:[NSString stringWithFormat:@"%d/%d", timeInterval, timerPeriod ]];
 }
 
 @end
