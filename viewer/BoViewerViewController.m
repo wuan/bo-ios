@@ -7,6 +7,7 @@
 //
 
 #import "BoViewerViewController.h"
+#import "BoViewerJsonRpcClient.h"
 
 @interface BoViewerViewController ()
 
@@ -51,9 +52,13 @@
     
     if (update) {
         lastUpdate = [NSDate date];
+        BoViewerJsonRpcClient* jsonRpcClient = [[BoViewerJsonRpcClient alloc] initWithServiceEndpoint:@"http://bo1.tryb.de:7080"];
+        [jsonRpcClient call:@"check"];
     }
     
     [_statusText setText:[NSString stringWithFormat:@"%d/%d", timeInterval, timerPeriod ]];
 }
+
+
 
 @end

@@ -25,6 +25,7 @@
 		A93B066F16330195007AB25A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B066E16330195007AB25A /* CoreLocation.framework */; };
 		A95CBB6D1634838D0052BE53 /* Viewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A95CBB6C1634838D0052BE53 /* Viewer.storyboard */; };
 		A95CBBBD1634871A0052BE53 /* BoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A95CBBBC1634871A0052BE53 /* BoViewerViewController.m */; };
+		A9EBEDC51637E16800EB1167 /* BoViewerJsonRpcClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EBEDC41637E16800EB1167 /* BoViewerJsonRpcClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		A95CBB6C1634838D0052BE53 /* Viewer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Viewer.storyboard; sourceTree = "<group>"; };
 		A95CBBBB1634871A0052BE53 /* BoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoViewerViewController.h; sourceTree = "<group>"; };
 		A95CBBBC1634871A0052BE53 /* BoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoViewerViewController.m; sourceTree = "<group>"; };
+		A9EBEDC31637E16800EB1167 /* BoViewerJsonRpcClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoViewerJsonRpcClient.h; sourceTree = "<group>"; };
+		A9EBEDC41637E16800EB1167 /* BoViewerJsonRpcClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoViewerJsonRpcClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,7 @@
 		A93B063D1633001F007AB25A /* viewer */ = {
 			isa = PBXGroup;
 			children = (
+				A9EBEDC11637E12800EB1167 /* jsonrpc */,
 				A93B06461633001F007AB25A /* BoViewerAppDelegate.h */,
 				A93B06471633001F007AB25A /* BoViewerAppDelegate.m */,
 				A93B063E1633001F007AB25A /* Supporting Files */,
@@ -166,6 +170,15 @@
 				A93B065E1633001F007AB25A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A9EBEDC11637E12800EB1167 /* jsonrpc */ = {
+			isa = PBXGroup;
+			children = (
+				A9EBEDC31637E16800EB1167 /* BoViewerJsonRpcClient.h */,
+				A9EBEDC41637E16800EB1167 /* BoViewerJsonRpcClient.m */,
+			);
+			name = jsonrpc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,6 +295,7 @@
 				A93B06441633001F007AB25A /* main.m in Sources */,
 				A93B06481633001F007AB25A /* BoViewerAppDelegate.m in Sources */,
 				A95CBBBD1634871A0052BE53 /* BoViewerViewController.m in Sources */,
+				A9EBEDC51637E16800EB1167 /* BoViewerJsonRpcClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
