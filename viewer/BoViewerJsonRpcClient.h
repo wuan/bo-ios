@@ -10,7 +10,17 @@
 
 @interface BoViewerJsonRpcClient : NSObject
 
+@property(nonatomic, strong) NSMutableData *_receivedData;
+
 - (id) initWithServiceEndpoint:(NSString*) serviceEndpoint;
+
 - (void) call:(NSString*) methodName;
-- (void) call:(NSString*) methodName withArgument:(NSString*)argument, ...;
+
+- (void) call:(NSString*) methodName withArgument:(id)argument, ... NS_REQUIRES_NIL_TERMINATION;
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 @end

@@ -15,12 +15,11 @@
 
 @implementation BoViewerViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     timerPeriod = 20;
-    
+
     pollingTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                     target:self
                                                   selector:@selector(timerTick)
@@ -28,37 +27,33 @@
                                                    repeats:YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (void)timerTick
-{
+- (void)timerTick {
     boolean_t update = false;
 
     int timeInterval;
-    
+
     if (lastUpdate == nil) {
         update = true;
     } else {
         timeInterval = -[lastUpdate timeIntervalSinceNow];
-    
-        if (timeInterval >= timerPeriod)
-        {
+
+        if (timeInterval >= timerPeriod) {
             update = true;
         }
     }
-    
+
     if (update) {
         lastUpdate = [NSDate date];
-        BoViewerJsonRpcClient* jsonRpcClient = [[BoViewerJsonRpcClient alloc] initWithServiceEndpoint:@"http://bo1.tryb.de:7080"];
-        [jsonRpcClient call:@"check"];
+        BoViewerJsonRpcClient *jsonRpcClient = [[BoViewerJsonRpcClient alloc] initWithServiceEndpoint:@"http://bo1.tryb.de:7080"];
+        [jsonRpcClient call:@"get_strokes_raster" withArgument:@60, @10000, @0, @1, nil ];
     }
-    
-    [_statusText setText:[NSString stringWithFormat:@"%d/%d", timeInterval, timerPeriod ]];
-}
 
+    [_statusText setText:[NSString stringWithFormat:@"%d/%d", timeInterval, timerPeriod]];
+}
 
 
 @end
