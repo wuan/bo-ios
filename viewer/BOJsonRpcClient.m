@@ -1,20 +1,20 @@
 //
-//  BoViewerJsonRpcClient.m
+//  BOJsonRpcClient.m
 //  viewer
 //
 //  Created by Andreas Würl on 24.10.12.
 //  Copyright (c) 2012 Andreas Würl. All rights reserved.
 //
 
-#import "BoViewerJsonRpcClient.h"
-#import "BoViewerJsonRpcClientDelegate.h"
+#import "BOJsonRpcClient.h"
+#import "BOJsonRpcClientDelegate.h"
 
-@interface BoViewerJsonRpcClient ()
+@interface BOJsonRpcClient ()
 @property(nonatomic, strong) NSURL *serviceEndpoint;
-@property(retain, nonatomic) id <BoViewerJsonRpcClientDelegate> delegate;
+@property(retain, nonatomic) id <BOJsonRpcClientDelegate> delegate;
 @end
 
-@implementation BoViewerJsonRpcClient
+@implementation BOJsonRpcClient
 
 @synthesize delegate = _delegate;
 

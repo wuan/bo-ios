@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Andreas Würl. All rights reserved.
 //
 
-#import "BoViewerAppDelegate.h"
+#import "BOAppDelegate.h"
 
-@implementation BoViewerAppDelegate
+@implementation BOAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

@@ -1,5 +1,5 @@
 //
-//  BoViewerViewController.h
+//  BOViewController.h
 //  viewer
 //
 //  Created by Andreas Würl on 21.10.12.
@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface BoViewerViewController : UIViewController
+@interface BOViewController : UIViewController
 {
     NSTimer *pollingTimer;
     NSDate *lastUpdate;

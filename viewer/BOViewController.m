@@ -1,21 +1,21 @@
 //
-//  BoViewerViewController.m
+//  BOViewController.m
 //  viewer
 //
 //  Created by Andreas Würl on 21.10.12.
 //  Copyright (c) 2012 Andreas Würl. All rights reserved.
 //
 
-#import "BoViewerViewController.h"
-#import "BoViewerJsonRpcClient.h"
+#import "BOViewController.h"
+#import "BOJsonRpcClient.h"
 #import "BORasterParameters.h"
 #import "BORasterElement.h"
 
-@interface BoViewerViewController ()
+@interface BOViewController ()
 
 @end
 
-@implementation BoViewerViewController
+@implementation BOViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,7 +51,7 @@
 
     if (update) {
         lastUpdate = [NSDate date];
-        BoViewerJsonRpcClient *jsonRpcClient = [[BoViewerJsonRpcClient alloc] initWithServiceEndpoint:@"http://bo1.tryb.de:7080"];
+        BOJsonRpcClient *jsonRpcClient = [[BOJsonRpcClient alloc] initWithServiceEndpoint:@"http://bo1.tryb.de:7080"];
         [jsonRpcClient setDelegate:self];
         [jsonRpcClient call:@"get_strokes_raster" withArgument:@60, @10000, @0, @1, nil ];
     }

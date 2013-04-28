@@ -1,5 +1,5 @@
 //
-//  BoViewerJsonRpcClient.h
+//  BOJsonRpcClient.h
 //  viewer
 //
 //  Created by Andreas Würl on 24.10.12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BoViewerJsonRpcClient : NSObject
+@interface BOJsonRpcClient : NSObject
 
 - (id)initWithServiceEndpoint:(NSString *)serviceEndpoint;
 

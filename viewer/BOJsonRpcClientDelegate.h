@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol BoViewerJsonRpcClientDelegate <NSObject>
+@protocol BOJsonRpcClientDelegate <NSObject>
 
 -(void)receivedResponse:(NSDictionary*)response;
 -(void)errorInServiceCall:(NSError*)error;
