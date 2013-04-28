@@ -7,16 +7,19 @@
 //
 
 #import "BoViewerJsonRpcClient.h"
+#import "BoViewerJsonRpcClientDelegate.h"
 
 @interface BoViewerJsonRpcClient ()
-@property(nonatomic, strong) NSURL *_serviceEndpoint;
+@property(nonatomic, strong) NSURL *serviceEndpoint;
+@property(retain, nonatomic) id <BoViewerJsonRpcClientDelegate> delegate;
 @end
 
 @implementation BoViewerJsonRpcClient
 
+@synthesize delegate = _delegate;
+
 - (id)initWithServiceEndpoint:(NSString *)serviceEndpoint {
-    self._serviceEndpoint = [NSURL URLWithString:serviceEndpoint];
-    self._receivedData = [[NSMutableData alloc] init];
+    _serviceEndpoint = [NSURL URLWithString:serviceEndpoint];
 
     return self;
 }
@@ -52,7 +55,7 @@
     NSData *postData = [NSJSONSerialization dataWithJSONObject:argumentDict
                                                        options:NSJSONWritingPrettyPrinted error:&error];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self._serviceEndpoint];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_serviceEndpoint];
     [request setValue:@"text/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"bo-ios" forHTTPHeaderField:@"User-Agent"];
     [request setValue:[NSString stringWithFormat:@"%i", postData.length] forHTTPHeaderField:@"Content-Length"];
@@ -60,25 +63,35 @@
     [request setHTTPBody:postData];
     //NSLog(@"%@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
 
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [NSURLConnection
+            sendAsynchronousRequest:request
+                              queue:[[NSOperationQueue alloc] init]
+                  completionHandler:^(NSURLResponse *response,
+                          NSData *data,
+                          NSError *connectionError) {
+                      if ([data length] > 0 && connectionError == nil) {
+                          //NSString *jsonStringResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+                          NSError *jsonError = [[NSError alloc] init];
+                          NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+                          NSLog(@"%@", jsonResponse);
+                          [[self delegate] receivedResponse:[jsonResponse objectForKey:@"result"]];
+                      }
+                      else if ([data length] == 0 && connectionError == nil) {
+                          NSLog(@"Nothing was downloaded.");
+                      }
+                      else if (connectionError != nil) {
+                          NSLog(@"Error = %@", connectionError);
+                      }
+
+                  }];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [__receivedData setLength:0];
+- (id)delegate {
+    return _delegate;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [__receivedData appendData:data];
+- (void)setDelegate:(id)delegate {
+    _delegate = delegate;
 }
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"%@", error);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-
-    NSString *jsonResponse = [[NSString alloc] initWithData:__receivedData encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", jsonResponse);
-}
-
 @end
