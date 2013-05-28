@@ -7,13 +7,13 @@
 
 
 #import <Foundation/Foundation.h>
-#import "BOAbstractStroke.h"
+#import "BOStroke.h"
 
 @class BORasterParameters;
 
-@interface BORasterElement : BOAbstractStroke
+@interface BORasterElement : BOStroke
 
--(id) initWithRasterParameters:(BORasterParameters*)rasterParameters andTimestamp:(long)referenceTimestamp fromArray:(NSArray*)dataArray;
+-(id) initWithRasterParameters:(const BORasterParameters*)rasterParameters andTimestamp:(long)referenceTimestamp fromArray:(NSArray*)dataArray;
 
 - (NSString *)description;
 @end

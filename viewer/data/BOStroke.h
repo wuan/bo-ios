@@ -2,19 +2,20 @@
 // Created by Andreas Würl on 28.04.13.
 // Copyright (c) 2013 Andreas Würl. All rights reserved.
 //
-// To change the template use AppCode | Preferences | File Templates.
-//
 
 
 #import <Foundation/Foundation.h>
 
+#import <MapKit/MKGeometry.h>
 
-@interface BOAbstractStroke : NSObject
+@interface BOStroke : NSObject
 
 @property long timestamp;
-@property float longitude;
-@property float latitude;
+@property MKMapPoint location;
 @property int multiplicity;
 
+- (void)setLongitude:(double) x;
+- (void)setLatitude:(double) y;
+- (MKMapPoint const *)getLocation;
 - (NSString *)description;
 @end

@@ -10,6 +10,10 @@
 #import "BORasterParameters.h"
 
 
+@interface BORasterElement ()
+@property(nonatomic) BORasterParameters *rasterParameters;
+@end
+
 @implementation BORasterElement {
 
 }
@@ -19,7 +23,7 @@
     [self setLatitude:[rasterParameters getCenterLatitude:[[dataArray objectAtIndex:1] integerValue]]];
     [self setMultiplicity:[[dataArray objectAtIndex:2] integerValue]];
     [self setTimestamp:referenceTimestamp + 1000 * [[dataArray objectAtIndex:3] integerValue]];
-
+    [self setRasterParameters:rasterParameters];
     return self;
 }
 
