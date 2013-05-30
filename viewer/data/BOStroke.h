@@ -7,15 +7,22 @@
 #import <Foundation/Foundation.h>
 
 #import <MapKit/MKGeometry.h>
+#import <MapKit/MKOverlay.h>
 
-@interface BOStroke : NSObject
+@interface BOStroke : NSObject {
+    MKMapRect envelope;
+}
 
-@property long timestamp;
-@property MKMapPoint location;
-@property int multiplicity;
+@property (readonly) long timestamp;
+@property (readonly) int multiplicity;
 
-- (void)setLongitude:(double) x;
-- (void)setLatitude:(double) y;
+- (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate;
+- (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate andWidth:(double)width andHeight:(double)height;
+
 - (MKMapPoint const *)getLocation;
+
+- (MKMapRect const *)getEnvelope;
+
 - (NSString *)description;
+
 @end

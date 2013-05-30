@@ -10,10 +10,13 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class BOMapViewDelegate;
+
 @interface BOViewController : UIViewController
 {
-    NSTimer *pollingTimer;
-    NSDate *lastUpdate;
+    NSTimer* pollingTimer;
+    NSDate* lastUpdate;
+    BOMapViewDelegate* mapViewDelegate;
     int timerPeriod;
 }
 

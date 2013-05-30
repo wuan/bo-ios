@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DC17028720FEEC25ABF1EBF /* BOStrokesOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17F9B613B837A459A9F3D /* BOStrokesOverlayView.m */; };
+		2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */; };
 		2DC1723A22D9DA350B883C40 /* BORasterElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17955BCBA884F6404405D /* BORasterElement.m */; };
-		2DC1740EC4393DC5369640BD /* BOStrokesOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC171E3DC267CD20277D13C /* BOStrokesOverlay.m */; };
+		2DC1740EC4393DC5369640BD /* BOStrokeOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC171E3DC267CD20277D13C /* BOStrokeOverlay.m */; };
 		2DC17A11375AA373AABAFB19 /* BOStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17C3E42CF3BB87B38E8E1 /* BOStroke.m */; };
 		2DC17B66D89B0D99EED13F9E /* BORasterParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC1737B70A1D333520E7F63 /* BORasterParameters.m */; };
+		2DC17E73677F602B7CC519D3 /* BOMapViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17575F2563705146FCDE3 /* BOMapViewDelegate.m */; };
 		A93B06381633001F007AB25A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06371633001F007AB25A /* UIKit.framework */; };
 		A93B063A1633001F007AB25A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06391633001F007AB25A /* Foundation.framework */; };
 		A93B063C1633001F007AB25A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B063B1633001F007AB25A /* CoreGraphics.framework */; };
@@ -44,17 +45,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2DC171E3DC267CD20277D13C /* BOStrokesOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokesOverlay.m; sourceTree = "<group>"; };
-		2DC171F62D565F93264D4D1A /* BOStrokesOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokesOverlayView.h; sourceTree = "<group>"; };
+		2DC171E3DC267CD20277D13C /* BOStrokeOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokeOverlay.m; sourceTree = "<group>"; };
+		2DC171F62D565F93264D4D1A /* BOStrokeOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokeOverlayView.h; sourceTree = "<group>"; };
 		2DC1737B70A1D333520E7F63 /* BORasterParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BORasterParameters.m; sourceTree = "<group>"; };
+		2DC17575F2563705146FCDE3 /* BOMapViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOMapViewDelegate.m; sourceTree = "<group>"; };
 		2DC175964BBE3EE9EA8D3567 /* BORasterParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BORasterParameters.h; sourceTree = "<group>"; };
 		2DC176B2754BBDB3FF46FEFD /* BORasterElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BORasterElement.h; sourceTree = "<group>"; };
-		2DC178B825D8FEBB89F98BBA /* BOStrokesOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokesOverlay.h; sourceTree = "<group>"; };
+		2DC178B825D8FEBB89F98BBA /* BOStrokeOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokeOverlay.h; sourceTree = "<group>"; };
 		2DC17955BCBA884F6404405D /* BORasterElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BORasterElement.m; sourceTree = "<group>"; };
 		2DC179B0A150B85A18C830B8 /* BOStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStroke.h; sourceTree = "<group>"; };
 		2DC17C3E42CF3BB87B38E8E1 /* BOStroke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStroke.m; sourceTree = "<group>"; };
+		2DC17C57A5A5EC935398C47F /* BOMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOMapViewDelegate.h; sourceTree = "<group>"; };
 		2DC17E32863F470DB3125A2B /* BOJsonRpcClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOJsonRpcClientDelegate.h; sourceTree = "<group>"; };
-		2DC17F9B613B837A459A9F3D /* BOStrokesOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokesOverlayView.m; sourceTree = "<group>"; };
+		2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokeOverlayView.m; sourceTree = "<group>"; };
 		A93B06331633001F007AB25A /* viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = viewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A93B06371633001F007AB25A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A93B06391633001F007AB25A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -112,8 +115,8 @@
 		2DC175124C1B4E935A7F0915 /* overlay */ = {
 			isa = PBXGroup;
 			children = (
-				2DC171E3DC267CD20277D13C /* BOStrokesOverlay.m */,
-				2DC178B825D8FEBB89F98BBA /* BOStrokesOverlay.h */,
+				2DC171E3DC267CD20277D13C /* BOStrokeOverlay.m */,
+				2DC178B825D8FEBB89F98BBA /* BOStrokeOverlay.h */,
 			);
 			path = overlay;
 			sourceTree = "<group>";
@@ -121,8 +124,8 @@
 		2DC17A17BF3C2712370D8E93 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				2DC17F9B613B837A459A9F3D /* BOStrokesOverlayView.m */,
-				2DC171F62D565F93264D4D1A /* BOStrokesOverlayView.h */,
+				2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */,
+				2DC171F62D565F93264D4D1A /* BOStrokeOverlayView.h */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -145,6 +148,8 @@
 			children = (
 				2DC175124C1B4E935A7F0915 /* overlay */,
 				2DC17A17BF3C2712370D8E93 /* view */,
+				2DC17575F2563705146FCDE3 /* BOMapViewDelegate.m */,
+				2DC17C57A5A5EC935398C47F /* BOMapViewDelegate.h */,
 			);
 			path = mapview;
 			sourceTree = "<group>";
@@ -358,8 +363,9 @@
 				2DC17B66D89B0D99EED13F9E /* BORasterParameters.m in Sources */,
 				2DC17A11375AA373AABAFB19 /* BOStroke.m in Sources */,
 				2DC1723A22D9DA350B883C40 /* BORasterElement.m in Sources */,
-				2DC1740EC4393DC5369640BD /* BOStrokesOverlay.m in Sources */,
-				2DC17028720FEEC25ABF1EBF /* BOStrokesOverlayView.m in Sources */,
+				2DC1740EC4393DC5369640BD /* BOStrokeOverlay.m in Sources */,
+				2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayView.m in Sources */,
+				2DC17E73677F602B7CC519D3 /* BOMapViewDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

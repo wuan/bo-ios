@@ -12,8 +12,6 @@
 @class BORasterParameters;
 
 @interface BORasterElement : BOStroke
-
--(id) initWithRasterParameters:(const BORasterParameters*)rasterParameters andTimestamp:(long)referenceTimestamp fromArray:(NSArray*)dataArray;
-
+-(id)initWithRasterParameters:(BORasterParameters *)rasterParameters andReferenceTimestamp:(long)referenceTimestamp fromArray:(NSArray*)dataArray;
 - (NSString *)description;
 @end

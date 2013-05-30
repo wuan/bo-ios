@@ -6,31 +6,43 @@
 //
 
 
+#import <MapKit/MapKit.h>
 #import "BOStroke.h"
 
+@interface BOStroke()
+@end
 
 @implementation BOStroke
 {
-    long timestamp;
-    MKMapPoint location;
-    int multiplicity;
 }
 
-@synthesize timestamp, multiplicity;
+@synthesize timestamp = _timestamp, multiplicity = _multiplicity;
 
-- (void)setLongitude:(double)x {
-    location.x = x;
+- (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate {
+    return [self initWithTimestamp:timestamp andMultiplicity:multiplicity andX:xCoordinate andY:yCoordinate andWidth:0.0 andHeight:0.0];
 }
 
-- (void)setLatitude:(double)y {
-    location.y = y;
+- (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate andWidth:(double)width andHeight:(double)height {
+    _timestamp = timestamp;
+    _multiplicity = multiplicity;
+    envelope.origin.x = xCoordinate;
+    envelope.origin.y = yCoordinate;
+    envelope.size.width = width;
+    envelope.size.height = height;
+    return self;
 }
 
 - (const MKMapPoint *)getLocation {
-    return &location;
+    return &envelope.origin;
+}
+
+- (const MKMapRect*)getEnvelope {
+    return &envelope;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"Stroke: %d (%.4f, %.4f) %d", timestamp, longitude, latitude, multiplicity];
+    return [NSString stringWithFormat:@"Stroke: %ld (%.4f, %.4f) %d", _timestamp, envelope.origin.x, envelope.origin.y, _multiplicity];
 }
+
+
 @end

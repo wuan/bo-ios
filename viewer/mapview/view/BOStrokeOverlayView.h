@@ -6,10 +6,10 @@
 //
 
 
-#import "BOStrokesOverlayView.h"
+#import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
-
-@implementation BOStrokesOverlayView {
+@interface BOStrokeOverlayView : MKOverlayView {
 
 }
 @end

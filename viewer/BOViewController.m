@@ -10,6 +10,8 @@
 #import "BOJsonRpcClient.h"
 #import "BORasterParameters.h"
 #import "BORasterElement.h"
+#import "BOMapViewDelegate.h"
+#import "BOStrokeOverlay.h"
 
 @interface BOViewController ()
 
@@ -27,6 +29,10 @@
                                                   selector:@selector(timerTick)
                                                   userInfo:nil
                                                    repeats:YES];
+
+    mapViewDelegate = [[BOMapViewDelegate alloc] init];
+
+    [_mapView setDelegate:mapViewDelegate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,14 +79,16 @@
 
     NSArray *dataArray = [response objectForKey:@"r"];
 
-    NSMutableArray *rasterElements = [[NSMutableArray alloc] initWithCapacity:dataArray.count];
+    NSMutableArray *overlays = [[NSMutableArray alloc] initWithCapacity:dataArray.count];
 
     for (NSArray *rasterData in dataArray) {
-        BORasterElement *rasterElement = [[BORasterElement alloc] initWithRasterParameters:rasterParameters andTimestamp:referenceTimestamp fromArray:rasterData];
-        [rasterElements addObject:rasterElement];
+        BORasterElement* rasterElement = [[BORasterElement alloc] initWithRasterParameters:rasterParameters andReferenceTimestamp:referenceTimestamp fromArray:rasterData];
+        BOStrokeOverlay* overlay = [[BOStrokeOverlay alloc] initWithStroke:rasterElement];
+        [_mapView addOverlay:overlay];
+        [overlays addObject:overlay];
     }
-    NSLog(@"%@", rasterElements);
-    NSLog(@"%d", rasterElements.count);
+    NSLog(@"%@", overlays);
+    NSLog(@"%d", overlays.count);
 }
 
 @end
