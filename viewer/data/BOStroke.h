@@ -10,7 +10,7 @@
 #import <MapKit/MKOverlay.h>
 
 @interface BOStroke : NSObject {
-    MKMapRect envelope;
+    MKCoordinateRegion envelope;
 }
 
 @property (readonly) long timestamp;
@@ -19,9 +19,9 @@
 - (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate;
 - (id)initWithTimestamp:(long)timestamp andMultiplicity:(int)multiplicity andX:(double)xCoordinate andY:(double)yCoordinate andWidth:(double)width andHeight:(double)height;
 
-- (MKMapPoint const *)getLocation;
+- (CLLocationCoordinate2D const *)getLocation;
 
-- (MKMapRect const *)getEnvelope;
+- (MKCoordinateRegion const *)getEnvelope;
 
 - (NSString *)description;
 

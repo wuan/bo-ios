@@ -1,10 +1,3 @@
-//
-//  BOViewController.h
-//  viewer
-//
-//  Created by Andreas Würl on 21.10.12.
-//  Copyright (c) 2012 Andreas Würl. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>

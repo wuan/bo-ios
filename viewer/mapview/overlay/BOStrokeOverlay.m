@@ -14,13 +14,35 @@
 
 - (id)initWithStroke:(BOStroke *)inputStroke {
     stroke = inputStroke;
-    boundingMapRect = [stroke getEnvelope];
-    coordinate = CLLocationCoordinate2DMake(boundingMapRect->origin.x, boundingMapRect->origin.y);
+    const MKCoordinateRegion *strokeRegion = stroke.getEnvelope;
+
+    CLLocationCoordinate2D topLeftCoordinate =
+            CLLocationCoordinate2DMake(strokeRegion->center.latitude
+                    + (strokeRegion->span.latitudeDelta / 2.0),
+                    strokeRegion->center.longitude
+                            - (strokeRegion->span.longitudeDelta / 2.0));
+
+    MKMapPoint topLeftMapPoint = MKMapPointForCoordinate(topLeftCoordinate);
+
+    CLLocationCoordinate2D bottomRightCoordinate =
+            CLLocationCoordinate2DMake(strokeRegion->center.latitude
+                    - (strokeRegion->span.latitudeDelta / 2.0),
+                    strokeRegion->center.longitude
+                            + (strokeRegion->span.longitudeDelta / 2.0));
+
+    MKMapPoint bottomRightMapPoint = MKMapPointForCoordinate(bottomRightCoordinate);
+
+    boundingMapRect = MKMapRectMake(topLeftMapPoint.x,
+            topLeftMapPoint.y,
+            fabs(bottomRightMapPoint.x - topLeftMapPoint.x),
+            fabs(bottomRightMapPoint.y - topLeftMapPoint.y));
+
+    coordinate = strokeRegion->center;
     return self;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"Overlay(%@)", [stroke description]];
+    return [NSString stringWithFormat:@"Overlay(%@)", [stroke description]];
 }
 
 - (CLLocationCoordinate2D)coordinate {
@@ -28,7 +50,7 @@
 }
 
 - (MKMapRect)boundingMapRect {
-    return *boundingMapRect;
+    return boundingMapRect;
 }
 
 - (const BOStroke *)getStroke {

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */; };
+		2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17F9B613B837A459A9F3D /* BOStrokeOverlayRenderer.m */; };
 		2DC1723A22D9DA350B883C40 /* BORasterElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17955BCBA884F6404405D /* BORasterElement.m */; };
 		2DC1740EC4393DC5369640BD /* BOStrokeOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC171E3DC267CD20277D13C /* BOStrokeOverlay.m */; };
 		2DC17A11375AA373AABAFB19 /* BOStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17C3E42CF3BB87B38E8E1 /* BOStroke.m */; };
@@ -46,7 +46,7 @@
 
 /* Begin PBXFileReference section */
 		2DC171E3DC267CD20277D13C /* BOStrokeOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokeOverlay.m; sourceTree = "<group>"; };
-		2DC171F62D565F93264D4D1A /* BOStrokeOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokeOverlayView.h; sourceTree = "<group>"; };
+		2DC171F62D565F93264D4D1A /* BOStrokeOverlayRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOStrokeOverlayRenderer.h; sourceTree = "<group>"; };
 		2DC1737B70A1D333520E7F63 /* BORasterParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BORasterParameters.m; sourceTree = "<group>"; };
 		2DC17575F2563705146FCDE3 /* BOMapViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOMapViewDelegate.m; sourceTree = "<group>"; };
 		2DC175964BBE3EE9EA8D3567 /* BORasterParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BORasterParameters.h; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 		2DC17C3E42CF3BB87B38E8E1 /* BOStroke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStroke.m; sourceTree = "<group>"; };
 		2DC17C57A5A5EC935398C47F /* BOMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOMapViewDelegate.h; sourceTree = "<group>"; };
 		2DC17E32863F470DB3125A2B /* BOJsonRpcClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BOJsonRpcClientDelegate.h; sourceTree = "<group>"; };
-		2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokeOverlayView.m; sourceTree = "<group>"; };
+		2DC17F9B613B837A459A9F3D /* BOStrokeOverlayRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BOStrokeOverlayRenderer.m; sourceTree = "<group>"; };
 		A93B06331633001F007AB25A /* viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = viewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A93B06371633001F007AB25A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A93B06391633001F007AB25A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -124,8 +124,8 @@
 		2DC17A17BF3C2712370D8E93 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				2DC17F9B613B837A459A9F3D /* BOStrokeOverlayView.m */,
-				2DC171F62D565F93264D4D1A /* BOStrokeOverlayView.h */,
+				2DC17F9B613B837A459A9F3D /* BOStrokeOverlayRenderer.m */,
+				2DC171F62D565F93264D4D1A /* BOStrokeOverlayRenderer.h */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -364,7 +364,7 @@
 				2DC17A11375AA373AABAFB19 /* BOStroke.m in Sources */,
 				2DC1723A22D9DA350B883C40 /* BORasterElement.m in Sources */,
 				2DC1740EC4393DC5369640BD /* BOStrokeOverlay.m in Sources */,
-				2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayView.m in Sources */,
+				2DC17028720FEEC25ABF1EBF /* BOStrokeOverlayRenderer.m in Sources */,
 				2DC17E73677F602B7CC519D3 /* BOMapViewDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +465,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "viewer/viewer-Prefix.pch";
 				INFOPLIST_FILE = "viewer/viewer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -476,6 +477,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "viewer/viewer-Prefix.pch";
 				INFOPLIST_FILE = "viewer/viewer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

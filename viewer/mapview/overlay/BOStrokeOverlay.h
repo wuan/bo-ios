@@ -11,7 +11,7 @@
 @class BOStroke;
 
 @interface BOStrokeOverlay : NSObject <MKOverlay> {
-    const MKMapRect *boundingMapRect;
+    MKMapRect boundingMapRect;
     const BOStroke *stroke;
 }
 

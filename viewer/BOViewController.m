@@ -1,10 +1,3 @@
-//
-//  BOViewController.m
-//  viewer
-//
-//  Created by Andreas Würl on 21.10.12.
-//  Copyright (c) 2012 Andreas Würl. All rights reserved.
-//
 
 #import "BOViewController.h"
 #import "BOJsonRpcClient.h"
@@ -33,6 +26,12 @@
     mapViewDelegate = [[BOMapViewDelegate alloc] init];
 
     [_mapView setDelegate:mapViewDelegate];
+
+    //CLLocationCoordinate2D worldCoords[4] = { {90,-180}, {90,180}, {-90,180}, {-90,-180} };
+    CLLocationCoordinate2D worldCoords[4] = { {43,-100}, {43,-80}, {25,-80}, {25,-100} };
+    MKPolygon *worldOverlay = [MKPolygon polygonWithCoordinates:worldCoords
+                                                          count:4];
+    [_mapView addOverlay:worldOverlay];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,5 +89,6 @@
     NSLog(@"%@", overlays);
     NSLog(@"%d", overlays.count);
 }
+
 
 @end
