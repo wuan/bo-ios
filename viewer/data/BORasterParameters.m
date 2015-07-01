@@ -13,12 +13,12 @@
 }
 
 - (id)initFromJson:(NSDictionary *)json {
-    lon_start = [[json objectForKey:@"x0"] floatValue];
-    lat_start = [[json objectForKey:@"y1"] floatValue];
-    lon_delta = [[json objectForKey:@"xd"] floatValue];
-    lat_delta = [[json objectForKey:@"yd"] floatValue];
-    lon_count = [[json objectForKey:@"xc"] integerValue];
-    lat_count = [[json objectForKey:@"yc"] integerValue];
+    lon_start = [json[@"x0"] floatValue];
+    lat_start = [json[@"y1"] floatValue];
+    lon_delta = [json[@"xd"] floatValue];
+    lat_delta = [json[@"yd"] floatValue];
+    lon_count = [json[@"xc"] integerValue];
+    lat_count = [json[@"yc"] integerValue];
 
     return self;
 }

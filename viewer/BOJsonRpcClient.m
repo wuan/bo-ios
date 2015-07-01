@@ -41,15 +41,15 @@
         va_end(argumentList);
     }
 
-    NSArray *argumentKeys = [NSArray arrayWithObjects:@"id", @"method", nil];
-    NSArray *argumentValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:1], methodName, nil];
+    NSArray *argumentKeys = @[@"id", @"method"];
+    NSArray *argumentValues = @[@1, methodName];
 
     if ([arguments count] > 0) {
         argumentKeys = [argumentKeys arrayByAddingObject:@"params"];
         argumentValues = [argumentValues arrayByAddingObject:arguments];
     }
 
-    NSDictionary *argumentDict = [NSDictionary dictionaryWithObjects:argumentValues forKeys:argumentKeys];
+    NSDictionary *argumentDict = @{argumentKeys : argumentValues};
 
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:argumentDict
@@ -75,7 +75,7 @@
                           NSError *jsonError = [[NSError alloc] init];
                           NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
                           NSLog(@"%@", jsonResponse);
-                          [[self delegate] receivedResponse:[jsonResponse objectForKey:@"result"]];
+                          [[self delegate] receivedResponse:jsonResponse[@"result"]];
                       }
                       else if ([data length] == 0 && connectionError == nil) {
                           NSLog(@"Nothing was downloaded.");
@@ -91,7 +91,4 @@
     return _delegate;
 }
 
-- (void)setDelegate:(id)delegate {
-    _delegate = delegate;
-}
 @end

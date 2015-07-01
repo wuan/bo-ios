@@ -1,5 +1,3 @@
-
-
 #import "BOMapViewDelegate.h"
 #import "BOStrokeOverlay.h"
 #import "BOStrokeOverlayRenderer.h"

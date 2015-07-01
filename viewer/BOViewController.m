@@ -68,7 +68,7 @@
 - (void)receivedResponse:(NSDictionary *)response {
     id rasterParameters = [[BORasterParameters alloc] initFromJson:response];
 
-    NSString *referenceTimeString = [response objectForKey:@"t"];
+    NSString *referenceTimeString = response[@"t"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMdd'T'HH:mm:ss"];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -76,7 +76,7 @@
 
     long referenceTimestamp = (long)[referenceTime timeIntervalSince1970];
 
-    NSArray *dataArray = [response objectForKey:@"r"];
+    NSArray *dataArray = response[@"r"];
 
     NSMutableArray *overlays = [[NSMutableArray alloc] initWithCapacity:dataArray.count];
 
