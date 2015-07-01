@@ -22,7 +22,6 @@
 		A93B064A1633001F007AB25A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B06491633001F007AB25A /* Default.png */; };
 		A93B064C1633001F007AB25A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B064B1633001F007AB25A /* Default@2x.png */; };
 		A93B064E1633001F007AB25A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A93B064D1633001F007AB25A /* Default-568h@2x.png */; };
-		A93B06561633001F007AB25A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06551633001F007AB25A /* SenTestingKit.framework */; };
 		A93B06571633001F007AB25A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06371633001F007AB25A /* UIKit.framework */; };
 		A93B06581633001F007AB25A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93B06391633001F007AB25A /* Foundation.framework */; };
 		A93B06601633001F007AB25A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A93B065E1633001F007AB25A /* InfoPlist.strings */; };
@@ -72,7 +71,6 @@
 		A93B064B1633001F007AB25A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A93B064D1633001F007AB25A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		A93B06541633001F007AB25A /* viewerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = viewerTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A93B06551633001F007AB25A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		A93B065D1633001F007AB25A /* viewerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "viewerTests-Info.plist"; sourceTree = "<group>"; };
 		A93B065F1633001F007AB25A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A93B06611633001F007AB25A /* viewerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = viewerTests.h; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A93B06561633001F007AB25A /* SenTestingKit.framework in Frameworks */,
 				A93B06571633001F007AB25A /* UIKit.framework in Frameworks */,
 				A93B06581633001F007AB25A /* Foundation.framework in Frameworks */,
 			);
@@ -181,7 +178,6 @@
 				A93B06371633001F007AB25A /* UIKit.framework */,
 				A93B06391633001F007AB25A /* Foundation.framework */,
 				A93B063B1633001F007AB25A /* CoreGraphics.framework */,
-				A93B06551633001F007AB25A /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -282,7 +278,7 @@
 			name = viewerTests;
 			productName = viewerTests;
 			productReference = A93B06541633001F007AB25A /* viewerTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -291,6 +287,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Bo;
+				LastTestingUpgradeCheck = 0640;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Andreas Würl";
 			};
@@ -429,7 +426,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -451,7 +448,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -490,13 +487,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "viewer/viewer-Prefix.pch";
 				INFOPLIST_FILE = "viewerTests/viewerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -507,13 +504,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "viewer/viewer-Prefix.pch";
 				INFOPLIST_FILE = "viewerTests/viewerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

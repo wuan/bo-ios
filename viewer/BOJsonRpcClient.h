@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol BOJsonRpcClientDelegate;
+
 @interface BOJsonRpcClient : NSObject
 
 - (id)initWithServiceEndpoint:(NSString *)serviceEndpoint;
@@ -18,6 +20,6 @@
 
 - (id)delegate;
 
-- (void)setDelegate:(id)delegate;
+- (void)setDelegate:(id <BOJsonRpcClientDelegate>)delegate;
 
 @end

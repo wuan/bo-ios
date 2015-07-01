@@ -23,4 +23,9 @@
     return nil;
 }
 
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
+    return nil;
+}
+
+
 @end

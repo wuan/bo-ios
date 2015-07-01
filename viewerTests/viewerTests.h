@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Andreas Würl. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface viewerTests : SenTestCase
+@interface viewerTests : XCTestCase
 
 @end
