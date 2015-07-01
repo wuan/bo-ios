@@ -70,7 +70,7 @@
 		A93B06491633001F007AB25A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A93B064B1633001F007AB25A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A93B064D1633001F007AB25A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		A93B06541633001F007AB25A /* viewerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = viewerTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A93B06541633001F007AB25A /* viewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = viewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A93B065D1633001F007AB25A /* viewerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "viewerTests-Info.plist"; sourceTree = "<group>"; };
 		A93B065F1633001F007AB25A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A93B06611633001F007AB25A /* viewerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = viewerTests.h; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				A93B06331633001F007AB25A /* viewer.app */,
-				A93B06541633001F007AB25A /* viewerTests.octest */,
+				A93B06541633001F007AB25A /* viewerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,7 +277,7 @@
 			);
 			name = viewerTests;
 			productName = viewerTests;
-			productReference = A93B06541633001F007AB25A /* viewerTests.octest */;
+			productReference = A93B06541633001F007AB25A /* viewerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
