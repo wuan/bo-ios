@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ZNC-dQ-fVf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ZNC-dQ-fVf">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="7cs-l0-3HO">
             <objects>
-                <viewController storyboardIdentifier="MainView" id="ZNC-dQ-fVf" customClass="BOViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainView" id="ZNC-dQ-fVf" customClass="ViewController" customModule="monitor" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GQa-ID-nSE"/>
                         <viewControllerLayoutGuide type="bottom" id="G0e-Fe-9kt"/>
@@ -17,15 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="s8v-QM-wHK">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybrid" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s8v-QM-wHK">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <animations/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZNC-dQ-fVf" id="ouq-xf-L9p"/>
+                                </connections>
                             </mapView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTf-2x-7xq" userLabel="StatusText">
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="s8v-QM-wHK" firstAttribute="trailing" secondItem="NxE-P5-JEH" secondAttribute="trailing" id="2Hs-VY-hh6"/>
@@ -37,20 +43,13 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="locationManager" destination="geP-0M-GNz" id="rvU-qd-qHf"/>
-                        <outlet property="mapView" destination="s8v-QM-wHK" id="xiN-ZE-t6E"/>
-                        <outlet property="statusText" destination="ZTf-2x-7xq" id="4R4-Op-vrF"/>
+                        <outlet property="mapView" destination="s8v-QM-wHK" id="E3u-3P-hg3"/>
+                        <outlet property="statusText" destination="ZTf-2x-7xq" id="POl-Ub-EsT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jMC-Qh-86p" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="geP-0M-GNz" customClass="CLLocationManager"/>
             </objects>
             <point key="canvasLocation" x="3" y="46"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
