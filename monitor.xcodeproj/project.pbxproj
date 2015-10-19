@@ -14,6 +14,10 @@
 		A96639721BD56A2C004E2537 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96639701BD56A2C004E2537 /* LaunchScreen.storyboard */; };
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
+		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
+		A96639981BD56BFB004E2537 /* data in Resources */ = {isa = PBXBuildFile; fileRef = A96639971BD56BFB004E2537 /* data */; settings = {ASSET_TAGS = (); }; };
+		A966399A1BD56C19004E2537 /* mapview in Resources */ = {isa = PBXBuildFile; fileRef = A96639991BD56C19004E2537 /* mapview */; settings = {ASSET_TAGS = (); }; };
+		A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966399B1BD56C30004E2537 /* JsonRpcClient.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		A96639831BD56A2C004E2537 /* monitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = monitorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A96639871BD56A2C004E2537 /* monitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = monitorUITests.swift; sourceTree = "<group>"; };
 		A96639891BD56A2C004E2537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A96639951BD56B6D004E2537 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A96639971BD56BFB004E2537 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		A96639991BD56C19004E2537 /* mapview */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mapview; sourceTree = "<group>"; };
+		A966399B1BD56C30004E2537 /* JsonRpcClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRpcClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +86,7 @@
 		A966395B1BD56A2B004E2537 = {
 			isa = PBXGroup;
 			children = (
+				A96639951BD56B6D004E2537 /* MapKit.framework */,
 				A96639661BD56A2B004E2537 /* monitor */,
 				A966397B1BD56A2C004E2537 /* monitorTests */,
 				A96639861BD56A2C004E2537 /* monitorUITests */,
@@ -97,6 +107,9 @@
 		A96639661BD56A2B004E2537 /* monitor */ = {
 			isa = PBXGroup;
 			children = (
+				A966399B1BD56C30004E2537 /* JsonRpcClient.swift */,
+				A96639991BD56C19004E2537 /* mapview */,
+				A96639971BD56BFB004E2537 /* data */,
 				A96639671BD56A2B004E2537 /* AppDelegate.swift */,
 				A96639691BD56A2B004E2537 /* ViewController.swift */,
 				A966396B1BD56A2B004E2537 /* Main.storyboard */,
@@ -192,6 +205,11 @@
 				TargetAttributes = {
 					A96639631BD56A2B004E2537 = {
 						CreatedOnToolsVersion = 7.0.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					A96639771BD56A2C004E2537 = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -230,6 +248,8 @@
 			files = (
 				A96639721BD56A2C004E2537 /* LaunchScreen.storyboard in Resources */,
 				A966396F1BD56A2B004E2537 /* Assets.xcassets in Resources */,
+				A96639981BD56BFB004E2537 /* data in Resources */,
+				A966399A1BD56C19004E2537 /* mapview in Resources */,
 				A966396D1BD56A2B004E2537 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */,
+				A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */,
 				A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,6 +504,7 @@
 				A966398E1BD56A2C004E2537 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A966398F1BD56A2C004E2537 /* Build configuration list for PBXNativeTarget "monitorTests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +513,7 @@
 				A96639911BD56A2C004E2537 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A96639921BD56A2C004E2537 /* Build configuration list for PBXNativeTarget "monitorUITests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +522,7 @@
 				A96639941BD56A2C004E2537 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
