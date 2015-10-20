@@ -24,8 +24,8 @@ public class StrokeOverlay : NSObject, MKOverlay {
         let bottomRightMapPoint = MKMapPointForCoordinate(bottomRightCoordinate)
         
         boundingMapRect = MKMapRectMake(topLeftMapPoint.x, topLeftMapPoint.y,
-            fabs(bottomRightMapPoint.x - topLeftMapPoint.x),
-            fabs(bottomRightMapPoint.y - topLeftMapPoint.y))
+            fabs(bottomRightMapPoint.x - topLeftMapPoint.x) + 1,
+            fabs(bottomRightMapPoint.y - topLeftMapPoint.y) + 1)
         
         coordinate = strokeRegion.center
     }

@@ -56,7 +56,7 @@ public class JsonRpcClient : NSObject {
                 //NSError *jsonError = [[NSError alloc] init];
                 do {
                     let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)) as! [String:AnyObject]
-                    NSLog("\(jsonResponse)");
+                    //NSLog("\(jsonResponse)");
                     self.delegate?.receivedResponse(jsonResponse, errorInServiceCall: nil)
                 } catch let error {
                     self.delegate?.receivedResponse(nil, errorInServiceCall: error)

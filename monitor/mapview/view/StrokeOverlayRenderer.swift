@@ -32,6 +32,5 @@ public class StrokeOverlayRenderer : MKOverlayRenderer {
         let rasterRect = self.rectForMapRect(rasterElement);
 
         CGContextFillRect(context, rasterRect);
-        NSLog("\(NSStringFromCGRect(rasterRect))  - \(rasterElement.origin.x), \(rasterElement.origin.y) - \(rasterElement.size.height), \(rasterElement.size.height)")
     }
 }

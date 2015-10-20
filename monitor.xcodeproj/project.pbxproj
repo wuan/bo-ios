@@ -15,9 +15,12 @@
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
 		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
-		A96639981BD56BFB004E2537 /* data in Resources */ = {isa = PBXBuildFile; fileRef = A96639971BD56BFB004E2537 /* data */; settings = {ASSET_TAGS = (); }; };
-		A966399A1BD56C19004E2537 /* mapview in Resources */ = {isa = PBXBuildFile; fileRef = A96639991BD56C19004E2537 /* mapview */; settings = {ASSET_TAGS = (); }; };
 		A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966399B1BD56C30004E2537 /* JsonRpcClient.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639A31BD56EAA004E2537 /* StrokeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639A51BD56EB9004E2537 /* StrokeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639AC1BD56EE8004E2537 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Stroke.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,9 +55,12 @@
 		A96639871BD56A2C004E2537 /* monitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = monitorUITests.swift; sourceTree = "<group>"; };
 		A96639891BD56A2C004E2537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96639951BD56B6D004E2537 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A96639971BD56BFB004E2537 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		A96639991BD56C19004E2537 /* mapview */ = {isa = PBXFileReference; lastKnownFileType = folder; path = mapview; sourceTree = "<group>"; };
 		A966399B1BD56C30004E2537 /* JsonRpcClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRpcClient.swift; sourceTree = "<group>"; };
+		A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrokeOverlay.swift; path = mapview/overlay/StrokeOverlay.swift; sourceTree = "<group>"; };
+		A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrokeOverlayRenderer.swift; path = mapview/view/StrokeOverlayRenderer.swift; sourceTree = "<group>"; };
+		A96639A71BD56EE8004E2537 /* RasterElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterElement.swift; path = data/RasterElement.swift; sourceTree = "<group>"; };
+		A96639A81BD56EE8004E2537 /* RasterParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterParameters.swift; path = data/RasterParameters.swift; sourceTree = "<group>"; };
+		A96639A91BD56EE8004E2537 /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stroke.swift; path = data/Stroke.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +113,9 @@
 		A96639661BD56A2B004E2537 /* monitor */ = {
 			isa = PBXGroup;
 			children = (
+				A96639A61BD56ECF004E2537 /* data */,
+				A966399F1BD56E7F004E2537 /* mapview */,
 				A966399B1BD56C30004E2537 /* JsonRpcClient.swift */,
-				A96639991BD56C19004E2537 /* mapview */,
-				A96639971BD56BFB004E2537 /* data */,
 				A96639671BD56A2B004E2537 /* AppDelegate.swift */,
 				A96639691BD56A2B004E2537 /* ViewController.swift */,
 				A966396B1BD56A2B004E2537 /* Main.storyboard */,
@@ -136,6 +142,41 @@
 				A96639891BD56A2C004E2537 /* Info.plist */,
 			);
 			path = monitorUITests;
+			sourceTree = "<group>";
+		};
+		A966399F1BD56E7F004E2537 /* mapview */ = {
+			isa = PBXGroup;
+			children = (
+				A96639A11BD56E97004E2537 /* overlay */,
+				A96639A01BD56E8D004E2537 /* view */,
+			);
+			name = mapview;
+			sourceTree = "<group>";
+		};
+		A96639A01BD56E8D004E2537 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		A96639A11BD56E97004E2537 /* overlay */ = {
+			isa = PBXGroup;
+			children = (
+				A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */,
+			);
+			name = overlay;
+			sourceTree = "<group>";
+		};
+		A96639A61BD56ECF004E2537 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				A96639A71BD56EE8004E2537 /* RasterElement.swift */,
+				A96639A81BD56EE8004E2537 /* RasterParameters.swift */,
+				A96639A91BD56EE8004E2537 /* Stroke.swift */,
+			);
+			name = data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,8 +289,6 @@
 			files = (
 				A96639721BD56A2C004E2537 /* LaunchScreen.storyboard in Resources */,
 				A966396F1BD56A2B004E2537 /* Assets.xcassets in Resources */,
-				A96639981BD56BFB004E2537 /* data in Resources */,
-				A966399A1BD56C19004E2537 /* mapview in Resources */,
 				A966396D1BD56A2B004E2537 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,9 +314,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A96639A31BD56EAA004E2537 /* StrokeOverlay.swift in Sources */,
+				A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */,
 				A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */,
+				A96639A51BD56EB9004E2537 /* StrokeOverlayRenderer.swift in Sources */,
 				A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */,
 				A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */,
+				A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */,
+				A96639AC1BD56EE8004E2537 /* Stroke.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +464,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = monitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -431,6 +476,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = monitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";

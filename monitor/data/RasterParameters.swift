@@ -27,19 +27,27 @@ public class RasterParameters {
     }
 
     public var rectCenterLongitude: Double {
-        return longitudeStart + longitudeDelta * Double(longitudeCount) / 2.0;
+        return longitudeStart + longitudeDelta * Double(longitudeCount) / 2.0
     }
 
     public var rectCenterLatitude: Double {
-        return latitudeStart - latitudeDelta * Double(latitudeCount) / 2.0;
+        return latitudeStart - latitudeDelta * Double(latitudeCount) / 2.0
     }
 
     public func getCenterLongitude(offset: Int) -> Double {
-        return longitudeStart + longitudeDelta * (Double(offset) + 0.5);
+        return longitudeStart + longitudeDelta * (Double(offset) + 0.5)
     }
 
     public func getCenterLatitude(offset: Int) -> Double {
-        return latitudeStart - latitudeDelta * (Double(offset) + 0.5);
+        return latitudeStart - latitudeDelta * (Double(offset) + 0.5)
+    }
+    
+    public var longitudeEnd: Double {
+        return longitudeStart + longitudeDelta * Double(longitudeCount)
+    }
+    
+    public var latitudeEnd: Double {
+        return latitudeStart - latitudeDelta * Double(latitudeCount)
     }
 
 }
