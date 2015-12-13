@@ -23,7 +23,7 @@ public class RasterParameters {
     }
 
     public convenience init(fromDict dict: [String:AnyObject]) {
-        self.init(longitudeStart: dict["x0"] as! Double, longitudeDelta: dict["xd"] as! Double,longitudeCount: dict["xc"] as! Int,latitudeStart: dict["y1"] as! Double,latitudeDelta: dict["yd"] as! Double,latitudeCount: dict["yc"] as! Int)
+        self.init(longitudeStart: dict["x0"] as! Double, longitudeDelta: dict["xd"] as! Double, longitudeCount: dict["xc"] as! Int, latitudeStart: dict["y1"] as! Double, latitudeDelta: dict["yd"] as! Double, latitudeCount: dict["yc"] as! Int)
     }
 
     public var rectCenterLongitude: Double {
@@ -41,11 +41,11 @@ public class RasterParameters {
     public func getCenterLatitude(offset: Int) -> Double {
         return latitudeStart - latitudeDelta * (Double(offset) + 0.5)
     }
-    
+
     public var longitudeEnd: Double {
         return longitudeStart + longitudeDelta * Double(longitudeCount)
     }
-    
+
     public var latitudeEnd: Double {
         return latitudeStart - latitudeDelta * Double(latitudeCount)
     }

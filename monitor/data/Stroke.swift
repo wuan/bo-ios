@@ -31,7 +31,7 @@ public class Stroke: NSObject {
         let span = MKCoordinateSpanMake(height, width)
         envelope = MKCoordinateRegion(center: location, span: span)
     }
-    
+
     override public var description: String {
         return "Stroke: \(timestamp) (\(envelope.center.longitude), \(envelope.center.latitude)) \(multiplicity)";
     }
