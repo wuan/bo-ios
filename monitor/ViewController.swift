@@ -69,36 +69,42 @@ public class ViewController: UIViewController, JsonRpcClientDelegate, MKMapViewD
     }
 
     func receivedResponse(response: [String:AnyObject]?, errorInServiceCall: ErrorType?) {
-        if let result = response!["result"] as? [String:AnyObject] {
+        if let response = response {
+            if let result = response["result"] as? [String:AnyObject] {
 
-            let rasterParameters = RasterParameters(fromDict: result)
+                let rasterParameters = RasterParameters(fromDict: result)
 
-            let referenceTimeString = result["t"] as! String
-            let dateFormatter = NSDateFormatter()
+                let referenceTimeString = result["t"] as! String
+                let dateFormatter = NSDateFormatter()
 
-            dateFormatter.dateFormat = "yyyyMMdd'T'HH:mm:ss"
-            dateFormatter.timeZone = NSTimeZone.localTimeZone()
-            let referenceTime = dateFormatter.dateFromString(referenceTimeString)
+                dateFormatter.dateFormat = "yyyyMMdd'T'HH:mm:ss"
+                dateFormatter.timeZone = NSTimeZone.localTimeZone()
+                let referenceTime = dateFormatter.dateFromString(referenceTimeString)
 
-            let referenceTimestamp = Int((referenceTime?.timeIntervalSince1970)!)
+                let referenceTimestamp = Int((referenceTime?.timeIntervalSince1970)!)
 
-            let dataArray = result["r"] as! [[Int]];
+                let dataArray = result["r"] as! [[Int]];
 
-            let overlays = dataArray.map({
-                (rasterData: [Int]) -> MKOverlay in
-                let rasterElement = RasterElement(rasterParameters: rasterParameters, withReferenceTimestamp: referenceTimestamp, fromArray: rasterData)
-                return StrokeOverlay(withStroke: rasterElement)
-            })
+                let overlays = dataArray.map({
+                    (rasterData: [Int]) -> MKOverlay in
+                    let rasterElement = RasterElement(rasterParameters: rasterParameters, withReferenceTimestamp: referenceTimestamp, fromArray: rasterData)
+                    return StrokeOverlay(withStroke: rasterElement)
+                })
 
-            dispatch_async(dispatch_get_main_queue(), {
-                self.mapView.removeOverlays(self.mapView.overlays)
-                self.mapView.addOverlays(overlays)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.mapView.removeOverlays(self.mapView.overlays)
+                    self.mapView.addOverlays(overlays)
 
-                self.addDataArea(rasterParameters)
-            })
+                    self.addDataArea(rasterParameters)
+                })
 
-            //NSLog("\(overlays)");
-            NSLog("# overlays: \(overlays.count)");
+                //NSLog("\(overlays)");
+                NSLog("# overlays: \(overlays.count)");
+            }
+        } else {
+            if let error = errorInServiceCall {
+                NSLog("error in service call: \(errorInServiceCall)")
+            }
         }
     }
 

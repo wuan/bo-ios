@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A96639631BD56A2B004E2537"
-               BuildableName = "monitor"
+               BuildableName = "monitor.app"
                BlueprintName = "monitor"
                ReferencedContainer = "container:monitor.xcodeproj">
             </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A96639631BD56A2B004E2537"
-            BuildableName = "monitor"
+            BuildableName = "monitor.app"
             BlueprintName = "monitor"
             ReferencedContainer = "container:monitor.xcodeproj">
          </BuildableReference>
