@@ -11,12 +11,12 @@ import MapKit
 
 public class StrikeOverlayRenderer: MKOverlayRenderer {
 
-    public let strokeOverlay: StrikeOverlay
+    public let strikeOverlay: StrikeOverlay
 
     private let colorScheme: ColorScheme
 
     public override init(overlay: MKOverlay) {
-        strokeOverlay = overlay as! StrikeOverlay
+        strikeOverlay = overlay as! StrikeOverlay
         colorScheme = ColorScheme()
         super.init(overlay: overlay)
     }
@@ -28,11 +28,19 @@ public class StrikeOverlayRenderer: MKOverlayRenderer {
     public override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext) {
         super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
 
-        CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0)
+        let color = colorScheme.getColor(strikeOverlay.referenceTimestamp,
+                eventTime: strikeOverlay.strike.timestamp,
+                intervalDuration: strikeOverlay.parameters.intervalDuration)
+        
+        let red = CGFloat((color & 0xff0000) >> 16) / 255.0
+        let green = CGFloat((color & 0x00ff00) >> 8) / 255.0
+        let blue = CGFloat(color & 0x0000ff) / 255.0
+        
+        CGContextSetRGBFillColor(context, red , green, blue, 1.0)
 
-        let rasterElement = self.strokeOverlay.boundingMapRect
+        let rasterElement = strikeOverlay.boundingMapRect
 
-        let rasterRect = self.rectForMapRect(rasterElement);
+        let rasterRect = rectForMapRect(rasterElement);
 
         CGContextFillRect(context, rasterRect);
     }

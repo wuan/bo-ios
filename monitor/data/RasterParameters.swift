@@ -35,7 +35,7 @@ public class RasterParameters {
     }
 
     public func getCenterLongitude(offset: Int) -> Double {
-        return longitudeStart + longitudeDelta * (Double(offset) + 0.5)
+        return longitudeStart + longitudeDelta * (Double(offset) - 0.5)
     }
 
     public func getCenterLatitude(offset: Int) -> Double {

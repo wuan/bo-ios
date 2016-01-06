@@ -18,6 +18,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     var pollingTimer: NSTimer?
     var lastUpdate: NSDate?
+    var strikeStatus: String?
     var timerPeriod: Int = 0
     var parameters: Parameters = Parameters()
     let serviceClient = DefaultClient()
@@ -65,14 +66,17 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             serviceClient.fetchData(parameters, callback: handleResult)
         }
 
-        self.statusText.text = "\(timerPeriod - timeInterval)/\(timerPeriod)"
+        self.statusText.text = (strikeStatus ?? "") + "\(timerPeriod - timeInterval)/\(timerPeriod)"
+        self.statusText.textColor = UIColor.whiteColor()
     }
 
     func handleResult(result: Result) {
         let overlays = result.strikes.map({
             (let strike) -> MKOverlay in
-            return StrikeOverlay(withStroke: strike)
+            return StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
         })
+
+        strikeStatus = "\(countStrikes(result.strikes)) strikes/\(parameters.intervalDuration) minutes "
 
         dispatch_async(dispatch_get_main_queue(), {
             self.mapView.removeOverlays(self.mapView.overlays)
@@ -82,6 +86,14 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                 self.addDataArea(rasterParameters)
             }
         })
+    }
+
+    private func countStrikes(strikes: [Strike]) -> Int {
+        var count = 0
+        for strike in strikes {
+            count += strike.multiplicity
+        }
+        return count
     }
 
     func addDataArea(rasterParameters: RasterParameters) {

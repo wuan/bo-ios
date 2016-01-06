@@ -14,7 +14,8 @@ class ColorScheme {
     }
 
     func getColor(now: Int, eventTime: Int, intervalDuration: Int) -> UInt {
-        return getColor(getColorSection(now, eventTime: eventTime, intervalDuration: intervalDuration, intervalOffset: 0))
+        let color = getColor(getColorSection(now, eventTime: eventTime, intervalDuration: intervalDuration, intervalOffset: 0))
+        return color
     }
 
     func getColor(section: Int) -> UInt {

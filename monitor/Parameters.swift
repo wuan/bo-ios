@@ -12,7 +12,7 @@ public class Parameters: TimeIntervalWithOffset {
     let intervalOffset: Int
     let countThreshold: Int
 
-    init(region: Int = 1, rasterBaselength: Int = 10000, intervalDuration: Int = 60, intervalOffset: Int = 0, countThreshold: Int = 1) {
+    init(region: Int = 1, rasterBaselength: Int = 10000, intervalDuration: Int = 60, intervalOffset: Int = 0, countThreshold: Int = 0) {
         self.region = region
         self.rasterBaselength = rasterBaselength
         self.intervalDuration = intervalDuration
