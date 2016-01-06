@@ -67,7 +67,6 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         }
 
         self.statusText.text = (strikeStatus ?? "") + "\(timerPeriod - timeInterval)/\(timerPeriod)"
-        self.statusText.textColor = UIColor.whiteColor()
     }
 
     func handleResult(result: Result) {
