@@ -1,13 +1,13 @@
 import Foundation
 import MapKit
 
-public class StrokeOverlay: NSObject, MKOverlay {
+public class StrikeOverlay: NSObject, MKOverlay {
 
-    let stroke: Stroke
+    let stroke: Strike
     public let boundingMapRect: MKMapRect
     public let coordinate: CLLocationCoordinate2D
 
-    init(withStroke stroke: Stroke) {
+    init(withStroke stroke: Strike) {
         self.stroke = stroke
 
         let strokeRegion = stroke.envelope

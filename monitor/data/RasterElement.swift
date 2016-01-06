@@ -6,7 +6,7 @@
 import Foundation
 
 @objc
-public class RasterElement: Stroke {
+public class RasterElement: Strike {
 
     init(rasterParameters: RasterParameters,
          withReferenceTimestamp referenceTimestamp: Int,

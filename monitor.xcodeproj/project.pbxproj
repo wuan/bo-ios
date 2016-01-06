@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */; settings = {ASSET_TAGS = (); }; };
+		2DC1728B521563D807A04201 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC1775191DDC425442A9A11 /* Result.swift */; };
+		2DC173DCB86E36482FC42DD2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */; };
+		2DC1791DC8BD07003ECEECD5 /* DefaultClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC176AF0A43F935704DBB25 /* DefaultClient.swift */; };
+		2DC17D4BF6E29CE039A56304 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17AA298FA585119F4AD0B /* Parameters.swift */; };
+		2DC17EC4C9DD8FB26B02A98C /* TimeIntervalWithOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC172B5449BB42C9DE850FB /* TimeIntervalWithOffset.swift */; };
 		A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639671BD56A2B004E2537 /* AppDelegate.swift */; };
 		A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639691BD56A2B004E2537 /* ViewController.swift */; };
 		A966396D1BD56A2B004E2537 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A966396B1BD56A2B004E2537 /* Main.storyboard */; };
@@ -15,12 +21,11 @@
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
 		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
-		A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966399B1BD56C30004E2537 /* JsonRpcClient.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639A31BD56EAA004E2537 /* StrokeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639A51BD56EB9004E2537 /* StrokeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */; settings = {ASSET_TAGS = (); }; };
 		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; settings = {ASSET_TAGS = (); }; };
 		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639AC1BD56EE8004E2537 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Stroke.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Strike.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +46,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2DC172B5449BB42C9DE850FB /* TimeIntervalWithOffset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIntervalWithOffset.swift; sourceTree = "<group>"; };
+		2DC176AF0A43F935704DBB25 /* DefaultClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultClient.swift; sourceTree = "<group>"; };
+		2DC1775191DDC425442A9A11 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRpcClient.swift; sourceTree = "<group>"; };
+		2DC17AA298FA585119F4AD0B /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		A96639641BD56A2B004E2537 /* monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = monitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A96639671BD56A2B004E2537 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A96639691BD56A2B004E2537 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,12 +66,11 @@
 		A96639871BD56A2C004E2537 /* monitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = monitorUITests.swift; sourceTree = "<group>"; };
 		A96639891BD56A2C004E2537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96639951BD56B6D004E2537 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A966399B1BD56C30004E2537 /* JsonRpcClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRpcClient.swift; sourceTree = "<group>"; };
-		A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrokeOverlay.swift; path = mapview/overlay/StrokeOverlay.swift; sourceTree = "<group>"; };
-		A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrokeOverlayRenderer.swift; path = mapview/view/StrokeOverlayRenderer.swift; sourceTree = "<group>"; };
+		A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlay.swift; path = mapview/overlay/StrikeOverlay.swift; sourceTree = "<group>"; };
+		A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlayRenderer.swift; path = mapview/view/StrikeOverlayRenderer.swift; sourceTree = "<group>"; };
 		A96639A71BD56EE8004E2537 /* RasterElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterElement.swift; path = data/RasterElement.swift; sourceTree = "<group>"; };
 		A96639A81BD56EE8004E2537 /* RasterParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterParameters.swift; path = data/RasterParameters.swift; sourceTree = "<group>"; };
-		A96639A91BD56EE8004E2537 /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stroke.swift; path = data/Stroke.swift; sourceTree = "<group>"; };
+		A96639A91BD56EE8004E2537 /* Strike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Strike.swift; path = data/Strike.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +99,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2DC17288A05A817E687A3EBF /* client */ = {
+			isa = PBXGroup;
+			children = (
+				2DC176AF0A43F935704DBB25 /* DefaultClient.swift */,
+				2DC1791F5641CAF0174637F8 /* jsonrpc */,
+			);
+			path = client;
+			sourceTree = "<group>";
+		};
+		2DC1791F5641CAF0174637F8 /* jsonrpc */ = {
+			isa = PBXGroup;
+			children = (
+				2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */,
+			);
+			path = jsonrpc;
+			sourceTree = "<group>";
+		};
+		2DC17E515D78B3496817F744 /* color */ = {
+			isa = PBXGroup;
+			children = (
+				2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */,
+			);
+			name = color;
+			sourceTree = "<group>";
+		};
 		A966395B1BD56A2B004E2537 = {
 			isa = PBXGroup;
 			children = (
@@ -115,13 +150,13 @@
 			children = (
 				A96639A61BD56ECF004E2537 /* data */,
 				A966399F1BD56E7F004E2537 /* mapview */,
-				A966399B1BD56C30004E2537 /* JsonRpcClient.swift */,
 				A96639671BD56A2B004E2537 /* AppDelegate.swift */,
 				A96639691BD56A2B004E2537 /* ViewController.swift */,
 				A966396B1BD56A2B004E2537 /* Main.storyboard */,
 				A966396E1BD56A2B004E2537 /* Assets.xcassets */,
 				A96639701BD56A2C004E2537 /* LaunchScreen.storyboard */,
 				A96639731BD56A2C004E2537 /* Info.plist */,
+				2DC17288A05A817E687A3EBF /* client */,
 			);
 			path = monitor;
 			sourceTree = "<group>";
@@ -149,6 +184,7 @@
 			children = (
 				A96639A11BD56E97004E2537 /* overlay */,
 				A96639A01BD56E8D004E2537 /* view */,
+				2DC17E515D78B3496817F744 /* color */,
 			);
 			name = mapview;
 			sourceTree = "<group>";
@@ -156,7 +192,7 @@
 		A96639A01BD56E8D004E2537 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A41BD56EB9004E2537 /* StrokeOverlayRenderer.swift */,
+				A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -164,7 +200,7 @@
 		A96639A11BD56E97004E2537 /* overlay */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A21BD56EAA004E2537 /* StrokeOverlay.swift */,
+				A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */,
 			);
 			name = overlay;
 			sourceTree = "<group>";
@@ -174,7 +210,10 @@
 			children = (
 				A96639A71BD56EE8004E2537 /* RasterElement.swift */,
 				A96639A81BD56EE8004E2537 /* RasterParameters.swift */,
-				A96639A91BD56EE8004E2537 /* Stroke.swift */,
+				A96639A91BD56EE8004E2537 /* Strike.swift */,
+				2DC17AA298FA585119F4AD0B /* Parameters.swift */,
+				2DC172B5449BB42C9DE850FB /* TimeIntervalWithOffset.swift */,
+				2DC1775191DDC425442A9A11 /* Result.swift */,
 			);
 			name = data;
 			sourceTree = "<group>";
@@ -314,14 +353,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96639A31BD56EAA004E2537 /* StrokeOverlay.swift in Sources */,
+				A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */,
 				A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */,
 				A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */,
-				A96639A51BD56EB9004E2537 /* StrokeOverlayRenderer.swift in Sources */,
-				A966399C1BD56C30004E2537 /* JsonRpcClient.swift in Sources */,
+				A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */,
 				A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */,
 				A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */,
-				A96639AC1BD56EE8004E2537 /* Stroke.swift in Sources */,
+				A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */,
+				2DC173DCB86E36482FC42DD2 /* ColorScheme.swift in Sources */,
+				2DC17D4BF6E29CE039A56304 /* Parameters.swift in Sources */,
+				2DC17EC4C9DD8FB26B02A98C /* TimeIntervalWithOffset.swift in Sources */,
+				2DC1728B521563D807A04201 /* Result.swift in Sources */,
+				2DC1791DC8BD07003ECEECD5 /* DefaultClient.swift in Sources */,
+				2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

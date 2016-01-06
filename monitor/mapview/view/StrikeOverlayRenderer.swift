@@ -9,12 +9,15 @@
 import Foundation
 import MapKit
 
-public class StrokeOverlayRenderer: MKOverlayRenderer {
+public class StrikeOverlayRenderer: MKOverlayRenderer {
 
-    public let strokeOverlay: StrokeOverlay
+    public let strokeOverlay: StrikeOverlay
+
+    private let colorScheme: ColorScheme
 
     public override init(overlay: MKOverlay) {
-        self.strokeOverlay = overlay as! StrokeOverlay
+        strokeOverlay = overlay as! StrikeOverlay
+        colorScheme = ColorScheme()
         super.init(overlay: overlay)
     }
 

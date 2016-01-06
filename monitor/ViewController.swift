@@ -14,11 +14,13 @@ enum MapViewError: ErrorType {
     case UnhandledType(AnyClass)
 }
 
-public class ViewController: UIViewController, JsonRpcClientDelegate, MKMapViewDelegate {
+public class ViewController: UIViewController, MKMapViewDelegate {
 
     var pollingTimer: NSTimer?
     var lastUpdate: NSDate?
     var timerPeriod: Int = 0
+    var parameters: Parameters = Parameters()
+    let serviceClient = DefaultClient()
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var statusText: UILabel!
@@ -32,8 +34,8 @@ public class ViewController: UIViewController, JsonRpcClientDelegate, MKMapViewD
     }
 
     public func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
-        if (overlay.isKindOfClass(StrokeOverlay)) {
-            return StrokeOverlayRenderer(overlay: overlay as! StrokeOverlay)
+        if (overlay.isKindOfClass(StrikeOverlay)) {
+            return StrikeOverlayRenderer(overlay: overlay as! StrikeOverlay)
         }
 
         let renderer = MKPolygonRenderer.init(polygon: overlay as! MKPolygon)
@@ -60,52 +62,26 @@ public class ViewController: UIViewController, JsonRpcClientDelegate, MKMapViewD
 
         if (update) {
             lastUpdate = NSDate()
-            let jsonRpcClient = JsonRpcClient(withServiceEndpoint: "http://bo-test.tryb.de")
-            jsonRpcClient.setDelegate(self)
-            jsonRpcClient.call("get_strikes_grid", withArguments: 60, 10000, 0, 1, 0);
+            serviceClient.fetchData(parameters, callback: handleResult)
         }
 
         self.statusText.text = "\(timerPeriod - timeInterval)/\(timerPeriod)"
     }
 
-    func receivedResponse(response: [String:AnyObject]?, errorInServiceCall: ErrorType?) {
-        if let response = response {
-            if let result = response["result"] as? [String:AnyObject] {
+    func handleResult(result: Result) {
+        let overlays = result.strikes.map({
+            (let strike) -> MKOverlay in
+            return StrikeOverlay(withStroke: strike)
+        })
 
-                let rasterParameters = RasterParameters(fromDict: result)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.mapView.removeOverlays(self.mapView.overlays)
+            self.mapView.addOverlays(overlays)
 
-                let referenceTimeString = result["t"] as! String
-                let dateFormatter = NSDateFormatter()
-
-                dateFormatter.dateFormat = "yyyyMMdd'T'HH:mm:ss"
-                dateFormatter.timeZone = NSTimeZone.localTimeZone()
-                let referenceTime = dateFormatter.dateFromString(referenceTimeString)
-
-                let referenceTimestamp = Int((referenceTime?.timeIntervalSince1970)!)
-
-                let dataArray = result["r"] as! [[Int]];
-
-                let overlays = dataArray.map({
-                    (rasterData: [Int]) -> MKOverlay in
-                    let rasterElement = RasterElement(rasterParameters: rasterParameters, withReferenceTimestamp: referenceTimestamp, fromArray: rasterData)
-                    return StrokeOverlay(withStroke: rasterElement)
-                })
-
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.mapView.removeOverlays(self.mapView.overlays)
-                    self.mapView.addOverlays(overlays)
-
-                    self.addDataArea(rasterParameters)
-                })
-
-                //NSLog("\(overlays)");
-                NSLog("# overlays: \(overlays.count)");
+            if let rasterParameters = result.rasterParameters {
+                self.addDataArea(rasterParameters)
             }
-        } else {
-            if let error = errorInServiceCall {
-                NSLog("error in service call: \(errorInServiceCall)")
-            }
-        }
+        })
     }
 
     func addDataArea(rasterParameters: RasterParameters) {

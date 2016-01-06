@@ -7,7 +7,7 @@ import Foundation
 import MapKit
 
 @objc
-public class Stroke: NSObject {
+public class Strike: NSObject {
 
     let timestamp: Int
     let multiplicity: Int

@@ -8,23 +8,18 @@
 
 import Foundation
 
-protocol JsonRpcClientDelegate {
-    func receivedResponse(response: [String:AnyObject]?, errorInServiceCall: ErrorType?) -> Void
-}
-
 public class JsonRpcClient: NSObject {
 
-    var delegate: JsonRpcClientDelegate? = nil
     let serviceEndpoint: NSURL!
 
     init(withServiceEndpoint serviceEndpoint: String) {
         self.serviceEndpoint = NSURL(string: serviceEndpoint)
     }
 
-    func call(methodName: String, withArguments arguments: Int...) {
+    func call(callback: (response: [String:AnyObject]?, errorInServiceCall: ErrorType?) -> Void,
+              methodName: String, withArguments arguments: Int...) {
 
         var callArguments: [String:AnyObject] = ["id": 1, "method": methodName]
-
 
         if (arguments.count > 0) {
             callArguments["params"] = arguments
@@ -34,7 +29,7 @@ public class JsonRpcClient: NSObject {
         do {
             postData = try NSJSONSerialization.dataWithJSONObject(callArguments, options: NSJSONWritingOptions.PrettyPrinted)
         } catch let error {
-            self.delegate?.receivedResponse(nil, errorInServiceCall: error)
+            callback(response: nil, errorInServiceCall: error)
             return
         }
 
@@ -58,9 +53,9 @@ public class JsonRpcClient: NSObject {
                     do {
                         let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)) as! [String:AnyObject]
                         //NSLog("\(jsonResponse)");
-                        self.delegate?.receivedResponse(jsonResponse, errorInServiceCall: nil)
+                        callback(response: jsonResponse, errorInServiceCall: nil)
                     } catch let error {
-                        self.delegate?.receivedResponse(nil, errorInServiceCall: error)
+                        callback(response: nil, errorInServiceCall: error)
                     }
                 }
             } else if (connectionError == nil) {
@@ -69,9 +64,5 @@ public class JsonRpcClient: NSObject {
                 NSLog("Error = \(connectionError)");
             }
         })
-    }
-
-    func setDelegate(delegate: JsonRpcClientDelegate) {
-        self.delegate = delegate
     }
 }
