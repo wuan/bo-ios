@@ -76,7 +76,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             serviceClient.fetchData(parameters, callback: handleResult)
         }
 
-        self.statusText.text = (strikeStatus ?? "") + "\(timerPeriod - timeInterval)/\(timerPeriod)"
+        self.statusText.text = (strikeStatus ?? "n/a ") + "\(timerPeriod - timeInterval)/\(timerPeriod) s"
     }
 
     func handleResult(result: Result) {
