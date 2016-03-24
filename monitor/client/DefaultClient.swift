@@ -68,7 +68,7 @@ public class DefaultClient {
             }
         } else {
             if let error = errorInServiceCall {
-                NSLog("error in service call: \(errorInServiceCall)")
+                NSLog("error in service call: \(error)")
             }
         }
     }

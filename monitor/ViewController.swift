@@ -41,7 +41,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         timerPeriod = 20;
 
-        pollingTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "timerTick", userInfo: nil, repeats: true)
+        pollingTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
     }
 
     public func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
