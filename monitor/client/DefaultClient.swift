@@ -57,7 +57,7 @@ public class DefaultClient {
 
                 let strikes = dataArray.map({
                     (rasterData: [Int]) -> Strike in
-                    return RasterElement(rasterParameters: rasterParameters, withReferenceTimestamp: referenceTimestamp, fromArray: rasterData)
+                    RasterElement(rasterParameters: rasterParameters, withReferenceTimestamp: referenceTimestamp, fromArray: rasterData)
                 })
 
                 let result = Result(parameters: parameters, referenceTimestamp: referenceTimestamp, strikes: strikes, rasterParameters: rasterParameters)

@@ -44,7 +44,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
     }
 
-    public func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is StrikeOverlay {
             return StrikeOverlayRenderer(overlay: overlay as! StrikeOverlay)
         }
@@ -82,7 +82,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     func handleResult(result: Result) {
         let overlays = result.strikes.map({
             (strike) -> MKOverlay in
-            return StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
+            StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
         })
 
         strikeStatus = "\(countStrikes(strikes: result.strikes)) strikes/\(parameters.intervalDuration) minutes "
