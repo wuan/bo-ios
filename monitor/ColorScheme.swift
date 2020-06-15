@@ -23,23 +23,23 @@ class ColorScheme {
     let colors: Array<UInt> = [0xffe4f9f9, 0xffd8f360, 0xffdfbc51, 0xffe48044, 0xffe73c3b, 0xffb82e2d]
 
     func getColorSection(now: Int, eventTime: Int, timeIntervalWithOffset: TimeIntervalWithOffset) -> Int {
-        return getColorSection(now, eventTime: eventTime, intervalDuration: timeIntervalWithOffset.intervalDuration, intervalOffset: timeIntervalWithOffset.intervalOffset)
+        return getColorSection(now: now, eventTime: eventTime, intervalDuration: timeIntervalWithOffset.intervalDuration, intervalOffset: timeIntervalWithOffset.intervalOffset)
     }
 
     func getColor(now: Int, eventTime: Int, intervalDuration: Int) -> UInt {
-        let color = getColor(getColorSection(now, eventTime: eventTime, intervalDuration: intervalDuration, intervalOffset: 0))
+        let color = getColor(section: getColorSection(now: now, eventTime: eventTime, intervalDuration: intervalDuration))
         return color
     }
 
     func getColor(section: Int) -> UInt {
-        return colors[limitToValidRange(section)]
+        return colors[limitToValidRange(section_: section)]
     }
 
     private func getColorSection(now: Int, eventTime: Int, intervalDuration: Int, intervalOffset: Int = 0) -> Int {
         let minutesPerColor = intervalDuration / colors.count
         let startTime = intervalOffset * 60 * 1000
         var section = (now + startTime - eventTime) / 1000 / 60 / minutesPerColor
-        section = limitToValidRange(section)
+        section = limitToValidRange(section_: section)
 
         return section
     }

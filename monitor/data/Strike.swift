@@ -41,7 +41,7 @@ public class Strike: NSObject {
         self.multiplicity = multiplicity
 
         let location = CLLocationCoordinate2D(latitude: yCoordinate, longitude: xCoordinate)
-        let span = MKCoordinateSpanMake(height, width)
+        let span = MKCoordinateSpan(latitudeDelta: height, longitudeDelta: width)
         envelope = MKCoordinateRegion(center: location, span: span)
     }
 

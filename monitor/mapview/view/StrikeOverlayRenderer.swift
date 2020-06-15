@@ -31,14 +31,14 @@ public class StrikeOverlayRenderer: MKOverlayRenderer {
         super.init(overlay: overlay)
     }
 
-    public override func canDrawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
+    public override func canDraw(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
         return true
     }
 
-    public override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext) {
-        super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
+    public override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
+        super.draw(mapRect, zoomScale: zoomScale, in: context)
 
-        let color = colorScheme.getColor(strikeOverlay.referenceTimestamp,
+        let color = colorScheme.getColor(now: strikeOverlay.referenceTimestamp,
                 eventTime: strikeOverlay.strike.timestamp,
                 intervalDuration: strikeOverlay.parameters.intervalDuration)
         
@@ -46,12 +46,12 @@ public class StrikeOverlayRenderer: MKOverlayRenderer {
         let green = CGFloat((color & 0x00ff00) >> 8) / 255.0
         let blue = CGFloat(color & 0x0000ff) / 255.0
         
-        CGContextSetRGBFillColor(context, red , green, blue, 1.0)
+        context.setFillColor(red: red , green: green, blue: blue, alpha: 1.0)
 
         let rasterElement = strikeOverlay.boundingMapRect
 
-        let rasterRect = rectForMapRect(rasterElement);
+        let rasterRect = rect(for: rasterElement);
 
-        CGContextFillRect(context, rasterRect);
+        context.fill(rasterRect);
     }
 }

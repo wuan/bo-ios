@@ -38,17 +38,17 @@ public class StrikeOverlay: NSObject, MKOverlay {
             strokeRegion.center.latitude + (strokeRegion.span.latitudeDelta / 2.0),
             strokeRegion.center.longitude + (strokeRegion.span.longitudeDelta / 2.0))
         
-        let topLeftMapPoint = MKMapPointForCoordinate(topLeftCoordinate)
+        let topLeftMapPoint = MKMapPoint(topLeftCoordinate)
         
         let bottomRightCoordinate = CLLocationCoordinate2DMake(
             strokeRegion.center.latitude - (strokeRegion.span.latitudeDelta / 2.0),
             strokeRegion.center.longitude - (strokeRegion.span.longitudeDelta / 2.0))
         
-        let bottomRightMapPoint = MKMapPointForCoordinate(bottomRightCoordinate)
+        let bottomRightMapPoint = MKMapPoint(bottomRightCoordinate)
         
-        boundingMapRect = MKMapRectMake(topLeftMapPoint.x, topLeftMapPoint.y,
-            fabs(bottomRightMapPoint.x - topLeftMapPoint.x) + 1,
-            fabs(bottomRightMapPoint.y - topLeftMapPoint.y) + 1)
+        boundingMapRect = MKMapRect(x: topLeftMapPoint.x, y: topLeftMapPoint.y,
+                                    width: fabs(bottomRightMapPoint.x - topLeftMapPoint.x) + 1,
+                                    height: fabs(bottomRightMapPoint.y - topLeftMapPoint.y) + 1)
         
         coordinate = strokeRegion.center
     }

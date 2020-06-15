@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */; settings = {ASSET_TAGS = (); }; };
+		2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */; };
 		2DC1728B521563D807A04201 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC1775191DDC425442A9A11 /* Result.swift */; };
 		2DC173DCB86E36482FC42DD2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */; };
 		2DC1791DC8BD07003ECEECD5 /* DefaultClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC176AF0A43F935704DBB25 /* DefaultClient.swift */; };
@@ -21,11 +21,11 @@
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
 		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
-		A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; settings = {ASSET_TAGS = (); }; };
-		A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Strike.swift */; settings = {ASSET_TAGS = (); }; };
+		A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */; };
+		A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */; };
+		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; };
+		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; };
+		A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Strike.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,7 +280,7 @@
 		A966395C1BD56A2B004E2537 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Andreas Würl";
 				TargetAttributes = {
 					A96639631BD56A2B004E2537 = {
@@ -303,7 +303,7 @@
 			};
 			buildConfigurationList = A966395F1BD56A2B004E2537 /* Build configuration list for PBXProject "monitor" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -424,17 +424,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -469,17 +480,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -498,6 +520,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -512,6 +535,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -524,6 +548,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

@@ -26,8 +26,8 @@ public class RasterElement: Strike {
          fromArray dataArray: [Int]) {
         let timestamp = referenceTimestamp + 1000 * dataArray[3]
         let multiplicity = dataArray[2];
-        let xCoordinate = rasterParameters.getCenterLongitude(dataArray[0])
-        let yCoordinate = rasterParameters.getCenterLatitude(dataArray[1])
+        let xCoordinate = rasterParameters.getCenterLongitude(offset: dataArray[0])
+        let yCoordinate = rasterParameters.getCenterLatitude(offset: dataArray[1])
         let width = rasterParameters.longitudeDelta
         let height = rasterParameters.latitudeDelta
 

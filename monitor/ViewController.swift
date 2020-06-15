@@ -20,13 +20,13 @@ import Foundation
 import UIKit
 import MapKit
 
-enum MapViewError: ErrorType {
+enum MapViewError: Error {
     case UnhandledType(AnyClass)
 }
 
 public class ViewController: UIViewController, MKMapViewDelegate {
 
-    var pollingTimer: NSTimer?
+    var pollingTimer: Timer?
     var lastUpdate: NSDate?
     var strikeStatus: String?
     var timerPeriod: Int = 0
@@ -41,21 +41,21 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         timerPeriod = 20;
 
-        pollingTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
+        pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
     }
 
     public func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
-        if (overlay.isKindOfClass(StrikeOverlay)) {
+        if overlay is StrikeOverlay {
             return StrikeOverlayRenderer(overlay: overlay as! StrikeOverlay)
         }
 
         let renderer = MKPolygonRenderer.init(polygon: overlay as! MKPolygon)
-        renderer.strokeColor = UIColor.whiteColor()
+        renderer.strokeColor = UIColor.white
         renderer.lineWidth = 1
         return renderer;
     }
 
-    func timerTick() {
+    @objc func timerTick() {
         var update = false;
 
         var timeInterval: Int;
@@ -73,7 +73,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         if (update) {
             lastUpdate = NSDate()
-            serviceClient.fetchData(parameters, callback: handleResult)
+            serviceClient.fetchData(parameters: parameters, callback: handleResult)
         }
 
         self.statusText.text = (strikeStatus ?? "n/a ") + "\(timerPeriod - timeInterval)/\(timerPeriod) s"
@@ -81,20 +81,20 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     func handleResult(result: Result) {
         let overlays = result.strikes.map({
-            (let strike) -> MKOverlay in
+            (strike) -> MKOverlay in
             return StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
         })
 
-        strikeStatus = "\(countStrikes(result.strikes)) strikes/\(parameters.intervalDuration) minutes "
+        strikeStatus = "\(countStrikes(strikes: result.strikes)) strikes/\(parameters.intervalDuration) minutes "
 
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async {
             self.mapView.removeOverlays(self.mapView.overlays)
             self.mapView.addOverlays(overlays)
 
             if let rasterParameters = result.rasterParameters {
-                self.addDataArea(rasterParameters)
+                self.addDataArea(rasterParameters: rasterParameters)
             }
-        })
+        }
     }
 
     private func countStrikes(strikes: [Strike]) -> Int {

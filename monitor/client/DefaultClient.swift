@@ -20,15 +20,15 @@ import Foundation
 
 public class DefaultClient {
 
-    public func fetchData(parameters: Parameters, callback: (Result) -> Void) {
+    public func fetchData(parameters: Parameters, callback: @escaping (Result) -> Void) {
         let jsonRpcClient = JsonRpcClient(withServiceEndpoint: "http://bo-test.tryb.de")
 
         let responseHandler = {
-            (response: [String:AnyObject]?, errorInServiceCall: ErrorType?) -> Void in
-            self.receivedResponse(callback, parameters: parameters, response: response, errorInServiceCall: errorInServiceCall)
+            (response: [String:AnyObject]?, errorInServiceCall: Error?) -> Void in
+            self.receivedResponse(callback: callback, parameters: parameters, response: response, errorInServiceCall: errorInServiceCall)
         }
 
-        jsonRpcClient.call(responseHandler,
+        jsonRpcClient.call(callback: responseHandler,
                 methodName: "get_strikes_grid",
                 withArguments: parameters.intervalDuration,
                 parameters.rasterBaselength,
@@ -38,18 +38,18 @@ public class DefaultClient {
 
     }
 
-    func receivedResponse(callback: (Result) -> Void, parameters: Parameters, response: [String:AnyObject]?, errorInServiceCall: ErrorType?) {
+    func receivedResponse(callback: (Result) -> Void, parameters: Parameters, response: [String:AnyObject]?, errorInServiceCall: Error?) {
         if let response = response {
             if let result = response["result"] as? [String:AnyObject] {
 
                 let rasterParameters = RasterParameters(fromDict: result)
 
                 let referenceTimeString = result["t"] as! String
-                let dateFormatter = NSDateFormatter()
+                let dateFormatter = DateFormatter()
 
                 dateFormatter.dateFormat = "yyyyMMdd'T'HH:mm:ss"
-                dateFormatter.timeZone = NSTimeZone.localTimeZone()
-                let referenceTime = dateFormatter.dateFromString(referenceTimeString)
+                dateFormatter.timeZone = NSTimeZone.local
+                let referenceTime = dateFormatter.date(from: referenceTimeString)
 
                 let referenceTimestamp = Int((referenceTime?.timeIntervalSince1970)!)
 

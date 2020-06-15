@@ -16,52 +16,52 @@ public class JsonRpcClient: NSObject {
         self.serviceEndpoint = NSURL(string: serviceEndpoint)
     }
 
-    func call(callback: (response: [String:AnyObject]?, errorInServiceCall: ErrorType?) -> Void,
+    func call(callback: @escaping (_ response: [String:AnyObject]?, _ errorInServiceCall: Error?) -> Void,
               methodName: String, withArguments arguments: Int...) {
 
-        var callArguments: [String:AnyObject] = ["id": 1, "method": methodName]
+        var callArguments: [String:AnyObject] = ["id": 1 as AnyObject, "method": methodName as AnyObject]
 
         if (arguments.count > 0) {
-            callArguments["params"] = arguments
+            callArguments["params"] = arguments as AnyObject
         }
 
         var postData: NSData
         do {
-            postData = try NSJSONSerialization.dataWithJSONObject(callArguments, options: NSJSONWritingOptions.PrettyPrinted)
+            postData = try JSONSerialization.data(withJSONObject: callArguments, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
         } catch let error {
-            callback(response: nil, errorInServiceCall: error)
+            callback(nil, error)
             return
         }
 
-        let request = NSMutableURLRequest(URL: self.serviceEndpoint);
+        let request = NSMutableURLRequest(url: self.serviceEndpoint as URL);
         request.setValue("text/json", forHTTPHeaderField: "Content-Type")
         request.setValue("bo-ios", forHTTPHeaderField: "User-Agent")
         request.setValue("\(postData.length)", forHTTPHeaderField: "Content-Length")
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
+        request.httpMethod = "POST"
+        request.httpBody = postData as Data
         //NSLog(@"%@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
 
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: {
-            (response: NSURLResponse?, data: NSData?, connectionError: NSError?) -> Void in
+        NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue(), completionHandler: {
+            (response: URLResponse?, data: Data?, connectionError: Error?) -> Void in
 
             if let data = data {
 
-                if data.length > 0 && connectionError == nil {
+                if data.count > 0 && connectionError == nil {
                     //NSString *jsonStringResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
                     //NSError *jsonError = [[NSError alloc] init];
                     do {
-                        let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)) as! [String:AnyObject]
+                        let jsonResponse = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [String:AnyObject]
                         //NSLog("\(jsonResponse)");
-                        callback(response: jsonResponse, errorInServiceCall: nil)
+                        callback(jsonResponse, nil)
                     } catch let error {
-                        callback(response: nil, errorInServiceCall: error)
+                        callback(nil, error)
                     }
                 }
             } else if (connectionError == nil) {
                 NSLog("Nothing was downloaded.")
             } else if (connectionError != nil) {
-                NSLog("Error = \(connectionError)");
+                NSLog("Error = \(String(describing: connectionError))");
             }
         })
     }
