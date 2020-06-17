@@ -25,9 +25,22 @@ public class StrikeOverlayRenderer: MKOverlayRenderer {
 
     private let colorScheme: ColorScheme
 
+    private let m: Double
+    private let t: Double
+    private let maxAlpha = 1.0
+    private let minAlpha = 0.2
+
     public override init(overlay: MKOverlay) {
         strikeOverlay = overlay as! StrikeOverlay
         colorScheme = ColorScheme()
+
+        let x1 = -9.0
+        let y1 = maxAlpha
+        let x2 = -5.0
+        let y2 = minAlpha
+        m = (y1 - y2) / (x1 - x2)
+        t = y1 - m * x1
+
         super.init(overlay: overlay)
     }
 
@@ -41,17 +54,26 @@ public class StrikeOverlayRenderer: MKOverlayRenderer {
         let color = colorScheme.getColor(now: strikeOverlay.referenceTimestamp,
                 eventTime: strikeOverlay.strike.timestamp,
                 intervalDuration: strikeOverlay.parameters.intervalDuration)
-        
+
+
         let red = CGFloat((color & 0xff0000) >> 16) / 255.0
         let green = CGFloat((color & 0x00ff00) >> 8) / 255.0
         let blue = CGFloat(color & 0x0000ff) / 255.0
-        
-        context.setFillColor(red: red , green: green, blue: blue, alpha: 1.0)
+        let alpha = calculateAlpha(zoomScale: zoomScale)
+
+        context.setFillColor(red: red, green: green, blue: blue, alpha: CGFloat(alpha))
 
         let rasterElement = strikeOverlay.boundingMapRect
 
         let rasterRect = rect(for: rasterElement);
 
         context.fill(rasterRect);
+    }
+
+    private func calculateAlpha(zoomScale: MKZoomScale) -> Double {
+        let scale = Double(log(zoomScale))
+        let value = m * scale + t
+        let alpha = max(min(value, maxAlpha), minAlpha)
+        return alpha
     }
 }

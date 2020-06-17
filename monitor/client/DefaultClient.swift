@@ -63,7 +63,6 @@ public class DefaultClient {
                 let result = Result(parameters: parameters, referenceTimestamp: referenceTimestamp, strikes: strikes, rasterParameters: rasterParameters)
                 callback(result)
 
-                //NSLog("\(overlays)");
                 NSLog("# strikes: \(strikes.count)");
             }
         } else {

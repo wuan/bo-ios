@@ -33,15 +33,43 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     var parameters: Parameters = Parameters()
     let serviceClient = DefaultClient()
 
-    @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var statusText: UILabel!
+    var mapView: MKMapView!
+    var statusText: UILabel!
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
 
-        timerPeriod = 20;
+        statusText = UILabel(frame: .zero)
+        statusText.translatesAutoresizingMaskIntoConstraints = false
+        statusText.clearsContextBeforeDrawing = true
+        view.addSubview(statusText);
+
+        mapView = MKMapView()
+        mapView.mapType = MKMapType.hybrid
+        mapView.isRotateEnabled = false
+        mapView.showsUserLocation = true
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.delegate = self
+        view.addSubview(mapView)
+
+        constraintsInit();
+
+        timerPeriod = 60;
 
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
+    }
+
+    func constraintsInit() {
+        NSLayoutConstraint.activate([
+            statusText.leftAnchor.constraint(equalTo: view.leftAnchor),
+            statusText.topAnchor.constraint(equalTo: view.topAnchor),
+
+            mapView.leftAnchor.constraint(equalTo: statusText.leftAnchor),
+            mapView.topAnchor.constraint(equalTo: statusText.bottomAnchor),
+            mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
 
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -52,7 +80,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         let renderer = MKPolygonRenderer.init(polygon: overlay as! MKPolygon)
         renderer.strokeColor = UIColor.white
         renderer.lineWidth = 1
-        return renderer;
+        return renderer
     }
 
     @objc func timerTick() {
@@ -113,15 +141,16 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         let y2 = rasterParameters.latitudeEnd
 
         var worldCoords = [
-                CLLocationCoordinate2D(latitude: y1, longitude: x1),
-                CLLocationCoordinate2D(latitude: y1, longitude: x2),
-                CLLocationCoordinate2D(latitude: y2, longitude: x2),
-                CLLocationCoordinate2D(latitude: y2, longitude: x1)]
+            CLLocationCoordinate2D(latitude: y1, longitude: x1),
+            CLLocationCoordinate2D(latitude: y1, longitude: x2),
+            CLLocationCoordinate2D(latitude: y2, longitude: x2),
+            CLLocationCoordinate2D(latitude: y2, longitude: x1)]
 
         let worldOverlay = MKPolygon(coordinates: &worldCoords, count: 4);
 
         self.mapView.addOverlay(worldOverlay)
     }
 
+    public override var prefersStatusBarHidden: Bool { return true }
 
 }
