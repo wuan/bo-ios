@@ -58,6 +58,33 @@ class monitorUITests: XCTestCase {
         app.buttons["settings.close"].tap()
     }
 
+    /// Exercises the 24-hour time slider: the rightmost position activates
+    /// realtime, and any other position selects that historical interval. Needs
+    /// no backend because the mode indicator changes as soon as the slider moves.
+    func testTimeSliderRightmostActivatesRealtime() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let slider = app.sliders["time.slider"]
+        XCTAssertTrue(slider.waitForExistence(timeout: 15))
+
+        let indicator = app.staticTexts["mode.indicator"]
+        XCTAssertTrue(indicator.waitForExistence(timeout: 10))
+        XCTAssertEqual(indicator.label, "Realtime")
+
+        let status = app.staticTexts["status.text"]
+        XCTAssertTrue(status.waitForExistence(timeout: 10))
+        XCTAssertTrue(waitForStatus(status, matching: "[0-9]+/[0-9]+ s"), "status was '\(status.label)'")
+
+        slider.adjust(toNormalizedSliderPosition: 0.5)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForStatus(status, matching: "@ [0-9]{2}:[0-9]{2}"), "status was '\(status.label)'")
+
+        slider.adjust(toNormalizedSliderPosition: 1.0)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Realtime"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForStatus(status, matching: "[0-9]+/[0-9]+ s"), "status was '\(status.label)'")
+    }
+
     /// LIVE CHECK: requires network access. Selects the JSON-RPC source with no
     /// endpoint override and confirms the app renders a non-zero strike count.
     ///
@@ -82,6 +109,52 @@ class monitorUITests: XCTestCase {
 
         let reported = waitForStrikeCount(in: status, timeout: 90)
         XCTAssertTrue(reported.matched, "status was '\(reported.label)'")
+    }
+
+    /// LIVE CHECK: requires network access. Drives the time slider into history,
+    /// then starts animation, and confirms each mode selects an interval and
+    /// keeps rendering from the live backend (the status line keeps reporting an
+    /// interval instead of freezing on the realtime frame).
+    func testLiveModesRenderHistoricalAndAnimatedIntervals() throws {
+        try requireLiveBackend()
+
+        let app = XCUIApplication()
+        app.launch()
+
+        openSettings(app)
+        selectSource(app, index: 0)
+        replaceText(in: app.textFields["settings.endpoint"], with: "")
+        app.buttons["settings.save"].tap()
+        app.buttons["settings.close"].tap()
+
+        relaunch(app)
+
+        let status = app.staticTexts["status.text"]
+        XCTAssertTrue(status.waitForExistence(timeout: 15))
+        XCTAssertTrue(waitForStatusWithInterval(status, timeout: 90), "status was '\(status.label)'")
+
+        let indicator = app.staticTexts["mode.indicator"]
+        XCTAssertTrue(indicator.waitForExistence(timeout: 10))
+
+        let slider = app.sliders["time.slider"]
+        XCTAssertTrue(slider.waitForExistence(timeout: 10))
+
+        // History: a non-rightmost position selects a historical interval.
+        slider.adjust(toNormalizedSliderPosition: 0.5)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForStatusWithInterval(status, timeout: 90), "history status was '\(status.label)'")
+
+        // Animation: playback advances and keeps rendering.
+        app.buttons["animation.toggle"].tap()
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Animation"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForStatusWithInterval(status, timeout: 90), "animation status was '\(status.label)'")
+
+        // Stopping holds the interval; the slider's rightmost position then
+        // returns to realtime.
+        app.buttons["animation.toggle"].tap()
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+        slider.adjust(toNormalizedSliderPosition: 1.0)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Realtime"), "mode was '\(indicator.label)'")
     }
 
     /// LIVE CHECK: requires the stub server in the development notes, listening on
@@ -272,6 +345,50 @@ class monitorUITests: XCTestCase {
         // Relaunch so the first poll fires immediately rather than after a period.
         app.terminate()
         app.launch()
+    }
+
+    /// Polls a label until it shows the expected value, for controls whose state
+    /// updates asynchronously with the UI query.
+    private func waitForLabel(_ element: XCUIElement,
+                              toEqual expected: String,
+                              timeout: TimeInterval = 5) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if element.label == expected {
+                return true
+            }
+            usleep(100_000)
+        }
+        return false
+    }
+
+    /// Polls a label until it matches a regular expression, for status text that
+    /// the app updates on its own cadence.
+    private func waitForStatus(_ element: XCUIElement,
+                               matching pattern: String,
+                               timeout: TimeInterval = 10) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if element.label.range(of: pattern, options: .regularExpression) != nil {
+                return true
+            }
+            usleep(200_000)
+        }
+        return false
+    }
+
+    /// Polls the status label until it reports any interval, including a zero
+    /// strike count, which still proves a result was rendered.
+    private func waitForStatusWithInterval(_ element: XCUIElement,
+                                           timeout: TimeInterval) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if element.label.range(of: "^[0-9]+ strikes/[0-9]+ minutes", options: .regularExpression) != nil {
+                return true
+            }
+            usleep(500_000)
+        }
+        return false
     }
 
     /// Polls the status label until it reports a non-zero strike count.

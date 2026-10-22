@@ -37,8 +37,8 @@ final class DataHandlerTests: XCTestCase {
 
     private let parameters = Parameters()
 
-    private func makeResult(referenceTimestamp: Int = 100) -> Result {
-        return Result(parameters: Parameters(), referenceTimestamp: referenceTimestamp, strikes: [], rasterParameters: nil)
+    private func makeResult(referenceTimestamp: Int = 100, parameters: Parameters = Parameters()) -> Result {
+        return Result(parameters: parameters, referenceTimestamp: referenceTimestamp, strikes: [], rasterParameters: nil)
     }
 
     func testSuccessfulRequestEmitsStartedThenReceived() async {
@@ -134,20 +134,37 @@ final class DataHandlerTests: XCTestCase {
         XCTAssertEqual(provider.requestCount, 2)
     }
 
-    func testStaleResultDoesNotReplaceFresherData() async {
+    func testStaleResultForTheSameSelectionDoesNotReplaceFresherData() async {
         let provider = StubProvider()
-        provider.result = makeResult(referenceTimestamp: 200)
-        let handler = DataHandler(provider: provider)
+        let handler = DataHandler(provider: provider, cache: DataCache(timeToLive: 0))
 
+        provider.result = makeResult(referenceTimestamp: 200)
         handler.requestData(parameters: Parameters())
         await waitUntil { handler.latest?.referenceTimestamp == 200 }
 
         provider.result = makeResult(referenceTimestamp: 100)
-        handler.requestData(parameters: Parameters(intervalOffset: 30))
+        handler.requestData(parameters: Parameters())
         try? await Task.sleep(nanoseconds: 50_000_000)
 
         XCTAssertEqual(provider.requestCount, 2)
         XCTAssertEqual(handler.latest?.referenceTimestamp, 200)
+    }
+
+    func testOlderResultForADifferentSelectionIsAccepted() async {
+        let provider = StubProvider()
+        let handler = DataHandler(provider: provider)
+
+        let realtime = Parameters(intervalOffset: 0)
+        provider.result = makeResult(referenceTimestamp: 200, parameters: realtime)
+        handler.requestData(parameters: realtime)
+        await waitUntil { handler.latest?.referenceTimestamp == 200 }
+
+        let history = Parameters(intervalOffset: -30)
+        provider.result = makeResult(referenceTimestamp: 100, parameters: history)
+        handler.requestData(parameters: history)
+        await waitUntil { handler.latest?.referenceTimestamp == 100 }
+
+        XCTAssertEqual(handler.latest?.referenceTimestamp, 100)
     }
 
     func testCancellingSubscriptionEndsDelivery() async {

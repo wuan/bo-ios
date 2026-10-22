@@ -89,4 +89,11 @@ public struct GridParameters: Equatable {
     public var latitudeEnd: Double {
         return latitudeStart - latitudeDelta * Double(latitudeCount)
     }
+
+    /// Whether the grid spans nearly the whole globe, so no visible extent can
+    /// fall outside it.
+    public var isGlobal: Bool {
+        return longitudeDelta * Double(longitudeCount) > 350 &&
+            latitudeDelta * Double(latitudeCount) > 170
+    }
 }

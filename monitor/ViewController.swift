@@ -29,16 +29,33 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     var pollingTimer: Timer?
     var lastUpdate: Date?
     var strikeStatus: String?
-    var timerPeriod: Int = 0
     var parameters: Parameters = Parameters()
     private let dataSource: DataEventSource
     private let settings: SettingsStore
     private let credentialStore: CredentialStore
     private var eventTask: Task<Void, Never>?
 
+    /// The interval/mode state driving requests and the slider.
+    var timeModel = TimeModel()
+    /// Region and data-area selection for the visible extent.
+    var localData = LocalData()
+    /// Decides when a refresh is due for the active mode.
+    let scheduler = ModeRefreshScheduler()
+
+    /// Region used for requests until the region selector lands (Phase 3).
+    var regionSetting = Parameters().region
+    /// Count threshold used for requests until the threshold control lands.
+    var countThresholdSetting = Parameters().countThreshold
+
+    private var viewExtent: ViewExtent?
+    private var lastGridSize: Int?
+
     var mapView: MKMapView!
     var statusText: UILabel!
     var settingsButton: UIButton!
+    var timeSlider: UISlider!
+    var animationButton: UIButton!
+    var modeLabel: UILabel!
 
     init(dataSource: DataEventSource,
          settings: SettingsStore = SettingsStore(),
@@ -97,14 +114,44 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
         view.addSubview(mapView)
 
-        constraintsInit();
-
-        timerPeriod = 60;
+        buildModeControls()
+        constraintsInit()
+        syncModeControls()
 
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
 
         startEventStream()
     }
+
+    /// Builds the time slider and animation control that drive the mode.
+    private func buildModeControls() {
+        modeLabel = UILabel()
+        modeLabel.translatesAutoresizingMaskIntoConstraints = false
+        modeLabel.accessibilityIdentifier = "mode.indicator"
+        modeLabel.font = .preferredFont(forTextStyle: .subheadline)
+
+        timeSlider = UISlider()
+        timeSlider.translatesAutoresizingMaskIntoConstraints = false
+        timeSlider.accessibilityIdentifier = "time.slider"
+        timeSlider.minimumValue = 0
+        timeSlider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
+
+        animationButton = UIButton(type: .system)
+        animationButton.translatesAutoresizingMaskIntoConstraints = false
+        animationButton.accessibilityIdentifier = "animation.toggle"
+        animationButton.addTarget(self, action: #selector(animationToggled), for: .touchUpInside)
+
+        let controls = UIStackView(arrangedSubviews: [modeLabel, timeSlider, animationButton])
+        controls.axis = .vertical
+        controls.spacing = 8
+        controls.translatesAutoresizingMaskIntoConstraints = false
+        controls.accessibilityIdentifier = "mode.controls"
+        view.addSubview(controls)
+
+        self.modeControls = controls
+    }
+
+    private var modeControls: UIStackView!
 
     func constraintsInit() {
         NSLayoutConstraint.activate([
@@ -118,7 +165,11 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             mapView.leftAnchor.constraint(equalTo: statusText.leftAnchor),
             mapView.topAnchor.constraint(equalTo: statusText.bottomAnchor),
             mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mapView.bottomAnchor.constraint(equalTo: modeControls.topAnchor, constant: -8),
+
+            modeControls.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            modeControls.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            modeControls.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
         ])
     }
 
@@ -143,6 +194,9 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private func handle(event: DataEvent) {
         switch event {
         case .dataReceived(let result):
+            // Ignore a response for a selection the user has already moved past,
+            // so an out-of-order reply cannot overwrite the current interval.
+            guard result.parameters.intervalOffset == timeModel.interval.offset else { return }
             render(result: result)
         case .failed(let error):
             NSLog("error in service call: \(error)")
@@ -162,35 +216,143 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         return renderer
     }
 
+    /// Tracks the visible extent so region and grid selection follow the map.
+    public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        applyExtent(ViewExtent(region: mapView.region))
+    }
+
+    private func applyExtent(_ extent: ViewExtent) {
+        viewExtent = extent
+        let areaChanged = localData.update(extent: extent)
+        let gridSize = LocalData.gridSize(for: extent)
+        let gridChanged = gridSize != lastGridSize
+        lastGridSize = gridSize
+        if areaChanged || gridChanged {
+            requestCurrentParameters()
+        }
+    }
+
     @objc func timerTick() {
-        var update = false;
+        let now = Date()
 
-        var timeInterval: Int;
+        switch scheduler.tick(mode: timeModel.mode, now: now) {
+        case .none:
+            break
+        case .refresh:
+            requestCurrentParameters()
+        case .advanceAndRefresh:
+            timeModel.advanceAnimation()
+            syncModeControls()
+            requestCurrentParameters()
+        }
 
-        if (self.lastUpdate == nil) {
-            update = true;
-            timeInterval = 0;
+        updateStatus(now: now)
+    }
+
+    /// Advances the record from the time model and the visible extent.
+    @discardableResult
+    private func requestCurrentParameters() -> Parameters {
+        lastUpdate = Date()
+
+        var parameters = baseParameters()
+        parameters = localData.updateParameters(parameters)
+        parameters = parameters.gatingGrid(on: dataSource.capabilities)
+        self.parameters = parameters
+        dataSource.requestData(parameters: parameters)
+        return parameters
+    }
+
+    private func baseParameters() -> Parameters {
+        let gridSize = viewExtent.map { LocalData.gridSize(for: $0) } ?? parameters.rasterBaselength
+        return Parameters(region: regionSetting,
+                          rasterBaselength: gridSize,
+                          intervalDuration: timeModel.interval.duration,
+                          intervalOffset: timeModel.interval.offset,
+                          countThreshold: countThresholdSetting,
+                          dataArea: nil)
+    }
+
+    // MARK: - Mode controls
+
+    @objc private func sliderChanged(_ sender: UISlider) {
+        let position = Int(sender.value.rounded())
+        timeModel.setPosition(position)
+        sender.setValue(Float(position), animated: false)
+        updateModeIndicator()
+        scheduler.selectionChanged(now: Date())
+        requestCurrentParameters()
+    }
+
+    @objc private func animationToggled() {
+        if timeModel.mode == .animation {
+            timeModel.stopAnimation()
         } else {
-            timeInterval = -Int((lastUpdate?.timeIntervalSinceNow)!);
-
-            if (timeInterval >= timerPeriod) {
-                update = true;
-            }
+            timeModel.startAnimation()
         }
+        syncModeControls()
+        requestCurrentParameters()
+    }
 
-        if (update) {
-            lastUpdate = Date()
-            dataSource.requestData(parameters: parameters)
+    /// Reflects the time model in the slider, the animation button, and the
+    /// mode indicator.
+    private func syncModeControls() {
+        let maxPosition = max(1, timeModel.maxPosition)
+        timeSlider.maximumValue = Float(maxPosition)
+        timeSlider.value = Float(timeModel.position)
+        timeSlider.isEnabled = timeModel.mode != .animation
+        updateModeIndicator()
+        updateAnimationButton()
+    }
+
+    private func updateModeIndicator() {
+        let key: String
+        switch timeModel.mode {
+        case .realtime:
+            key = "mode.realtime"
+        case .history:
+            key = "mode.history"
+        case .animation:
+            key = "mode.animation"
         }
+        modeLabel.text = NSLocalizedString(key, comment: "Time mode indicator")
+    }
 
-        let countdown = String(format: NSLocalizedString("status.refreshCountdown",
-                                                         comment: "Status line refresh countdown, e.g. 12/60 s"),
-                               timerPeriod - timeInterval,
-                               timerPeriod)
+    private func updateAnimationButton() {
+        let titleKey = timeModel.mode == .animation ? "animation.stop" : "animation.start"
+        animationButton.setTitle(NSLocalizedString(titleKey, comment: "Start or stop animation playback"),
+                                 for: .normal)
+    }
+
+    private func updateStatus(now: Date) {
         let status = strikeStatus ?? NSLocalizedString("status.unavailable",
                                                        comment: "Status line shown before the first data arrives")
-        self.statusText.text = "\(status) \(countdown)"
+        self.statusText.text = "\(status) \(statusSuffix(now: now))"
     }
+
+    /// The realtime countdown, or the start time of the selected historical
+    /// interval, which has no countdown of its own.
+    private func statusSuffix(now: Date) -> String {
+        guard timeModel.mode == .realtime else {
+            return String(format: NSLocalizedString("status.intervalStart",
+                                                    comment: "Status line showing the start time of the selected interval"),
+                          Self.intervalStartFormatter.string(from: timeModel.intervalStart(now: now)))
+        }
+
+        let period = Int(scheduler.realtimePeriod)
+        let elapsed = lastUpdate.map { Int(now.timeIntervalSince($0)) } ?? 0
+        return String(format: NSLocalizedString("status.refreshCountdown",
+                                                comment: "Status line refresh countdown, e.g. 12/60 s"),
+                      period - elapsed,
+                      period)
+    }
+
+    /// Renders the selected interval's start as a wall-clock time, e.g. `14:30`.
+    static let intervalStartFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 
     private func render(result: Result) {
         let overlays = result.strikes.map({
@@ -202,6 +364,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                         comment: "Status line showing strike count and interval in minutes"),
                               countStrikes(strikes: result.strikes),
                               parameters.intervalDuration)
+
+        if let rasterParameters = result.rasterParameters {
+            localData.store(gridParameters: rasterParameters)
+        }
 
         self.mapView.removeOverlays(self.mapView.overlays)
         self.mapView.addOverlays(overlays)

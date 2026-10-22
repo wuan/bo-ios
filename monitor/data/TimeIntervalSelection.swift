@@ -22,6 +22,10 @@ import Foundation
 ///
 /// Named `TimeIntervalSelection` rather than `TimeInterval` to avoid clashing
 /// with Foundation's `TimeInterval`.
+///
+/// The stepping operations mirror the Android `TimeInterval`: an offset is
+/// always clamped to the history lower limit and aligned to the history
+/// increment, so repeated steps never drift away from the slider positions.
 public struct TimeIntervalSelection: Equatable {
 
     /// Length of the displayed interval in minutes.
@@ -37,5 +41,78 @@ public struct TimeIntervalSelection: Equatable {
     /// A selection with a zero offset shows the most recent data.
     public var isRealtime: Bool {
         return offset == 0
+    }
+
+    // MARK: - Time stepping
+
+    /// Returns a selection at `offset`, or the receiver unchanged when the
+    /// offset falls outside the history range.
+    public func withOffset(_ offset: Int, history: History) -> TimeIntervalSelection {
+        guard offset >= history.lowerLimit(of: self), offset <= 0 else {
+            return self
+        }
+        return TimeIntervalSelection(duration: duration, offset: offset)
+    }
+
+    /// Steps one increment further into the past.
+    public func rewind(history: History) -> TimeIntervalSelection {
+        return stepping(history, by: -1)
+    }
+
+    /// Steps one increment towards the present.
+    public func fastForward(history: History) -> TimeIntervalSelection {
+        return stepping(history, by: 1)
+    }
+
+    /// Advances the animation: from realtime it jumps to the oldest interval,
+    /// otherwise it steps towards the present, looping back to the oldest.
+    public func animationStep(history: History) -> TimeIntervalSelection {
+        if offset == 0 {
+            return TimeIntervalSelection(duration: duration, offset: history.lowerLimit(of: self))
+        }
+        return stepping(history, by: 1)
+    }
+
+    /// Returns to realtime without changing the duration.
+    public func goRealtime() -> TimeIntervalSelection {
+        return TimeIntervalSelection(duration: duration, offset: 0)
+    }
+
+    // MARK: - Slider positions
+
+    /// The slider position for the current offset, where the rightmost position
+    /// is realtime.
+    public func position(history: History) -> Int {
+        return Self.position(for: history.lowerLimit(of: self) - offset, history: history)
+    }
+
+    /// The rightmost slider position, which maps to a zero offset.
+    public func maxPosition(history: History) -> Int {
+        return Self.position(for: history.lowerLimit(of: self), history: history)
+    }
+
+    /// Converts a slider position back into a selection. The rightmost position
+    /// yields a zero offset (realtime).
+    public func withPosition(_ position: Int, history: History) -> TimeIntervalSelection {
+        let offset = (-maxPosition(history: history) + position) * history.timeIncrement
+        return withOffset(offset, history: history)
+    }
+
+    // MARK: - Helpers
+
+    private func stepping(_ history: History, by increment: Int) -> TimeIntervalSelection {
+        let stepped = offset + increment * history.timeIncrement
+        let clamped = min(max(stepped, history.lowerLimit(of: self)), 0)
+        return TimeIntervalSelection(duration: duration, offset: Self.align(clamped, to: history.timeIncrement))
+    }
+
+    private static func position(for value: Int, history: History) -> Int {
+        guard history.timeIncrement != 0 else { return 0 }
+        return -value / history.timeIncrement
+    }
+
+    private static func align(_ value: Int, to increment: Int) -> Int {
+        guard increment != 0 else { return value }
+        return (value / increment) * increment
     }
 }

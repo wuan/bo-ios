@@ -27,7 +27,9 @@ import Foundation
 ///
 /// A request served from ``DataCache`` is delivered as `dataReceived` without a
 /// `requestStarted` event, because no fetch begins. Results that are not newer
-/// than the last accepted result are discarded by ``FreshnessValidator``.
+/// than the last accepted result for the same parameters are discarded by
+/// ``FreshnessValidator``, so a historical selection is not mistaken for a stale
+/// realtime answer.
 public final class DataHandler {
 
     private let provider: DataProvider
@@ -107,7 +109,7 @@ public final class DataHandler {
                 return
             }
             guard let result = result else { return }
-            guard self.freshness.accept(referenceTimestamp: result.referenceTimestamp) else {
+            guard self.freshness.accept(referenceTimestamp: result.referenceTimestamp, for: parameters) else {
                 return
             }
             self.cache.store(result, for: parameters)

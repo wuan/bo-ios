@@ -96,9 +96,13 @@ five-minute time-to-live (`DataCache.defaultTimeToLive = 300`), matching the
 Android client. A request within that window for the same parameters is served
 from the cache and does not contact the provider.
 
-`FreshnessValidator` keeps the reference timestamp of the last accepted result
-and rejects a result that is not newer, so an out-of-order response cannot
-replace fresher data. The first result is always accepted.
+`FreshnessValidator` keeps the reference timestamp most recently accepted for
+each parameter set and rejects a result that is not newer than the last accepted
+result **for the same parameters**, so an out-of-order response cannot replace
+fresher data for a selection. The first result for a selection is always
+accepted, and a result for a different selection is always accepted — which is
+what lets historical intervals, whose timestamps are older than realtime, still
+be displayed.
 
 `DataProviderCoordinator` wires both together: subscribe once with `events()`,
 call `requestData(parameters:)`, and it clears the cache and rebuilds the

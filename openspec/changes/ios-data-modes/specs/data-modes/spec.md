@@ -93,3 +93,14 @@ The app SHALL issue grid-data requests only when the active data source supports
 #### Scenario: Source with grid support
 - **WHEN** the active data source supports grid data
 - **THEN** the app may include the selected grid size in its requests
+
+### Requirement: Mode-aware status line
+The app SHALL show the realtime refresh countdown while in realtime mode and SHALL show the start of the selected interval as a wall-clock time while in history or animation mode.
+
+#### Scenario: Realtime shows the countdown
+- **WHEN** the app is in realtime mode
+- **THEN** the status line shows the refresh countdown
+
+#### Scenario: History shows the interval start
+- **WHEN** the app is in history or animation mode
+- **THEN** the status line shows the start of the selected interval as a wall-clock time

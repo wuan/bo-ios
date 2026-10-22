@@ -23,7 +23,7 @@ import Foundation
 /// The area is identified by a grid index (`x`, `y`) and a `scale` in degrees,
 /// matching the coarse rounding used by the Android app so that no precise
 /// user location is sent to the backend.
-public struct DataArea: Equatable {
+public struct DataArea: Equatable, Hashable {
 
     public let x: Int
     public let y: Int

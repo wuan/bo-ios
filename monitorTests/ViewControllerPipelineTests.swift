@@ -61,6 +61,27 @@ final class ViewControllerPipelineTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(controller.mapView.overlays.count, 1)
     }
 
+    func testIgnoresAResultForASupersededSelection() async {
+        let strike = Strike(timestamp: 100, andMultiplicity: 1, andX: 0.0, andY: 50.0)
+        let result = Result(parameters: Parameters(intervalOffset: -60),
+                            referenceTimestamp: 100,
+                            strikes: [strike],
+                            rasterParameters: nil)
+
+        let provider = FixedProvider()
+        provider.result = result
+        let handler = DataHandler(provider: provider)
+
+        let controller = ViewController(dataHandler: handler)
+        controller.loadViewIfNeeded()
+        XCTAssertEqual(controller.timeModel.interval.offset, 0)
+
+        handler.requestData(parameters: Parameters(intervalOffset: -60))
+        try? await Task.sleep(nanoseconds: 100_000_000)
+
+        XCTAssertEqual(controller.mapView.overlays.count, 0)
+    }
+
     private func waitUntil(_ condition: () -> Bool, timeout: TimeInterval = 1.0) async {
         let deadline = Date().addingTimeInterval(timeout)
         while !condition() && Date() < deadline {

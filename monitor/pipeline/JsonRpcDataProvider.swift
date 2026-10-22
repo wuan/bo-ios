@@ -32,8 +32,9 @@ public final class JsonRpcDataProvider: DataProvider {
 
     public init(serviceEndpoint: String,
                 userAgent: UserAgent = UserAgent(),
-                parser: StrikeDataParser = StrikeDataParser()) {
-        self.client = JsonRpcClient(withServiceEndpoint: serviceEndpoint, userAgent: userAgent)
+                parser: StrikeDataParser = StrikeDataParser(),
+                session: URLSession = .shared) {
+        self.client = JsonRpcClient(withServiceEndpoint: serviceEndpoint, userAgent: userAgent, session: session)
         self.parser = parser
     }
 

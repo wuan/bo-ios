@@ -9,6 +9,7 @@ Phase 0 of the [Android feature-parity roadmap](../openspec/changes/android-feat
 | `monitor/settings/` | `SettingsKey` (typed keys + registered defaults) and `SettingsStore` (typed access, persistence, reset, change observation). `SettingsViewController` is the minimal source/endpoint/credential surface. |
 | `monitor/client/` | `UserAgent` (client identification), `CredentialStore` (Keychain + in-memory), `HttpTransport` (URLSession transport), and the JSON-RPC client. |
 | `monitor/data/` | Shared domain model: `Result`, `Strike`/`RasterElement`, `GridParameters`, `Parameters`, `DataArea`, `TimeIntervalSelection`, `History`, `Location`, `Event`, and `StrikeDataParser`. |
+| `monitor/modes/` | Realtime/history/animation selection: `DataMode`, `TimeModel`, `LocalData` (region and data-area/grid selection), `ViewExtent`, and `ModeRefreshScheduler`. |
 | `monitor/pipeline/` | Data pipeline: `DataProvider`, `DataEvent`, `DataHandler`, `JsonRpcDataProvider`. |
 | `monitor/Resources/Localizable.xcstrings` | Base String Catalog for all user-facing text. |
 | `monitorTests/` | Unit tests and `Fixtures`. |
@@ -60,6 +61,13 @@ results are cached for five minutes per parameter set, and a result that is not 
 last accepted one is discarded.
 
 See [data-providers.md](data-providers.md) for the full reference.
+
+## Data modes
+
+The display runs in realtime, history, or animation mode over a 24-hour range,
+selects a region and local data area from the visible extent, sizes the grid to
+that extent, and carries a count threshold into requests. See
+[data-modes.md](data-modes.md) for the full reference.
 
 ## Building and testing
 
