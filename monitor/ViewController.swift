@@ -1,20 +1,20 @@
 /*
-
-Copyright 2015-2016 Andreas Würl
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-*/
+ 
+ Copyright 2015-2016 Andreas Würl
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ 
+ */
 
 import Foundation
 import UIKit
@@ -26,15 +26,33 @@ enum MapViewError: Error {
 
 public class ViewController: UIViewController, MKMapViewDelegate {
 
+    /// Default backend used when none is supplied.
+    public static let defaultServiceEndpoint = "http://bo-test.tryb.de"
+
     var pollingTimer: Timer?
-    var lastUpdate: NSDate?
+    var lastUpdate: Date?
     var strikeStatus: String?
     var timerPeriod: Int = 0
     var parameters: Parameters = Parameters()
-    let serviceClient = DefaultClient()
+    let dataHandler: DataHandler
+    private var eventTask: Task<Void, Never>?
 
     var mapView: MKMapView!
     var statusText: UILabel!
+
+    public init(dataHandler: DataHandler = DataHandler(provider: JsonRpcDataProvider(serviceEndpoint: ViewController.defaultServiceEndpoint))) {
+        self.dataHandler = dataHandler
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    public required init?(coder: NSCoder) {
+        self.dataHandler = DataHandler(provider: JsonRpcDataProvider(serviceEndpoint: ViewController.defaultServiceEndpoint))
+        super.init(coder: coder)
+    }
+
+    deinit {
+        eventTask?.cancel()
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +76,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         timerPeriod = 60;
 
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
+
+        startEventStream()
     }
 
     func constraintsInit() {
@@ -70,6 +90,28 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+
+    /// Subscribes to pipeline events and renders them on the main actor.
+    private func startEventStream() {
+        let events = dataHandler.events()
+        eventTask = Task { [weak self] in
+            for await event in events {
+                guard let self = self else { return }
+                self.handle(event: event)
+            }
+        }
+    }
+
+    private func handle(event: DataEvent) {
+        switch event {
+        case .dataReceived(let result):
+            render(result: result)
+        case .failed(let error):
+            NSLog("error in service call: \(error)")
+        case .requestStarted:
+            break
+        }
     }
 
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -100,28 +142,35 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         }
 
         if (update) {
-            lastUpdate = NSDate()
-            serviceClient.fetchData(parameters: parameters, callback: handleResult)
+            lastUpdate = Date()
+            dataHandler.requestData(parameters: parameters)
         }
 
-        self.statusText.text = (strikeStatus ?? "n/a ") + "\(timerPeriod - timeInterval)/\(timerPeriod) s"
+        let countdown = String(format: NSLocalizedString("status.refreshCountdown",
+                                                         comment: "Status line refresh countdown, e.g. 12/60 s"),
+                               timerPeriod - timeInterval,
+                               timerPeriod)
+        let status = strikeStatus ?? NSLocalizedString("status.unavailable",
+                                                       comment: "Status line shown before the first data arrives")
+        self.statusText.text = "\(status) \(countdown)"
     }
 
-    func handleResult(result: Result) {
+    private func render(result: Result) {
         let overlays = result.strikes.map({
             (strike) -> MKOverlay in
             StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
         })
 
-        strikeStatus = "\(countStrikes(strikes: result.strikes)) strikes/\(parameters.intervalDuration) minutes "
+        strikeStatus = String(format: NSLocalizedString("status.strikeCount",
+                                                        comment: "Status line showing strike count and interval in minutes"),
+                              countStrikes(strikes: result.strikes),
+                              parameters.intervalDuration)
 
-        DispatchQueue.main.async {
-            self.mapView.removeOverlays(self.mapView.overlays)
-            self.mapView.addOverlays(overlays)
+        self.mapView.removeOverlays(self.mapView.overlays)
+        self.mapView.addOverlays(overlays)
 
-            if let rasterParameters = result.rasterParameters {
-                self.addDataArea(rasterParameters: rasterParameters)
-            }
+        if let rasterParameters = result.rasterParameters {
+            self.addDataArea(rasterParameters: rasterParameters)
         }
     }
 

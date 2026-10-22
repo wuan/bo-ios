@@ -1,0 +1,39 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "status.refreshCountdown" : {
+      "comment" : "Status line refresh countdown, e.g. 12/60 s",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/%lld s"
+          }
+        }
+      }
+    },
+    "status.strikeCount" : {
+      "comment" : "Status line showing strike count and interval in minutes",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld strikes/%lld minutes"
+          }
+        }
+      }
+    },
+    "status.unavailable" : {
+      "comment" : "Status line shown before the first data arrives",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "n/a"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

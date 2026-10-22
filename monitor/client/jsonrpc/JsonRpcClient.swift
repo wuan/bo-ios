@@ -41,8 +41,8 @@ public class JsonRpcClient: NSObject {
         request.httpBody = postData as Data
         //NSLog(@"%@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
 
-        NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue(), completionHandler: {
-            (response: URLResponse?, data: Data?, connectionError: Error?) -> Void in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+            (data: Data?, response: URLResponse?, connectionError: Error?) -> Void in
 
             if let data = data {
 
@@ -63,6 +63,7 @@ public class JsonRpcClient: NSObject {
             } else if (connectionError != nil) {
                 NSLog("Error = \(String(describing: connectionError))");
             }
-        })
+        }
+        task.resume()
     }
 }

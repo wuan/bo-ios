@@ -20,10 +20,10 @@ import Foundation
 import MapKit
 
 @objc
-public class Strike: NSObject {
+public class Strike: NSObject, Event {
 
-    let timestamp: Int
-    let multiplicity: Int
+    public let timestamp: Int
+    public let multiplicity: Int
     public let envelope: MKCoordinateRegion
     var location: CLLocationCoordinate2D {
         get {
