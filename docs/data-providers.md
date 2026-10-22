@@ -37,15 +37,17 @@ Security exceptions for `tryb.de` and `data.blitzortung.org`.
 
 ## Credentials
 
-The Blitzortung HTTP source requires authentication. Credentials are stored by a
-`CredentialStore`; the app uses `KeychainCredentialStore`, which keeps the
-username and password in the Keychain rather than in the settings store, so they
-never appear in `UserDefaults` or in a future preferences export. Tests use
-`InMemoryCredentialStore`.
+The Blitzortung.org HTTP source requires authentication; the JSON-RPC source has
+none. Credentials are stored by a `CredentialStore`; the app uses
+`KeychainCredentialStore`, which keeps the username and password in the Keychain
+rather than in the settings store, so they never appear in `UserDefaults` or in a
+future preferences export. Tests use `InMemoryCredentialStore`.
 
 Credentials are attached as an HTTP Basic `Authorization` header by
 `URLSessionHttpTransport`, and only for sources that pass them — the JSON-RPC
-provider has no credential store and sends none.
+provider has no credential store and sends none. The data-source screen follows
+the same split: it offers the username and password fields only while the HTTP
+source is selected.
 
 ## Client identification
 

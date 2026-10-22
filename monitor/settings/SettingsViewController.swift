@@ -190,6 +190,7 @@ public final class SettingsViewController: UIViewController {
         passwordField.text = credentials.password
 
         updateHint()
+        updateCredentials()
     }
 
     /// The map types the selector offers.
@@ -199,6 +200,22 @@ public final class SettingsViewController: UIViewController {
     private var mapModeSetting: String {
         let stored = settings.string(for: .mapMode)
         return SettingsViewController.mapModes.contains(stored) ? stored : SettingsViewController.mapModes[0]
+    }
+
+    /// The controls that only the authenticated source has a use for.
+    ///
+    /// The JSON-RPC source takes no username or password; only the Blitzortung.org
+    /// HTTP source authenticates, so the fields are offered for it alone.
+    private var credentialControls: [UIView] {
+        return [usernameLabel, usernameField, passwordLabel, passwordField]
+    }
+
+    /// Offers the credentials only while the authenticated source is selected.
+    private func updateCredentials() {
+        let authenticates = selectedType == .http
+        for control in credentialControls {
+            control.isHidden = !authenticates
+        }
     }
 
     private var selectedType: DataProviderType {
@@ -217,6 +234,7 @@ public final class SettingsViewController: UIViewController {
 
     @objc private func sourceChanged() {
         updateHint()
+        updateCredentials()
     }
 
     /// Applies a scheme change immediately, so the map behind the sheet redraws.
@@ -236,8 +254,12 @@ public final class SettingsViewController: UIViewController {
     @objc private func save() {
         settings.set(selectedType.rawValue, for: .dataSource)
         settings.set(endpointField.text ?? "", for: .serviceEndpoint)
-        credentialStore.save(Credentials(username: usernameField.text ?? "",
-                                         password: passwordField.text ?? ""))
+        // Only the source that authenticates stores credentials; the others
+        // leave whatever is stored for the HTTP source alone.
+        if selectedType == .http {
+            credentialStore.save(Credentials(username: usernameField.text ?? "",
+                                             password: passwordField.text ?? ""))
+        }
         loadValues()
     }
 

@@ -38,9 +38,7 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(open.waitForExistence(timeout: 15))
         open.tap()
 
-        let source = app.segmentedControls["settings.source"]
-        XCTAssertTrue(source.waitForExistence(timeout: 10))
-        source.buttons.element(boundBy: 1).tap()
+        selectSource(app, named: "HTTP")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
 
@@ -50,10 +48,10 @@ class monitorUITests: XCTestCase {
 
         let reopened = app.segmentedControls["settings.source"]
         XCTAssertTrue(reopened.waitForExistence(timeout: 10))
-        XCTAssertTrue(reopened.buttons.element(boundBy: 1).isSelected)
+        XCTAssertTrue(reopened.buttons["HTTP"].isSelected)
 
         // Restore the default source.
-        reopened.buttons.element(boundBy: 0).tap()
+        selectSource(app, named: "JSON-RPC")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
     }
@@ -97,7 +95,7 @@ class monitorUITests: XCTestCase {
         app.launch()
 
         openSettings(app)
-        selectSource(app, index: 0)
+        selectSource(app, named: "JSON-RPC")
         replaceText(in: app.textFields["settings.endpoint"], with: "")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
@@ -122,7 +120,7 @@ class monitorUITests: XCTestCase {
         app.launch()
 
         openSettings(app)
-        selectSource(app, index: 0)
+        selectSource(app, named: "JSON-RPC")
         replaceText(in: app.textFields["settings.endpoint"], with: "")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
@@ -167,7 +165,7 @@ class monitorUITests: XCTestCase {
         app.launch()
 
         openSettings(app)
-        selectSource(app, index: 1)
+        selectSource(app, named: "HTTP")
         replaceText(in: app.textFields["settings.endpoint"], with: "http://127.0.0.1:8099")
         replaceText(in: app.textFields["settings.username"], with: "test")
         replaceText(in: app.secureTextFields["settings.password"], with: "test")
@@ -188,21 +186,30 @@ class monitorUITests: XCTestCase {
     }
 
     /// LIVE CHECK: requires the same stub server as the test above. Configures
-    /// credentials and then selects the unauthenticated JSON-RPC source against a
-    /// custom endpoint, confirming the saved credentials neither break it nor are
-    /// sent to it.
+    /// credentials on the authenticated source, then selects the unauthenticated
+    /// JSON-RPC source against a custom endpoint, confirming the saved
+    /// credentials neither break it nor are sent to it.
     func testLiveRpcSourceIgnoresStoredCredentials() throws {
         try requireStubServer()
 
         let app = XCUIApplication()
         app.launch()
 
+        // The JSON-RPC source takes no credentials, so they are entered on the
+        // HTTP source, which is the one that authenticates.
         openSettings(app)
-        selectSource(app, index: 0)
+        selectSource(app, named: "HTTP")
         replaceText(in: app.textFields["settings.endpoint"], with: "http://127.0.0.1:8099")
         replaceText(in: app.textFields["settings.username"], with: "test")
         replaceText(in: app.secureTextFields["settings.password"], with: "test")
         app.otherElements["settings.root"].tap()
+        app.buttons["settings.save"].tap()
+
+        selectSource(app, named: "JSON-RPC")
+        XCTAssertFalse(app.textFields["settings.username"].exists,
+                       "the JSON-RPC source must not offer a username")
+        XCTAssertFalse(app.secureTextFields["settings.password"].exists,
+                       "the JSON-RPC source must not offer a password")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
 
@@ -226,17 +233,23 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(map.waitForExistence(timeout: 15))
 
         let marker = app.descendants(matching: .any)["own.location"]
+        // A run before this one may have left a location, and the marker drawn
+        // from it.
+        let existing = marker.exists ? marker.value as? String : nil
 
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.35, dy: 0.35)).press(forDuration: 1.2)
+        // Both presses stay clear of the chrome - the legend sits top-left and
+        // the radar, overview, and histogram along the bottom - so the map
+        // receives them.
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.35)).press(forDuration: 1.2)
         XCTAssertTrue(marker.waitForExistence(timeout: 10), "no own-location marker after a long press")
+        XCTAssertTrue(waitForMarkerValue(of: marker, toDifferFrom: existing),
+                      "the marker did not move to the first position: was \(existing ?? "nil"), now \(marker.value ?? "nil")")
 
         let firstValue = marker.value as? String
-        XCTAssertNotNil(firstValue, "the marker reports no position")
-
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.65, dy: 0.65)).press(forDuration: 1.2)
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.35)).press(forDuration: 1.2)
 
         XCTAssertTrue(waitForMarkerValue(of: marker, toDifferFrom: firstValue),
-                      "the marker did not move to the second position")
+                      "the marker did not move to the second position: was \(firstValue ?? "nil"), now \(marker.value ?? "nil")")
         attachScreenshot("own-location-marker")
     }
 
@@ -339,7 +352,7 @@ class monitorUITests: XCTestCase {
         app.launch()
 
         openSettings(app)
-        selectSource(app, index: 0)
+        selectSource(app, named: "JSON-RPC")
         replaceText(in: app.textFields["settings.endpoint"], with: "")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
@@ -497,7 +510,7 @@ class monitorUITests: XCTestCase {
         app.launch()
 
         openSettings(app)
-        selectSource(app, index: 1)
+        selectSource(app, named: "HTTP")
         // Leave the endpoint empty so the provider uses its built-in default.
         replaceText(in: app.textFields["settings.endpoint"], with: "")
         replaceText(in: app.textFields["settings.username"], with: credentials_.username)
@@ -580,10 +593,12 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(source.waitForExistence(timeout: 10))
     }
 
-    private func selectSource(_ app: XCUIApplication, index: Int) {
+    /// Selects the data source by the name its segment shows, rather than by an
+    /// index that has to be kept in step with the order of the segments.
+    private func selectSource(_ app: XCUIApplication, named name: String) {
         let source = app.segmentedControls["settings.source"]
         XCTAssertTrue(source.waitForExistence(timeout: 10))
-        source.buttons.element(boundBy: index).tap()
+        source.buttons[name].tap()
     }
 
     /// Replaces a field's contents rather than appending to whatever it holds.
