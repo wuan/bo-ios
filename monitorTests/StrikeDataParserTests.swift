@@ -39,9 +39,24 @@ final class StrikeDataParserTests: XCTestCase {
 
         let third = result.strikes[2]
         XCTAssertEqual(third.multiplicity, 2)
-        XCTAssertEqual(third.timestamp, Fixtures.referenceTimestamp - 3_000_000)
+        // The delay is in seconds, subtracted from the reference time.
+        XCTAssertEqual(third.timestamp, Fixtures.referenceTimestamp - 3_000)
         XCTAssertEqual(third.location.longitude, 8.5, accuracy: 0.0001)
         XCTAssertEqual(third.location.latitude, 35.5, accuracy: 0.0001)
+    }
+
+    func testCellAgeFallsInsideTheRequestedInterval() throws {
+        let response = Fixtures.decode(Fixtures.completeResponseJSON)
+
+        let result = try parser.parse(response: response, parameters: parameters)
+        let interval = parameters.intervalDuration * 60
+
+        for strike in result.strikes {
+            let age = result.referenceTimestamp - strike.timestamp
+            XCTAssertGreaterThanOrEqual(age, 0, "a cell cannot be newer than the reference time")
+            XCTAssertLessThanOrEqual(age, interval,
+                                     "the delay is seconds; scaling it would push every cell past the interval")
+        }
     }
 
     func testParsesResponseWithoutGridParameters() throws {

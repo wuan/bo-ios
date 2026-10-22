@@ -24,7 +24,10 @@ public class RasterElement: Strike {
     init(rasterParameters: RasterParameters,
          withReferenceTimestamp referenceTimestamp: Int,
          fromArray dataArray: [Int]) {
-        let timestamp = referenceTimestamp + 1000 * dataArray[3]
+        // The fourth value is the cell's age in seconds, before the reference
+        // time. Timestamps are epoch seconds throughout this app, so no unit
+        // conversion applies here (the reference client keeps milliseconds).
+        let timestamp = referenceTimestamp + dataArray[3]
         let multiplicity = dataArray[2];
         let xCoordinate = rasterParameters.getCenterLongitude(offset: dataArray[0])
         let yCoordinate = rasterParameters.getCenterLatitude(offset: dataArray[1])
