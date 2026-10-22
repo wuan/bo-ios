@@ -31,8 +31,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
+            let settings = SettingsStore()
+            let credentialStore = KeychainCredentialStore()
+            let factory = DataProviderFactory(credentialStore: credentialStore)
+            let coordinator = DataProviderCoordinator(settings: settings, factory: factory)
+
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = ViewController()
+            window.rootViewController = ViewController(dataSource: coordinator,
+                                                       settings: settings,
+                                                       credentialStore: credentialStore)
             self.window = window
             window.makeKeyAndVisible()
         }

@@ -37,8 +37,8 @@ final class DataHandlerTests: XCTestCase {
 
     private let parameters = Parameters()
 
-    private func makeResult() -> Result {
-        return Result(parameters: Parameters(), referenceTimestamp: 100, strikes: [], rasterParameters: nil)
+    private func makeResult(referenceTimestamp: Int = 100) -> Result {
+        return Result(parameters: Parameters(), referenceTimestamp: referenceTimestamp, strikes: [], rasterParameters: nil)
     }
 
     func testSuccessfulRequestEmitsStartedThenReceived() async {
@@ -93,9 +93,61 @@ final class DataHandlerTests: XCTestCase {
 
         provider.result = nil
         provider.error = StubError()
-        handler.requestData(parameters: parameters)
+        handler.requestData(parameters: Parameters(intervalOffset: 30))
 
+        XCTAssertEqual(provider.requestCount, 2)
         XCTAssertNotNil(handler.latest)
+    }
+
+    func testCacheHitAvoidsASecondProviderRequest() async {
+        let provider = StubProvider()
+        provider.result = makeResult()
+        let handler = DataHandler(provider: provider)
+
+        var events: [DataEvent] = []
+        let stream = handler.events()
+        let task = Task {
+            for await event in stream { events.append(event) }
+        }
+
+        handler.requestData(parameters: parameters)
+        await waitUntil { events.count >= 2 }
+        handler.requestData(parameters: parameters)
+        await waitUntil { events.count >= 3 }
+        task.cancel()
+
+        XCTAssertEqual(provider.requestCount, 1)
+        guard case .dataReceived = events[2] else {
+            return XCTFail("Expected a cached dataReceived event, got \(events[2])")
+        }
+    }
+
+    func testDifferingParametersAreNotServedFromCache() async {
+        let provider = StubProvider()
+        provider.result = makeResult()
+        let handler = DataHandler(provider: provider)
+
+        handler.requestData(parameters: Parameters())
+        await waitUntil { handler.latest != nil }
+        handler.requestData(parameters: Parameters(intervalOffset: 30))
+
+        XCTAssertEqual(provider.requestCount, 2)
+    }
+
+    func testStaleResultDoesNotReplaceFresherData() async {
+        let provider = StubProvider()
+        provider.result = makeResult(referenceTimestamp: 200)
+        let handler = DataHandler(provider: provider)
+
+        handler.requestData(parameters: Parameters())
+        await waitUntil { handler.latest?.referenceTimestamp == 200 }
+
+        provider.result = makeResult(referenceTimestamp: 100)
+        handler.requestData(parameters: Parameters(intervalOffset: 30))
+        try? await Task.sleep(nanoseconds: 50_000_000)
+
+        XCTAssertEqual(provider.requestCount, 2)
+        XCTAssertEqual(handler.latest?.referenceTimestamp, 200)
     }
 
     func testCancellingSubscriptionEndsDelivery() async {

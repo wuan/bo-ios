@@ -24,11 +24,16 @@ import Foundation
 /// ``StrikeDataParser`` so the rest of the app sees domain results.
 public final class JsonRpcDataProvider: DataProvider {
 
+    /// The JSON-RPC backend serves both grid-aggregated data and clusters.
+    public let capabilities = DataProviderCapabilities(supportsGrid: true, supportsClusters: true)
+
     private let client: JsonRpcClient
     private let parser: StrikeDataParser
 
-    public init(serviceEndpoint: String, parser: StrikeDataParser = StrikeDataParser()) {
-        self.client = JsonRpcClient(withServiceEndpoint: serviceEndpoint)
+    public init(serviceEndpoint: String,
+                userAgent: UserAgent = UserAgent(),
+                parser: StrikeDataParser = StrikeDataParser()) {
+        self.client = JsonRpcClient(withServiceEndpoint: serviceEndpoint, userAgent: userAgent)
         self.parser = parser
     }
 

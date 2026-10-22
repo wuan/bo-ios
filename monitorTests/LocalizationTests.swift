@@ -37,4 +37,13 @@ final class LocalizationTests: XCTestCase {
         let value = NSLocalizedString("status.doesNotExist", bundle: .main, comment: "")
         XCTAssertEqual(value, "status.doesNotExist")
     }
+
+    func testBaseCatalogResolvesSettingsKeys() {
+        for key in ["settings.title", "settings.source", "settings.endpoint",
+                    "settings.username", "settings.password", "settings.save",
+                    "settings.close", "settings.open"] {
+            let value = NSLocalizedString(key, bundle: .main, comment: "")
+            XCTAssertNotEqual(value, key, "\(key) did not resolve")
+        }
+    }
 }

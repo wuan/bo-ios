@@ -8,16 +8,33 @@
 
 import Foundation
 
+/// Errors raised before a JSON-RPC request can be sent.
+public enum JsonRpcClientError: Error {
+    /// The configured service endpoint is not a usable URL.
+    case invalidEndpoint(String)
+}
+
 public class JsonRpcClient: NSObject {
 
-    let serviceEndpoint: NSURL!
+    let serviceEndpoint: URL?
+    private let userAgent: UserAgent
+    private let session: URLSession
 
-    init(withServiceEndpoint serviceEndpoint: String) {
-        self.serviceEndpoint = NSURL(string: serviceEndpoint)
+    init(withServiceEndpoint serviceEndpoint: String,
+         userAgent: UserAgent = UserAgent(),
+         session: URLSession = .shared) {
+        self.serviceEndpoint = URL(string: serviceEndpoint)
+        self.userAgent = userAgent
+        self.session = session
     }
 
     func call(callback: @escaping (_ response: [String:AnyObject]?, _ errorInServiceCall: Error?) -> Void,
               methodName: String, withArguments arguments: Int...) {
+
+        guard let serviceEndpoint = serviceEndpoint else {
+            callback(nil, JsonRpcClientError.invalidEndpoint(methodName))
+            return
+        }
 
         var callArguments: [String:AnyObject] = ["id": 1 as AnyObject, "method": methodName as AnyObject]
 
@@ -33,15 +50,15 @@ public class JsonRpcClient: NSObject {
             return
         }
 
-        let request = NSMutableURLRequest(url: self.serviceEndpoint as URL);
+        var request = URLRequest(url: serviceEndpoint);
         request.setValue("text/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("bo-ios", forHTTPHeaderField: "User-Agent")
+        userAgent.apply(to: &request)
         request.setValue("\(postData.length)", forHTTPHeaderField: "Content-Length")
         request.httpMethod = "POST"
         request.httpBody = postData as Data
         //NSLog(@"%@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
 
-        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+        let task = session.dataTask(with: request) {
             (data: Data?, response: URLResponse?, connectionError: Error?) -> Void in
 
             if let data = data {

@@ -18,14 +18,18 @@ limitations under the License.
 
 import Foundation
 
-public class Parameters: TimeIntervalWithOffset {
-    let region: Int
-    let rasterBaselength: Int
-    let intervalDuration: Int
-    let intervalOffset: Int
-    let countThreshold: Int
+/// The parameters of a single data request.
+///
+/// This is a value type so it can be compared and used as a cache key; two
+/// parameter sets built from equal values are equal.
+public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
+    public let region: Int
+    public let rasterBaselength: Int
+    public let intervalDuration: Int
+    public let intervalOffset: Int
+    public let countThreshold: Int
 
-    init(region: Int = 1, rasterBaselength: Int = 10000, intervalDuration: Int = 60, intervalOffset: Int = 0, countThreshold: Int = 0) {
+    public init(region: Int = 1, rasterBaselength: Int = 10000, intervalDuration: Int = 60, intervalOffset: Int = 0, countThreshold: Int = 0) {
         self.region = region
         self.rasterBaselength = rasterBaselength
         self.intervalDuration = intervalDuration
@@ -33,11 +37,11 @@ public class Parameters: TimeIntervalWithOffset {
         self.countThreshold = countThreshold
     }
 
-    func isRealtime() -> Bool {
+    public func isRealtime() -> Bool {
         return intervalOffset == 0
     }
 
-    func isRaster() -> Bool {
+    public func isRaster() -> Bool {
         return rasterBaselength != 0
     }
 }

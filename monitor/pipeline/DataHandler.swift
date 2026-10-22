@@ -24,15 +24,25 @@ import Foundation
 /// Events are emitted in order: `requestStarted` followed by either
 /// `dataReceived` or `failed`. The most recent successful result is retained so
 /// consumers can keep showing data after a failure.
+///
+/// A request served from ``DataCache`` is delivered as `dataReceived` without a
+/// `requestStarted` event, because no fetch begins. Results that are not newer
+/// than the last accepted result are discarded by ``FreshnessValidator``.
 public final class DataHandler {
 
     private let provider: DataProvider
+    private let cache: DataCache
+    private let freshness: FreshnessValidator
     private let lock = NSLock()
-    private var continuations: [UUID: AsyncStream<DataEvent>.Continuation] = [:]
+    private var subscribers: [UUID: (DataEvent) -> Void] = [:]
     private var _latest: Result?
 
-    public init(provider: DataProvider) {
+    public init(provider: DataProvider,
+                cache: DataCache = DataCache(),
+                freshness: FreshnessValidator = FreshnessValidator()) {
         self.provider = provider
+        self.cache = cache
+        self.freshness = freshness
     }
 
     /// The most recently received result, if any.
@@ -42,46 +52,78 @@ public final class DataHandler {
         return _latest
     }
 
+    /// What the active provider can serve.
+    public var capabilities: DataProviderCapabilities {
+        return provider.capabilities
+    }
+
+    /// Registers `block` to receive every event and returns a token for
+    /// ``unsubscribe(_:)``.
+    ///
+    /// Registration is synchronous, so events emitted after this call are
+    /// always delivered.
+    @discardableResult
+    public func subscribe(_ block: @escaping (DataEvent) -> Void) -> UUID {
+        let id = UUID()
+        lock.lock()
+        subscribers[id] = block
+        lock.unlock()
+        return id
+    }
+
+    /// Stops delivering events to a subscription token.
+    public func unsubscribe(_ id: UUID) {
+        lock.lock()
+        subscribers[id] = nil
+        lock.unlock()
+    }
+
     /// Returns a stream of lifecycle events. Cancel the consuming task to stop
     /// receiving events.
     public func events() -> AsyncStream<DataEvent> {
         return AsyncStream { continuation in
-            let id = UUID()
-            lock.lock()
-            continuations[id] = continuation
-            lock.unlock()
-
+            let id = self.subscribe { continuation.yield($0) }
             continuation.onTermination = { [weak self] _ in
-                guard let self = self else { return }
-                self.lock.lock()
-                self.continuations[id] = nil
-                self.lock.unlock()
+                self?.unsubscribe(id)
             }
         }
     }
 
     /// Starts a data request, emitting a `requestStarted` event immediately.
+    ///
+    /// When a valid cached result exists for the same parameters it is delivered
+    /// without contacting the provider.
     public func requestData(parameters: Parameters) {
+        if let cached = cache.result(for: parameters) {
+            emit(.dataReceived(cached))
+            return
+        }
+
         emit(.requestStarted(parameters))
         provider.fetchData(parameters: parameters) { [weak self] result, error in
             guard let self = self else { return }
             if let error = error {
                 self.emit(.failed(error))
-            } else if let result = result {
-                self.lock.lock()
-                self._latest = result
-                self.lock.unlock()
-                self.emit(.dataReceived(result))
+                return
             }
+            guard let result = result else { return }
+            guard self.freshness.accept(referenceTimestamp: result.referenceTimestamp) else {
+                return
+            }
+            self.cache.store(result, for: parameters)
+            self.lock.lock()
+            self._latest = result
+            self.lock.unlock()
+            self.emit(.dataReceived(result))
         }
     }
 
     private func emit(_ event: DataEvent) {
         lock.lock()
-        let current = Array(continuations.values)
+        let current = Array(subscribers.values)
         lock.unlock()
-        for continuation in current {
-            continuation.yield(event)
+        for subscriber in current {
+            subscriber(event)
         }
     }
 }

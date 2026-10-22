@@ -26,27 +26,44 @@ enum MapViewError: Error {
 
 public class ViewController: UIViewController, MKMapViewDelegate {
 
-    /// Default backend used when none is supplied.
-    public static let defaultServiceEndpoint = "http://bo-test.tryb.de"
-
     var pollingTimer: Timer?
     var lastUpdate: Date?
     var strikeStatus: String?
     var timerPeriod: Int = 0
     var parameters: Parameters = Parameters()
-    let dataHandler: DataHandler
+    private let dataSource: DataEventSource
+    private let settings: SettingsStore
+    private let credentialStore: CredentialStore
     private var eventTask: Task<Void, Never>?
 
     var mapView: MKMapView!
     var statusText: UILabel!
+    var settingsButton: UIButton!
 
-    public init(dataHandler: DataHandler = DataHandler(provider: JsonRpcDataProvider(serviceEndpoint: ViewController.defaultServiceEndpoint))) {
-        self.dataHandler = dataHandler
+    init(dataSource: DataEventSource,
+         settings: SettingsStore = SettingsStore(),
+         credentialStore: CredentialStore = KeychainCredentialStore()) {
+        self.dataSource = dataSource
+        self.settings = settings
+        self.credentialStore = credentialStore
         super.init(nibName: nil, bundle: nil)
     }
 
+    /// Creates a controller fed by a single provider's handler.
+    public convenience init(dataHandler: DataHandler) {
+        self.init(dataSource: dataHandler)
+    }
+
+    /// Creates a controller fed by the source-aware coordinator.
+    public convenience init(coordinator: DataProviderCoordinator) {
+        self.init(dataSource: coordinator)
+    }
+
     public required init?(coder: NSCoder) {
-        self.dataHandler = DataHandler(provider: JsonRpcDataProvider(serviceEndpoint: ViewController.defaultServiceEndpoint))
+        self.dataSource = DataProviderCoordinator(settings: SettingsStore(),
+                                                  factory: DataProviderFactory())
+        self.settings = SettingsStore()
+        self.credentialStore = KeychainCredentialStore()
         super.init(coder: coder)
     }
 
@@ -61,7 +78,16 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         statusText = UILabel(frame: .zero)
         statusText.translatesAutoresizingMaskIntoConstraints = false
         statusText.clearsContextBeforeDrawing = true
+        statusText.accessibilityIdentifier = "status.text"
         view.addSubview(statusText);
+
+        settingsButton = UIButton(type: .system)
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.accessibilityIdentifier = "settings.open"
+        settingsButton.setTitle(NSLocalizedString("settings.open", comment: "Button opening the data source settings"),
+                                for: .normal)
+        settingsButton.addTarget(self, action: #selector(showSettings), for: .touchUpInside)
+        view.addSubview(settingsButton)
 
         mapView = MKMapView()
         mapView.mapType = MKMapType.hybrid
@@ -85,6 +111,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             statusText.leftAnchor.constraint(equalTo: view.leftAnchor),
             statusText.topAnchor.constraint(equalTo: view.topAnchor),
 
+            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8),
+            settingsButton.centerYAnchor.constraint(equalTo: statusText.centerYAnchor),
+            statusText.rightAnchor.constraint(lessThanOrEqualTo: settingsButton.leftAnchor, constant: -8),
+
             mapView.leftAnchor.constraint(equalTo: statusText.leftAnchor),
             mapView.topAnchor.constraint(equalTo: statusText.bottomAnchor),
             mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
@@ -92,9 +122,16 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         ])
     }
 
+    /// Presents the minimal data source configuration screen.
+    @objc func showSettings() {
+        let controller = SettingsViewController(settings: settings, credentialStore: credentialStore)
+        controller.modalPresentationStyle = .formSheet
+        present(controller, animated: true)
+    }
+
     /// Subscribes to pipeline events and renders them on the main actor.
     private func startEventStream() {
-        let events = dataHandler.events()
+        let events = dataSource.events()
         eventTask = Task { [weak self] in
             for await event in events {
                 guard let self = self else { return }
@@ -143,7 +180,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         if (update) {
             lastUpdate = Date()
-            dataHandler.requestData(parameters: parameters)
+            dataSource.requestData(parameters: parameters)
         }
 
         let countdown = String(format: NSLocalizedString("status.refreshCountdown",

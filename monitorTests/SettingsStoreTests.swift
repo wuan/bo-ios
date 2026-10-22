@@ -70,6 +70,33 @@ final class SettingsStoreTests: XCTestCase {
         XCTAssertEqual(store.int(for: .mapScale), 75)
     }
 
+    func testProviderSettingsDefaults() {
+        let store = SettingsStore(defaults: defaults)
+        XCTAssertEqual(store.string(for: .dataSource), "rpc")
+        XCTAssertEqual(store.string(for: .serviceEndpoint), "")
+    }
+
+    func testProviderSettingsPersistAcrossStoreInstances() {
+        let store = SettingsStore(defaults: defaults)
+        store.set("http", for: .dataSource)
+        store.set("http://data.example.org", for: .serviceEndpoint)
+
+        let reloaded = SettingsStore(defaults: defaults)
+        XCTAssertEqual(reloaded.string(for: .dataSource), "http")
+        XCTAssertEqual(reloaded.string(for: .serviceEndpoint), "http://data.example.org")
+    }
+
+    func testResetRestoresProviderSettingsDefaults() {
+        let store = SettingsStore(defaults: defaults)
+        store.set("http", for: .dataSource)
+        store.set("http://data.example.org", for: .serviceEndpoint)
+
+        store.reset()
+
+        XCTAssertEqual(store.string(for: .dataSource), "rpc")
+        XCTAssertEqual(store.string(for: .serviceEndpoint), "")
+    }
+
     func testObserverNotifiedForChangedKey() {
         let store = SettingsStore(defaults: defaults)
         let changed = expectation(description: "observer notified")

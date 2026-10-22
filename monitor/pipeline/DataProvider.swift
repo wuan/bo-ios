@@ -18,6 +18,23 @@
 
 import Foundation
 
+/// Describes what data a provider can serve.
+///
+/// Sources are not interchangeable: the Blitzortung HTTP source serves strike
+/// lists only, while the JSON-RPC source can serve grid-aggregated data and
+/// clusters. Consumers ask the active provider instead of assuming.
+public struct DataProviderCapabilities: Equatable {
+    /// Whether the source can serve grid-aggregated data.
+    public let supportsGrid: Bool
+    /// Whether the source can serve cluster data.
+    public let supportsClusters: Bool
+
+    public init(supportsGrid: Bool, supportsClusters: Bool) {
+        self.supportsGrid = supportsGrid
+        self.supportsClusters = supportsClusters
+    }
+}
+
 /// Supplies lightning data for a set of request parameters.
 ///
 /// Defined independently of any transport so providers can be replaced without
@@ -25,4 +42,14 @@ import Foundation
 public protocol DataProvider {
     /// Fetches data, invoking `completion` with a result or an error.
     func fetchData(parameters: Parameters, completion: @escaping (_ result: Result?, _ error: Error?) -> Void)
+    /// What this provider can serve.
+    var capabilities: DataProviderCapabilities { get }
+}
+
+public extension DataProvider {
+    /// Providers that do not declare capabilities are assumed unable to serve
+    /// grid data or clusters, so consumers never request what was not promised.
+    var capabilities: DataProviderCapabilities {
+        return DataProviderCapabilities(supportsGrid: false, supportsClusters: false)
+    }
 }

@@ -6,7 +6,8 @@ Phase 0 of the [Android feature-parity roadmap](../openspec/changes/android-feat
 
 | Path | Responsibility |
 | --- | --- |
-| `monitor/settings/` | `SettingsKey` (typed keys + registered defaults) and `SettingsStore` (typed access, persistence, reset, change observation). |
+| `monitor/settings/` | `SettingsKey` (typed keys + registered defaults) and `SettingsStore` (typed access, persistence, reset, change observation). `SettingsViewController` is the minimal source/endpoint/credential surface. |
+| `monitor/client/` | `UserAgent` (client identification), `CredentialStore` (Keychain + in-memory), `HttpTransport` (URLSession transport), and the JSON-RPC client. |
 | `monitor/data/` | Shared domain model: `Result`, `Strike`/`RasterElement`, `GridParameters`, `Parameters`, `DataArea`, `TimeIntervalSelection`, `History`, `Location`, `Event`, and `StrikeDataParser`. |
 | `monitor/pipeline/` | Data pipeline: `DataProvider`, `DataEvent`, `DataHandler`, `JsonRpcDataProvider`. |
 | `monitor/Resources/Localizable.xcstrings` | Base String Catalog for all user-facing text. |
@@ -28,11 +29,13 @@ Every case in `SettingsKey` must have an entry in `SettingsKey.defaultValues`; `
 ## Data pipeline
 
 ```swift
-let provider = JsonRpcDataProvider(serviceEndpoint: ViewController.defaultServiceEndpoint)
-let handler = DataHandler(provider: provider)
+let settings = SettingsStore()
+let credentialStore = KeychainCredentialStore()
+let factory = DataProviderFactory(credentialStore: credentialStore)
+let coordinator = DataProviderCoordinator(settings: settings, factory: factory)
 
 let task = Task {
-    for await event in handler.events() {
+    for await event in coordinator.events() {
         switch event {
         case .requestStarted:        break
         case .dataReceived(let result): /* render result */
@@ -41,12 +44,22 @@ let task = Task {
     }
 }
 
-handler.requestData(parameters: Parameters())
+coordinator.requestData(parameters: Parameters())
 // ...
 task.cancel()   // unsubscribes
 ```
 
 `DataHandler.latest` holds the most recent successful `Result`, which is retained after a failed request.
+
+## Data providers
+
+The active source is selected with the `dataSource` setting (`rpc` or `http`) and an optional
+`serviceEndpoint` override; an empty override falls back to the provider default. Credentials
+are stored in the Keychain, every request identifies the client as `bo-ios-<CFBundleVersion>`,
+results are cached for five minutes per parameter set, and a result that is not newer than the
+last accepted one is discarded.
+
+See [data-providers.md](data-providers.md) for the full reference.
 
 ## Building and testing
 

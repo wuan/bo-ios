@@ -1,6 +1,138 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "settings.close" : {
+      "comment" : "Close settings button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "settings.endpoint" : {
+      "comment" : "Label for the service endpoint field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service URL"
+          }
+        }
+      }
+    },
+    "settings.endpoint.placeholder" : {
+      "comment" : "Placeholder for the service endpoint field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave empty to use the default"
+          }
+        }
+      }
+    },
+    "settings.endpoint.resolved" : {
+      "comment" : "Shows the endpoint that will be used",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using: %@"
+          }
+        }
+      }
+    },
+    "settings.open" : {
+      "comment" : "Button opening the data source settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
+          }
+        }
+      }
+    },
+    "settings.password" : {
+      "comment" : "Label for the password field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
+    },
+    "settings.save" : {
+      "comment" : "Save settings button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "settings.source" : {
+      "comment" : "Label for the data source selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
+          }
+        }
+      }
+    },
+    "settings.source.http" : {
+      "comment" : "Blitzortung HTTP data source name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTP"
+          }
+        }
+      }
+    },
+    "settings.source.rpc" : {
+      "comment" : "JSON-RPC data source name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON-RPC"
+          }
+        }
+      }
+    },
+    "settings.title" : {
+      "comment" : "Settings screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
+          }
+        }
+      }
+    },
+    "settings.username" : {
+      "comment" : "Label for the username field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
+          }
+        }
+      }
+    },
     "status.refreshCountdown" : {
       "comment" : "Status line refresh countdown, e.g. 12/60 s",
       "localizations" : {
