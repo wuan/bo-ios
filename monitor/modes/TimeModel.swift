@@ -30,7 +30,7 @@ public struct TimeModel {
     /// The selected interval.
     public private(set) var interval: TimeIntervalSelection
     /// The bounds and stepping used for historical selection.
-    public let history: History
+    public private(set) var history: History
 
     public init(mode: DataMode = .realtime,
                 interval: TimeIntervalSelection = TimeIntervalSelection(),
@@ -89,6 +89,19 @@ public struct TimeModel {
     /// resume manual time selection; realtime is only re-entered on request.
     public mutating func stopAnimation() {
         updateModeForInterval()
+    }
+
+    /// Adopts a new interval duration and history step.
+    ///
+    /// The current selection is kept where the new bounds allow it, and the
+    /// mode is only re-derived for a manual selection so a running animation
+    /// is not interrupted by a settings change.
+    public mutating func configure(intervalDuration: Int, historicTimestep: Int) {
+        history = History(timeIncrement: historicTimestep)
+        interval = interval.withDuration(intervalDuration, history: history)
+        if mode != .animation {
+            updateModeForInterval()
+        }
     }
 
     /// Advances one animation step.

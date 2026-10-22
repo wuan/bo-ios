@@ -1,8 +1,8 @@
 # Map UI overlays (capability sketch)
 
-Planned capability for the [parity roadmap](../parity-roadmap.md). Lift these
-requirements into `openspec/changes/<phase>/specs/map-ui-overlays/spec.md` when the phase
-starts; the delta headers are intentional.
+Planned capability for the [parity roadmap](../parity-roadmap.md). Being delivered by the
+[`ios-map-ui-overlays`](../../openspec/changes/ios-map-ui-overlays/proposal.md) change, whose delta
+spec is the source of truth while it is in flight; delete this sketch when that change is archived.
 
 ## Purpose
 
@@ -25,9 +25,16 @@ The app SHALL display a legend describing the colour-to-age mapping and the acti
 - **WHEN** the local region is active
 - **THEN** the legend displays the local region size in degrees
 
-#### Scenario: Threshold shown only when active
-- **WHEN** the count threshold is greater than zero
-- **THEN** the legend displays the threshold value
+### Requirement: Data-area overview
+The app SHALL display an overview of the active data area showing its extent, its cell size, the part of it the map is currently showing, and the current zoom level.
+
+#### Scenario: Overview shows the data area
+- **WHEN** a data area is active for the displayed result
+- **THEN** the overview shows the area's extent and cell size
+
+#### Scenario: Viewport shown within the data area
+- **WHEN** the map is panned or zoomed
+- **THEN** the overview shows the portion of the data area the map is currently displaying
 
 ### Requirement: Quick settings
 The app SHALL open a quick-settings dialog when the user taps the legend, and SHALL apply changes made there without leaving the map.
@@ -75,12 +82,4 @@ The app SHALL display a histogram of strike rate over the displayed time period 
 - **THEN** the map zooms out to the region extent
 
 ### Requirement: Status line
-The app SHALL display a status line reporting the current strike count, interval, and refresh countdown.
-
-#### Scenario: Status reflects current data
-- **WHEN** a result is displayed
-- **THEN** the status line shows the strike count and the active interval
-
-#### Scenario: Refresh countdown
-- **WHEN** the app is awaiting the next refresh
-- **THEN** the status line shows the remaining time until the next update
+Already delivered: the `data-modes` requirement *Mode-aware status line* owns the strike count, the interval, and the realtime countdown, and the app ships it. What remains for later phases is the alert and lifecycle indicators (warning text, progress, error badge, background-alert icon), which belong with alerts and background monitoring rather than here.

@@ -27,6 +27,13 @@ public final class JsonRpcDataProvider: DataProvider {
     /// The JSON-RPC backend serves both grid-aggregated data and clusters.
     public let capabilities = DataProviderCapabilities(supportsGrid: true, supportsClusters: true)
 
+    /// The grid method's positional count-threshold argument.
+    ///
+    /// The method signature is positional and expects a threshold in its last
+    /// position, but the app has no threshold control and always requests with
+    /// it inactive, so the argument is sent as this constant.
+    public static let countThresholdArgument = 0
+
     private let client: JsonRpcClient
     private let parser: StrikeDataParser
 
@@ -60,6 +67,6 @@ public final class JsonRpcDataProvider: DataProvider {
         parameters.rasterBaselength,
         parameters.intervalOffset,
         parameters.region,
-        parameters.countThreshold)
+        JsonRpcDataProvider.countThresholdArgument)
     }
 }

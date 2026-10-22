@@ -67,7 +67,18 @@ public struct StrikeDataParser {
         return Result(parameters: parameters,
                       referenceTimestamp: referenceTimestamp,
                       strikes: strikes,
-                      rasterParameters: rasterParameters)
+                      rasterParameters: rasterParameters,
+                      histogram: Self.histogram(from: result))
+    }
+
+    /// The strike-rate histogram a grid response reports, or `nil` when it
+    /// carries none.
+    ///
+    /// The histogram arrives with the grid result, so the histogram overlay
+    /// needs no request of its own; a response without the key is not an error.
+    public static func histogram(from result: [String: AnyObject]) -> [Int]? {
+        guard let values = result["h"] as? [Any] else { return nil }
+        return values.compactMap { ($0 as? NSNumber)?.intValue }
     }
 
     /// Converts a provider reference-time string into a Unix timestamp, or `nil`

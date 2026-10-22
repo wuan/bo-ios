@@ -73,6 +73,17 @@ public struct TimeIntervalSelection: Equatable {
         return stepping(history, by: 1)
     }
 
+    /// Returns a selection with a new duration.
+    ///
+    /// The offset is kept where `history` allows it and aligned to the history
+    /// increment, so changing the duration never leaves the slider off-grid.
+    public func withDuration(_ duration: Int, history: History) -> TimeIntervalSelection {
+        let candidate = TimeIntervalSelection(duration: duration, offset: offset)
+        let clamped = min(max(offset, history.lowerLimit(of: candidate)), 0)
+        return TimeIntervalSelection(duration: duration,
+                                     offset: Self.align(clamped, to: history.timeIncrement))
+    }
+
     /// Returns to realtime without changing the duration.
     public func goRealtime() -> TimeIntervalSelection {
         return TimeIntervalSelection(duration: duration, offset: 0)

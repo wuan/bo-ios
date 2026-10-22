@@ -215,7 +215,269 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(reported.matched, "status was '\(reported.label)'")
     }
 
+    /// Sets the own location by long-pressing the map, and confirms the drawn
+    /// marker moves to each pressed position. Needs no backend: the marker is
+    /// drawn from the manual location alone.
+    func testLongPressSetsAndMovesTheOwnLocationMarker() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+
+        let marker = app.descendants(matching: .any)["own.location"]
+
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.35, dy: 0.35)).press(forDuration: 1.2)
+        XCTAssertTrue(marker.waitForExistence(timeout: 10), "no own-location marker after a long press")
+
+        let firstValue = marker.value as? String
+        XCTAssertNotNil(firstValue, "the marker reports no position")
+
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.65, dy: 0.65)).press(forDuration: 1.2)
+
+        XCTAssertTrue(waitForMarkerValue(of: marker, toDifferFrom: firstValue),
+                      "the marker did not move to the second position")
+        attachScreenshot("own-location-marker")
+    }
+
+    // MARK: - Chrome
+
+    /// Taps the legend and confirms the quick-settings dialog opens with every
+    /// entry present.
+    func testLegendTapOpensQuickSettingsWithEveryEntry() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let legend = app.descendants(matching: .any)["legend.view"]
+        XCTAssertTrue(legend.waitForExistence(timeout: 15), "the legend is not shown")
+        legend.tap()
+
+        XCTAssertTrue(app.otherElements["quick.root"].waitForExistence(timeout: 10),
+                      "tapping the legend did not open quick settings")
+
+        for identifier in ["quick.region", "quick.intervalDuration", "quick.historicTimestep",
+                           "quick.dataSource", "quick.colorScheme", "quick.mapMode", "quick.fade"] {
+            XCTAssertTrue(app.descendants(matching: .any)[identifier].exists, "\(identifier) is missing")
+        }
+    }
+
+    /// Changes the region in quick settings and confirms the map's legend shows
+    /// it after the dialog closes, with the map still up.
+    func testQuickSettingAppliesToTheMapWithoutLeavingIt() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let legend = app.descendants(matching: .any)["legend.view"]
+        XCTAssertTrue(legend.waitForExistence(timeout: 15))
+        legend.tap()
+
+        let picker = app.pickerWheels.firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        picker.adjust(toPickerWheelValue: "Asia")
+
+        app.buttons["quick.close"].tap()
+
+        XCTAssertTrue(waitForValue(of: legend, toContain: "Asia"),
+                      "the legend still reads '\(legend.value ?? "")'")
+        XCTAssertTrue(app.descendants(matching: .any)["map.view"].exists,
+                      "the map must still be there after the dialog closes")
+
+        // Restore the default region for later runs.
+        legend.tap()
+        let reopened = app.pickerWheels.firstMatch
+        XCTAssertTrue(reopened.waitForExistence(timeout: 10))
+        reopened.adjust(toPickerWheelValue: "Europe")
+        app.buttons["quick.close"].tap()
+    }
+
+    /// Long-presses the radar to open the enlarged radar, and dismissing it
+    /// leaves the map with the radar unchanged.
+    func testRadarLongPressOpensTheEnlargedRadar() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let radar = app.descendants(matching: .any)["radar.view"]
+        XCTAssertTrue(radar.waitForExistence(timeout: 15), "the radar is not shown")
+        radar.press(forDuration: 1.2)
+
+        XCTAssertTrue(app.descendants(matching: .any)["radar.enlarged"].waitForExistence(timeout: 10),
+                      "the enlarged radar did not open")
+        attachScreenshot("enlarged-radar")
+
+        app.buttons["radar.close"].tap()
+        XCTAssertTrue(radar.waitForExistence(timeout: 10), "the radar is gone after dismissing the enlarged one")
+    }
+
+    /// Taps the radar and confirms the map centres on the own location.
+    func testRadarTapCentresTheMapOnTheLocation() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+
+        // Set a location well away from the map's centre.
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.8)).press(forDuration: 1.2)
+
+        let marker = app.descendants(matching: .any)["own.location"]
+        XCTAssertTrue(marker.waitForExistence(timeout: 10), "no own-location marker after a long press")
+        XCTAssertGreaterThan(distance(from: map, to: marker), 60,
+                             "the location is too close to the centre to show a move")
+
+        app.descendants(matching: .any)["radar.view"].tap()
+
+        XCTAssertTrue(waitForMarker(marker, near: map), "the map did not centre on the location")
+        attachScreenshot("centred-on-location")
+    }
+
+    /// LIVE CHECK: requires network access. Taps the histogram and confirms the
+    /// map zooms out to the data area, which the overview's zoom level reflects.
+    func testHistogramTapZoomsOutToTheDataArea() throws {
+        try requireLiveBackend()
+
+        let app = XCUIApplication()
+        app.launch()
+
+        openSettings(app)
+        selectSource(app, index: 0)
+        replaceText(in: app.textFields["settings.endpoint"], with: "")
+        app.buttons["settings.save"].tap()
+        app.buttons["settings.close"].tap()
+        relaunch(app)
+
+        let histogram = app.descendants(matching: .any)["histogram.view"]
+        XCTAssertTrue(histogram.waitForExistence(timeout: 90), "no histogram arrived from the grid result")
+
+        let overview = app.descendants(matching: .any)["overview.view"]
+        XCTAssertTrue(overview.waitForExistence(timeout: 30), "no data-area overview")
+
+        let before = overview.value as? String
+        histogram.tap()
+
+        XCTAssertTrue(waitForValue(of: overview, toDifferFrom: before),
+                      "the map's visible region did not change to the data area")
+    }
+
+    /// Changes every quick setting without leaving the map, relaunches once, and
+    /// confirms each change survived. Restores the defaults afterwards.
+    func testEveryQuickSettingAppliesAndSurvivesARelaunch() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let legend = app.descendants(matching: .any)["legend.view"]
+        XCTAssertTrue(legend.waitForExistence(timeout: 15))
+        legend.tap()
+
+        XCTAssertTrue(app.pickerWheels.firstMatch.waitForExistence(timeout: 10))
+        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Asia")
+        app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 3).tap()   // 120 min
+        app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 2).tap()  // 60 min
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).tap()        // HTTP
+        app.segmentedControls["quick.colorScheme"].buttons.element(boundBy: 1).tap()       // RAINBOW
+        app.segmentedControls["quick.mapMode"].buttons.element(boundBy: 2).tap()           // standard
+        app.sliders["quick.fade"].adjust(toNormalizedSliderPosition: 0.2)
+        let fadeBefore = app.sliders["quick.fade"].value as? String
+
+        app.buttons["quick.close"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["map.view"].exists,
+                      "the map must be there after changing every entry")
+
+        relaunch(app)
+
+        XCTAssertTrue(legend.waitForExistence(timeout: 15))
+        legend.tap()
+        XCTAssertTrue(app.pickerWheels.firstMatch.waitForExistence(timeout: 10))
+
+        XCTAssertEqual(app.pickerWheels.firstMatch.value as? String, "Asia")
+        XCTAssertTrue(app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 3).isSelected)
+        XCTAssertTrue(app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 2).isSelected)
+        XCTAssertTrue(app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).isSelected)
+        XCTAssertTrue(app.segmentedControls["quick.colorScheme"].buttons.element(boundBy: 1).isSelected)
+        XCTAssertTrue(app.segmentedControls["quick.mapMode"].buttons.element(boundBy: 2).isSelected)
+        XCTAssertNotEqual(fadeBefore, "55 %", "the fade did not change")
+        XCTAssertEqual(app.sliders["quick.fade"].value as? String, fadeBefore)
+
+        // Restore the documented defaults for later runs.
+        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Europe")
+        app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 1).tap()
+        app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 1).tap()
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()
+        app.segmentedControls["quick.colorScheme"].buttons.element(boundBy: 0).tap()
+        app.segmentedControls["quick.mapMode"].buttons.element(boundBy: 0).tap()
+        app.sliders["quick.fade"].adjust(toNormalizedSliderPosition: 0.55)
+        app.buttons["quick.close"].tap()
+    }
+
     // MARK: - Helpers
+
+    /// Keeps a screenshot of the current screen in the test result.
+    private func attachScreenshot(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    /// Distance between an element and the centre of another, in points.
+    private func distance(from container: XCUIElement, to element: XCUIElement) -> CGFloat {        let center = CGPoint(x: container.frame.midX, y: container.frame.midY)
+        return hypot(element.frame.midX - center.x, element.frame.midY - center.y)
+    }
+
+    /// Polls until the marker sits at the container's centre.
+    private func waitForMarker(_ marker: XCUIElement,
+                               near container: XCUIElement,
+                               timeout: TimeInterval = 10) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if distance(from: container, to: marker) <= 60 {
+                return true
+            }
+            usleep(200_000)
+        }
+        return false
+    }
+
+    /// Polls an element's accessibility value until it contains a string.
+    private func waitForValue(of element: XCUIElement,
+                              toContain expected: String,
+                              timeout: TimeInterval = 10) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if let value = element.value as? String, value.contains(expected) {
+                return true
+            }
+            usleep(200_000)
+        }
+        return false
+    }
+
+    /// Polls an element's accessibility value until it differs from a string.
+    private func waitForValue(of element: XCUIElement,
+                              toDifferFrom previous: String?,
+                              timeout: TimeInterval = 20) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if let value = element.value as? String, value != previous {
+                return true
+            }
+            usleep(200_000)
+        }
+        return false
+    }
+
+    /// Polls the own-location marker until it reports a different position.
+    private func waitForMarkerValue(of element: XCUIElement,
+                                    toDifferFrom previous: String?,
+                                    timeout: TimeInterval = 10) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if let value = element.value as? String, value != previous {
+                return true
+            }
+            usleep(200_000)
+        }
+        return false
+    }
 
     /// LIVE CHECK: requires Blitzortung credentials and network access. Points the
     /// HTTP source at the real endpoint, enters the credentials, and confirms

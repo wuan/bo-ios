@@ -246,6 +246,55 @@ final class MapRenderingTests: XCTestCase {
         XCTAssertTrue(dimPolygons(in: controller).isEmpty)
     }
 
+    func testDimCoversTheVisibleArea() {
+        let controller = buildController()
+        controller.render(result: makeResult(strikes: [makeTile(atLongitude: 10.0, count: 1)],
+                                             rasterParameters: makeGrid()))
+
+        let dim = dimPolygons(in: controller)
+        XCTAssertEqual(dim.count, 1)
+        XCTAssertTrue(coveredArea(of: dim).contains(controller.mapView.visibleMapRect),
+                      "the wash must cover everything the map shows")
+    }
+
+    /// The wash covers the whole map, so a camera change must not replace it:
+    /// MapKit rebuilds an overlay's tiles whenever it is added, and rebuilding
+    /// the wash while the map moves leaves rectangular patches of it behind.
+    func testDimIsKeptWhileTheMapMoves() {
+        let controller = buildController()
+        controller.render(result: makeResult(strikes: [makeTile(atLongitude: 10.0, count: 1)],
+                                             rasterParameters: makeGrid()))
+        let first = dimPolygons(in: controller).first
+        XCTAssertNotNil(first)
+
+        controller.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 10),
+                                                        span: MKCoordinateSpan(latitudeDelta: 60,
+                                                                               longitudeDelta: 60)),
+                                     animated: false)
+        controller.mapViewDidChangeVisibleRegion(controller.mapView)
+
+        XCTAssertEqual(dimPolygons(in: controller).count, 1)
+        XCTAssertTrue(dimPolygons(in: controller).first === first,
+                      "the wash was rebuilt while the map moved")
+        XCTAssertTrue(coveredArea(of: dimPolygons(in: controller)).contains(controller.mapView.visibleMapRect),
+                      "the kept wash must still cover the zoomed-out map")
+    }
+
+    /// The map area the wash's own corners cover.
+    private func coveredArea(of washes: [ActivityDimPolygon]) -> MKMapRect {
+        var area = MKMapRect.null
+        for wash in washes {
+            for polygon in wash.polygons {
+                let points = polygon.points()
+                for index in 0 ..< polygon.pointCount {
+                    let corner = MKMapRect(origin: points[index], size: MKMapSize(width: 0, height: 0))
+                    area = area.isNull ? corner : area.union(corner)
+                }
+            }
+        }
+        return area
+    }
+
     // MARK: - 3.2 Details popup
 
     func testPresentingASelectionShowsOnePopupAndDismissalRemovesIt() {

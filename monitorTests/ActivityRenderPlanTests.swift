@@ -197,13 +197,33 @@ final class ActivityRenderPlanTests: XCTestCase {
         XCTAssertNil(plan(activity(tiles: [tile()], fadeAlpha: 0)).baseMapDim)
     }
 
-    func testDimCoversTheVisibleAreaWithTheConfiguredOpacity() {
+    func testDimCoversTheWholeMapWithTheConfiguredOpacity() {
         let dim = plan(activity(tiles: [tile()], fadeAlpha: 140)).baseMapDim
 
         XCTAssertEqual(dim?.alpha ?? 0, 140.0 / 255.0, accuracy: 0.0001)
         XCTAssertEqual(dim?.color, ColorHandler(baseType: .satellite).baseMapDimColor)
-        XCTAssertEqual(dim?.mapRect.origin.x ?? 0, viewport.origin.x, accuracy: 0.5)
-        XCTAssertEqual(dim?.mapRect.size.width ?? 0, viewport.size.width, accuracy: 0.5)
+        XCTAssertEqual(dim?.mapRect.origin.x ?? 0, MKMapRect.world.origin.x)
+        XCTAssertEqual(dim?.mapRect.origin.y ?? 0, MKMapRect.world.origin.y)
+        XCTAssertEqual(dim?.mapRect.size.width ?? 0, MKMapRect.world.size.width)
+        XCTAssertEqual(dim?.mapRect.size.height ?? 0, MKMapRect.world.size.height)
+    }
+
+    /// The wash is drawn over the whole map, so no zoom level can show a part of
+    /// the map that it does not cover.
+    func testDimCoversTheVisibleAreaAtEveryZoomLevel() {
+        for width in [1_000.0, 1_000_000.0, 200_000_000.0] {
+            let visible = MKMapRect(x: MKMapRect.world.midX - width / 2,
+                                    y: MKMapRect.world.midY - width / 2,
+                                    width: width,
+                                    height: width)
+            let dim = ActivityRenderPlan.make(activity: activity(tiles: [tile()], fadeAlpha: 140),
+                                              zoomScale: 1,
+                                              visibleMapRect: visible).baseMapDim
+
+            XCTAssertNotNil(dim)
+            XCTAssertTrue(dim?.mapRect.contains(visible) ?? false,
+                          "the wash does not cover a \(width) point wide view")
+        }
     }
 
     func testDimColourFollowsTheBaseMap() {

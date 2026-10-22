@@ -7,6 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */; };
+		38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */; };
+		46022E2C40C65D2AA35E0B58 /* EnlargedRadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */; };
+		3738B493EA3D216FD1990413 /* QuickSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */; };
+		1BEC1118E1366AC07E17C620 /* AlarmRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AA440642471C4B804868CD /* AlarmRadarView.swift */; };
+		83E2ED5859415BE3E3EB76C7 /* DataAreaOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */; };
+		CA9B1A8FC70EC99D227D2ADD /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2464465CDA6C1B1B344AE65B /* HistogramView.swift */; };
+		7C521AC3BB71962C09D97E23 /* LegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E96E92646C9FFC730161E3F /* LegendView.swift */; };
+		6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */; };
+		DF924C6F2B02285BA454BF40 /* RadarContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */; };
+		72395AD4DB9AB1D044409894 /* HistogramContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */; };
+		8B2513003CB4C3EA8CDF3256 /* LegendContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */; };
+		60A44AB0E25089847AD5FBB9 /* DataAreaOverviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717274A140593F63830636A /* DataAreaOverviewContent.swift */; };
+		8F68ECA80B703B4A59EF4F87 /* RadarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C562DAF90A68E787B3D1312 /* RadarContent.swift */; };
+		8B501C72316F876238D24E54 /* HistogramContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3E5977D61747100F99166B /* HistogramContent.swift */; };
+		38D39B4A439D43003A5F10E7 /* LegendContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57201717B38E3052E735D8FA /* LegendContent.swift */; };
+		74EB35688AFCEAA6C42F5991 /* MeasurementUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C372817662142910258B21 /* MeasurementUnit.swift */; };
+		B60A86E798AFF439C7CAAA96 /* AlertAggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF41688491A0435300653A /* AlertAggregationTests.swift */; };
+		478864EFDF7A136A10006FE8 /* AlertGeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */; };
+		CFE5323280E3C53E7353D411 /* AlertAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */; };
+		C6614BDDC2CC7F1B05A4D72C /* AlertGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94964987590390C50203FC26 /* AlertGeometry.swift */; };
+		0A27CF4A7F80E42D53525FED /* ViewControllerLocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */; };
+		A0CFC7A3FB64550C91ECBF66 /* OwnLocationAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */; };
+		0CB3EC7E65024E77DDE2E8BB /* OwnLocationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */; };
+		1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */; };
+		F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */; };
+		25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B061553CB00AF5EABC10F6 /* LocationSource.swift */; };
+		EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */; };
+		D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */; };
+		6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD07C951F9C17231923B741 /* SelectableSettings.swift */; };
 		710995B5C54247B78A59A76E /* ViewControllerPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */; };
 		BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */; };
 		2E994FC9FC3A478DB3D35CED /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CD93F37E94D2597FA4198 /* SettingsStore.swift */; };
@@ -78,7 +108,6 @@
 		AB0000000000000000000404 /* ViewExtentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000304 /* ViewExtentTests.swift */; };
 		AB0000000000000000000405 /* LocalDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000305 /* LocalDataTests.swift */; };
 		AB0000000000000000000406 /* GridGatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000306 /* GridGatingTests.swift */; };
-		AB0000000000000000000407 /* CountThresholdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000307 /* CountThresholdTests.swift */; };
 		AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */; };
 		AC0000000000000000000201 /* ColorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000101 /* ColorHandler.swift */; };
 		AC0000000000000000000202 /* ShapeAlpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000102 /* ShapeAlpha.swift */; };
@@ -116,6 +145,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerChromeTests.swift; path = ViewControllerChromeTests.swift; sourceTree = "<group>"; };
+		98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramParsingTests.swift; path = HistogramParsingTests.swift; sourceTree = "<group>"; };
+		1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnlargedRadarViewController.swift; path = mapview/view/EnlargedRadarViewController.swift; sourceTree = "<group>"; };
+		BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuickSettingsViewController.swift; path = mapview/view/QuickSettingsViewController.swift; sourceTree = "<group>"; };
+		59AA440642471C4B804868CD /* AlarmRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmRadarView.swift; path = mapview/view/AlarmRadarView.swift; sourceTree = "<group>"; };
+		17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewView.swift; path = mapview/view/DataAreaOverviewView.swift; sourceTree = "<group>"; };
+		2464465CDA6C1B1B344AE65B /* HistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramView.swift; path = mapview/view/HistogramView.swift; sourceTree = "<group>"; };
+		7E96E92646C9FFC730161E3F /* LegendView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendView.swift; path = mapview/view/LegendView.swift; sourceTree = "<group>"; };
+		B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewContentTests.swift; path = DataAreaOverviewContentTests.swift; sourceTree = "<group>"; };
+		6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadarContentTests.swift; path = RadarContentTests.swift; sourceTree = "<group>"; };
+		3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramContentTests.swift; path = HistogramContentTests.swift; sourceTree = "<group>"; };
+		E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendContentTests.swift; path = LegendContentTests.swift; sourceTree = "<group>"; };
+		B717274A140593F63830636A /* DataAreaOverviewContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewContent.swift; path = chrome/DataAreaOverviewContent.swift; sourceTree = "<group>"; };
+		5C562DAF90A68E787B3D1312 /* RadarContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadarContent.swift; path = chrome/RadarContent.swift; sourceTree = "<group>"; };
+		BF3E5977D61747100F99166B /* HistogramContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramContent.swift; path = chrome/HistogramContent.swift; sourceTree = "<group>"; };
+		57201717B38E3052E735D8FA /* LegendContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendContent.swift; path = chrome/LegendContent.swift; sourceTree = "<group>"; };
+		38C372817662142910258B21 /* MeasurementUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MeasurementUnit.swift; path = settings/MeasurementUnit.swift; sourceTree = "<group>"; };
+		F3DF41688491A0435300653A /* AlertAggregationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAggregationTests.swift; path = AlertAggregationTests.swift; sourceTree = "<group>"; };
+		C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertGeometryTests.swift; path = AlertGeometryTests.swift; sourceTree = "<group>"; };
+		20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAggregation.swift; path = alerts/AlertAggregation.swift; sourceTree = "<group>"; };
+		94964987590390C50203FC26 /* AlertGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertGeometry.swift; path = alerts/AlertGeometry.swift; sourceTree = "<group>"; };
+		C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerLocationTests.swift; path = ViewControllerLocationTests.swift; sourceTree = "<group>"; };
+		D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OwnLocationAnnotationView.swift; path = mapview/view/OwnLocationAnnotationView.swift; sourceTree = "<group>"; };
+		E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OwnLocationMarker.swift; path = mapview/OwnLocationMarker.swift; sourceTree = "<group>"; };
+		E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSourceTests.swift; path = ManualLocationSourceTests.swift; sourceTree = "<group>"; };
+		6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSource.swift; path = location/ManualLocationSource.swift; sourceTree = "<group>"; };
+		C8B061553CB00AF5EABC10F6 /* LocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSource.swift; path = location/LocationSource.swift; sourceTree = "<group>"; };
+		127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerSettingsTests.swift; path = ViewControllerSettingsTests.swift; sourceTree = "<group>"; };
+		C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettingsTests.swift; path = SelectableSettingsTests.swift; sourceTree = "<group>"; };
+		6BD07C951F9C17231923B741 /* SelectableSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettings.swift; path = settings/SelectableSettings.swift; sourceTree = "<group>"; };
 		E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerPipelineTests.swift; path = ViewControllerPipelineTests.swift; sourceTree = "<group>"; };
 		7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsKey.swift; path = settings/SettingsKey.swift; sourceTree = "<group>"; };
 		F64CD93F37E94D2597FA4198 /* SettingsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = settings/SettingsStore.swift; sourceTree = "<group>"; };
@@ -193,7 +252,6 @@
 		AB0000000000000000000304 /* ViewExtentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewExtentTests.swift; path = ViewExtentTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000305 /* LocalDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalDataTests.swift; path = LocalDataTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000306 /* GridGatingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridGatingTests.swift; path = GridGatingTests.swift; sourceTree = "<group>"; };
-		AB0000000000000000000307 /* CountThresholdTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CountThresholdTests.swift; path = CountThresholdTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModeRefreshSchedulerTests.swift; path = ModeRefreshSchedulerTests.swift; sourceTree = "<group>"; };
 		AC0000000000000000000101 /* ColorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorHandler.swift; path = mapview/color/ColorHandler.swift; sourceTree = "<group>"; };
 		AC0000000000000000000102 /* ShapeAlpha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlpha.swift; path = mapview/ShapeAlpha.swift; sourceTree = "<group>"; };
@@ -288,6 +346,24 @@
 		A96639661BD56A2B004E2537 /* monitor */ = {
 			isa = PBXGroup;
 			children = (
+				1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */,
+				BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */,
+				59AA440642471C4B804868CD /* AlarmRadarView.swift */,
+				17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */,
+				2464465CDA6C1B1B344AE65B /* HistogramView.swift */,
+				7E96E92646C9FFC730161E3F /* LegendView.swift */,
+				B717274A140593F63830636A /* DataAreaOverviewContent.swift */,
+				5C562DAF90A68E787B3D1312 /* RadarContent.swift */,
+				BF3E5977D61747100F99166B /* HistogramContent.swift */,
+				57201717B38E3052E735D8FA /* LegendContent.swift */,
+				38C372817662142910258B21 /* MeasurementUnit.swift */,
+				20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */,
+				94964987590390C50203FC26 /* AlertGeometry.swift */,
+				D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */,
+				E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */,
+				6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */,
+				C8B061553CB00AF5EABC10F6 /* LocationSource.swift */,
+				6BD07C951F9C17231923B741 /* SelectableSettings.swift */,
 				7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */,
 				F64CD93F37E94D2597FA4198 /* SettingsStore.swift */,
 				98E1A867741448B0B9A335CF /* GridParameters.swift */,
@@ -329,6 +405,18 @@
 		A966397B1BD56A2C004E2537 /* monitorTests */ = {
 			isa = PBXGroup;
 			children = (
+				7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */,
+				98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */,
+				B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */,
+				6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */,
+				3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */,
+				E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */,
+				F3DF41688491A0435300653A /* AlertAggregationTests.swift */,
+				C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */,
+				C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */,
+				E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */,
+				127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */,
+				C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */,
 				E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */,
 				82D9A7A5BDEF43038B207852 /* Fixtures.swift */,
 				B35568265E954B7FA4CC7037 /* SettingsStoreTests.swift */,
@@ -354,7 +442,6 @@
 				AB0000000000000000000304 /* ViewExtentTests.swift */,
 				AB0000000000000000000305 /* LocalDataTests.swift */,
 				AB0000000000000000000306 /* GridGatingTests.swift */,
-				AB0000000000000000000307 /* CountThresholdTests.swift */,
 				AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */,
 				AC0000000000000000000301 /* ColorSchemeTests.swift */,
 				AC0000000000000000000302 /* ShapeAlphaTests.swift */,
@@ -571,6 +658,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46022E2C40C65D2AA35E0B58 /* EnlargedRadarViewController.swift in Sources */,
+				3738B493EA3D216FD1990413 /* QuickSettingsViewController.swift in Sources */,
+				1BEC1118E1366AC07E17C620 /* AlarmRadarView.swift in Sources */,
+				83E2ED5859415BE3E3EB76C7 /* DataAreaOverviewView.swift in Sources */,
+				CA9B1A8FC70EC99D227D2ADD /* HistogramView.swift in Sources */,
+				7C521AC3BB71962C09D97E23 /* LegendView.swift in Sources */,
+				60A44AB0E25089847AD5FBB9 /* DataAreaOverviewContent.swift in Sources */,
+				8F68ECA80B703B4A59EF4F87 /* RadarContent.swift in Sources */,
+				8B501C72316F876238D24E54 /* HistogramContent.swift in Sources */,
+				38D39B4A439D43003A5F10E7 /* LegendContent.swift in Sources */,
+				74EB35688AFCEAA6C42F5991 /* MeasurementUnit.swift in Sources */,
+				CFE5323280E3C53E7353D411 /* AlertAggregation.swift in Sources */,
+				C6614BDDC2CC7F1B05A4D72C /* AlertGeometry.swift in Sources */,
+				A0CFC7A3FB64550C91ECBF66 /* OwnLocationAnnotationView.swift in Sources */,
+				0CB3EC7E65024E77DDE2E8BB /* OwnLocationMarker.swift in Sources */,
+				F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */,
+				25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */,
+				6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */,
 				BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */,
 				2E994FC9FC3A478DB3D35CED /* SettingsStore.swift in Sources */,
 				F35D644608AE464DBFE46D4F /* GridParameters.swift in Sources */,
@@ -628,6 +733,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */,
+				38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */,
+				6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */,
+				DF924C6F2B02285BA454BF40 /* RadarContentTests.swift in Sources */,
+				72395AD4DB9AB1D044409894 /* HistogramContentTests.swift in Sources */,
+				8B2513003CB4C3EA8CDF3256 /* LegendContentTests.swift in Sources */,
+				B60A86E798AFF439C7CAAA96 /* AlertAggregationTests.swift in Sources */,
+				478864EFDF7A136A10006FE8 /* AlertGeometryTests.swift in Sources */,
+				0A27CF4A7F80E42D53525FED /* ViewControllerLocationTests.swift in Sources */,
+				1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */,
+				EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */,
+				D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */,
 				710995B5C54247B78A59A76E /* ViewControllerPipelineTests.swift in Sources */,
 				2A86B70D3A9B4510A8D58B57 /* Fixtures.swift in Sources */,
 				96D790DB863448659F9081A9 /* SettingsStoreTests.swift in Sources */,
@@ -653,7 +770,6 @@
 				AB0000000000000000000404 /* ViewExtentTests.swift in Sources */,
 				AB0000000000000000000405 /* LocalDataTests.swift in Sources */,
 				AB0000000000000000000406 /* GridGatingTests.swift in Sources */,
-				AB0000000000000000000407 /* CountThresholdTests.swift in Sources */,
 				AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */,
 				AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */,
 				AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */,

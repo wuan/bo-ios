@@ -65,9 +65,8 @@ See [data-providers.md](data-providers.md) for the full reference.
 ## Data modes
 
 The display runs in realtime, history, or animation mode over a 24-hour range,
-selects a region and local data area from the visible extent, sizes the grid to
-that extent, and carries a count threshold into requests. See
-[data-modes.md](data-modes.md) for the full reference.
+selects a region and local data area from the visible extent, and sizes the grid
+to that extent. See [data-modes.md](data-modes.md) for the full reference.
 
 ## Building and testing
 

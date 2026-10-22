@@ -21,6 +21,16 @@ import XCTest
 
 final class GridGatingTests: XCTestCase {
 
+    override func setUp() {
+        super.setUp()
+        StubURLProtocol.reset()
+    }
+
+    override func tearDown() {
+        StubURLProtocol.reset()
+        super.tearDown()
+    }
+
     private final class CapturingProvider: DataProvider {
         let capabilities: DataProviderCapabilities
         private(set) var received: [Parameters] = []
@@ -38,18 +48,17 @@ final class GridGatingTests: XCTestCase {
     private let gridCapable = DataProviderCapabilities(supportsGrid: true, supportsClusters: true)
     private let nonGrid = DataProviderCapabilities(supportsGrid: false, supportsClusters: false)
 
-    func testNonGridSourceCarriesNoGridSizeOrThreshold() {
-        let parameters = Parameters(rasterBaselength: 5000, countThreshold: 4)
+    func testNonGridSourceCarriesNoGridSize() {
+        let parameters = Parameters(rasterBaselength: 5000)
 
         let gated = parameters.gatingGrid(on: nonGrid)
 
         XCTAssertEqual(gated.rasterBaselength, 0)
         XCTAssertFalse(gated.isRaster())
-        XCTAssertEqual(gated.countThreshold, 0)
     }
 
     func testGridSourceKeepsTheGridSize() {
-        let parameters = Parameters(rasterBaselength: 5000, countThreshold: 4)
+        let parameters = Parameters(rasterBaselength: 5000)
 
         XCTAssertEqual(parameters.gatingGrid(on: gridCapable), parameters)
     }
@@ -70,5 +79,49 @@ final class GridGatingTests: XCTestCase {
         provider.fetchData(parameters: parameters) { _, _ in }
 
         XCTAssertEqual(provider.received.map { $0.rasterBaselength }, [5000])
+    }
+
+    /// The threshold is no longer a parameter, but the provider's method is
+    /// positional and still expects the argument last.
+    func testGridRequestCarriesTheThresholdArgumentInItsPosition() async throws {
+        let provider = JsonRpcDataProvider(serviceEndpoint: "http://example.com",
+                                           session: makeStubbedSession())
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            provider.fetchData(parameters: Parameters(region: 1)) { _, _ in
+                continuation.resume()
+            }
+        }
+
+        let request = try XCTUnwrap(StubURLProtocol.capturedRequests.last)
+        let body = try XCTUnwrap(Self.body(of: request))
+        let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        let values = try XCTUnwrap(json["params"] as? [Any])
+
+        XCTAssertEqual(values.count, 5)
+        XCTAssertEqual(values.last as? Int, JsonRpcDataProvider.countThresholdArgument)
+    }
+
+    /// A request captured by `URLProtocol` exposes its body as a stream, not as
+    /// `httpBody`, so read whichever is present.
+    private static func body(of request: URLRequest) -> Data? {
+        if let body = request.httpBody {
+            return body
+        }
+        guard let stream = request.httpBodyStream else {
+            return nil
+        }
+        stream.open()
+        defer { stream.close() }
+
+        var data = Data()
+        let bufferSize = 1024
+        var buffer = [UInt8](repeating: 0, count: bufferSize)
+        while stream.hasBytesAvailable {
+            let read = stream.read(&buffer, maxLength: bufferSize)
+            if read <= 0 { break }
+            data.append(buffer, count: read)
+        }
+        return data.isEmpty ? nil : data
     }
 }

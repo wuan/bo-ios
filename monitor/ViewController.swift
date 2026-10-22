@@ -33,6 +33,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private let dataSource: DataEventSource
     private let settings: SettingsStore
     private let credentialStore: CredentialStore
+    /// Where the current location comes from; manual in this phase.
+    let locationSource: LocationSource
     private var eventTask: Task<Void, Never>?
 
     /// The interval/mode state driving requests and the slider.
@@ -42,10 +44,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// Decides when a refresh is due for the active mode.
     let scheduler = ModeRefreshScheduler()
 
-    /// Region used for requests until the region selector lands (Phase 3).
-    var regionSetting = Parameters().region
-    /// Count threshold used for requests until the threshold control lands.
-    var countThresholdSetting = Parameters().countThreshold
+    /// Region used for requests, from the persisted region setting.
+    var regionSetting: Int
 
     private var viewExtent: ViewExtent?
     private var lastGridSize: Int?
@@ -56,8 +56,14 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private var lastResult: Result?
     /// The area the drawn activity covers, used to avoid redrawing on every pan tick.
     private var lastPlanVisibleMapRect: MKMapRect?
+    /// The base-map wash currently on the map, so an unchanged one is kept.
+    private var drawnDim: ActivityRenderPlan.BaseMapDim?
     /// Tokens for the rendering settings this screen observes.
     private var settingsObservers: [NSObjectProtocol] = []
+    /// Token for the location source this screen observes.
+    private var locationObserver: NSObjectProtocol?
+    /// The own-location marker currently drawn, if any.
+    private(set) var ownLocationMarker: OwnLocationMarker?
 
     var mapView: MKMapView!
     var statusText: UILabel!
@@ -66,12 +72,31 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     var animationButton: UIButton!
     var modeLabel: UILabel!
 
+    /// The chrome framing the map.
+    var legendView: LegendView!
+    var histogramView: HistogramView!
+    var overviewView: DataAreaOverviewView!
+    var radarView: AlarmRadarView!
+
+    /// The content currently presented by the chrome.
+    private(set) var legendContent: LegendContent?
+    private(set) var histogramContent: HistogramContent?
+    private(set) var radarContent: RadarContent?
+    private(set) var overviewContent: DataAreaOverviewContent?
+
+    /// Aggregates realtime activity for the radar.
+    let alertAggregator = AlertAggregator()
+
     init(dataSource: DataEventSource,
          settings: SettingsStore = SettingsStore(),
-         credentialStore: CredentialStore = KeychainCredentialStore()) {
+         credentialStore: CredentialStore = KeychainCredentialStore(),
+         locationSource: LocationSource? = nil) {
         self.dataSource = dataSource
         self.settings = settings
         self.credentialStore = credentialStore
+        self.locationSource = locationSource ?? ManualLocationSource(settings: settings)
+        self.regionSetting = settings.choice(for: .region)
+        self.timeModel = ViewController.timeModel(for: settings)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -86,16 +111,29 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     }
 
     public required init?(coder: NSCoder) {
-        self.dataSource = DataProviderCoordinator(settings: SettingsStore(),
+        let settings = SettingsStore()
+        self.dataSource = DataProviderCoordinator(settings: settings,
                                                   factory: DataProviderFactory())
-        self.settings = SettingsStore()
+        self.settings = settings
         self.credentialStore = KeychainCredentialStore()
+        self.locationSource = ManualLocationSource(settings: settings)
+        self.regionSetting = settings.choice(for: .region)
+        self.timeModel = ViewController.timeModel(for: settings)
         super.init(coder: coder)
+    }
+
+    /// The time model the stored interval duration and history step describe.
+    static func timeModel(for settings: SettingsStore) -> TimeModel {
+        return TimeModel(interval: TimeIntervalSelection(duration: settings.choice(for: .intervalDuration)),
+                         history: History(timeIncrement: settings.choice(for: .historicTimestep)))
     }
 
     deinit {
         eventTask?.cancel()
         settingsObservers.forEach { settings.removeObserver($0) }
+        if let locationObserver = locationObserver {
+            locationSource.removeObserver(locationObserver)
+        }
     }
 
     public override func viewDidLoad() {
@@ -119,16 +157,27 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         mapView = MKMapView()
         mapView.mapType = ViewController.mapType(for: settings.string(for: .mapMode))
         mapView.isRotateEnabled = false
-        mapView.showsUserLocation = true
+        // The own-location marker is drawn by the app, from the location source,
+        // so MapKit's own user-location display stays off and no location
+        // permission is needed for the manual path.
+        mapView.showsUserLocation = false
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.delegate = self
+        mapView.accessibilityIdentifier = "map.view"
         mapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(mapTapped)))
+        mapView.addGestureRecognizer(UILongPressGestureRecognizer(target: self,
+                                                                 action: #selector(mapLongPressed)))
         view.addSubview(mapView)
 
         buildModeControls()
+        buildChrome()
         constraintsInit()
         syncModeControls()
         observeRenderingSettings()
+        observeSelectableSettings()
+        observeLocation()
+        applyLocation()
+        refreshChrome()
 
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
 
@@ -165,6 +214,32 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     private var modeControls: UIStackView!
 
+    /// Builds the on-map chrome: legend, radar, overview, and histogram.
+    private func buildChrome() {
+        legendView = LegendView()
+        legendView.translatesAutoresizingMaskIntoConstraints = false
+        legendView.addTarget(self, action: #selector(legendTapped), for: .touchUpInside)
+        view.addSubview(legendView)
+
+        radarView = AlarmRadarView()
+        radarView.translatesAutoresizingMaskIntoConstraints = false
+        let radarTap = UITapGestureRecognizer(target: self, action: #selector(radarTapped))
+        let radarLongPress = UILongPressGestureRecognizer(target: self, action: #selector(radarLongPressed))
+        radarTap.require(toFail: radarLongPress)
+        radarView.addGestureRecognizer(radarTap)
+        radarView.addGestureRecognizer(radarLongPress)
+        view.addSubview(radarView)
+
+        overviewView = DataAreaOverviewView()
+        overviewView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(overviewView)
+
+        histogramView = HistogramView()
+        histogramView.translatesAutoresizingMaskIntoConstraints = false
+        histogramView.addTarget(self, action: #selector(histogramTapped), for: .touchUpInside)
+        view.addSubview(histogramView)
+    }
+
     func constraintsInit() {
         NSLayoutConstraint.activate([
             statusText.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -182,6 +257,21 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             modeControls.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             modeControls.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             modeControls.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+
+            // The reference's corners: legend top-left, radar bottom-left,
+            // overview above the histogram bottom-right, histogram above the
+            // time slider.
+            legendView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            legendView.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 8),
+
+            radarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            radarView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -8),
+
+            histogramView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            histogramView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -8),
+
+            overviewView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            overviewView.bottomAnchor.constraint(equalTo: histogramView.topAnchor, constant: -8),
         ])
     }
 
@@ -230,7 +320,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             renderer.strokeColor = .clear
             return renderer
         case let dim as ActivityDimPolygon:
-            let renderer = MKPolygonRenderer(polygon: dim)
+            let renderer = MKMultiPolygonRenderer(multiPolygon: dim)
             renderer.fillColor = dim.fillColor
             renderer.strokeColor = .clear
             return renderer
@@ -252,6 +342,18 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             return view
         }
 
+        if let marker = annotation as? OwnLocationAnnotation,
+           let content = OwnLocationMarker.make(location: Location(latitude: marker.coordinate.latitude,
+                                                                  longitude: marker.coordinate.longitude)) {
+            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: OwnLocationAnnotationView.reuseIdentifier)
+                as? OwnLocationAnnotationView)
+                ?? OwnLocationAnnotationView(annotation: annotation,
+                                             reuseIdentifier: OwnLocationAnnotationView.reuseIdentifier)
+            view.annotation = annotation
+            view.configure(marker: content)
+            return view
+        }
+
         guard let selection = annotation as? ActivitySelectionAnnotation else { return nil }
 
         let view = (mapView.dequeueReusableAnnotationView(withIdentifier: ActivitySelectionAnnotationView.reuseIdentifier)
@@ -267,6 +369,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
         applyExtent(ViewExtent(region: mapView.region))
         redrawActivityIfVisibleAreaChanged()
+        refreshOverview()
     }
 
     /// Redraws the activity once the map has moved far enough to matter.
@@ -310,7 +413,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     /// Advances the record from the time model and the visible extent.
     @discardableResult
-    private func requestCurrentParameters() -> Parameters {
+    func requestCurrentParameters() -> Parameters {
         lastUpdate = Date()
 
         var parameters = baseParameters()
@@ -321,13 +424,12 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         return parameters
     }
 
-    private func baseParameters() -> Parameters {
+    func baseParameters() -> Parameters {
         let gridSize = viewExtent.map { LocalData.gridSize(for: $0) } ?? parameters.rasterBaselength
         return Parameters(region: regionSetting,
                           rasterBaselength: gridSize,
                           intervalDuration: timeModel.interval.duration,
                           intervalOffset: timeModel.interval.offset,
-                          countThreshold: countThresholdSetting,
                           dataArea: nil)
     }
 
@@ -435,6 +537,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         dismissSelection()
         drawActivity()
+        refreshChrome()
 
         if let rasterParameters = result.rasterParameters {
             self.addDataArea(rasterParameters: rasterParameters)
@@ -447,11 +550,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// geometry, so only overlays and annotations are created here.
     func drawActivity() {
         mapView.removeOverlays(mapView.overlays.filter { $0 is ActivityTilePolygon
-            || $0 is ActivityStrikePolygon
-            || $0 is ActivityDimPolygon })
+            || $0 is ActivityStrikePolygon })
         mapView.removeAnnotations(mapView.annotations.filter { $0 is ActivityCountAnnotation })
 
-        guard let activity = activity else { return }
+        guard let activity = activity else {
+            drawBaseMapDim(nil)
+            return
+        }
 
         let zoomScale = currentZoomScale()
         let covered = ActivityRenderPlan.coveringRect(for: mapView.visibleMapRect)
@@ -461,9 +566,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         lastPlanVisibleMapRect = covered
 
         // The dim goes down first so the activity is drawn above it.
-        if let dim = plan.baseMapDim {
-            mapView.addOverlay(ActivityOverlayBuilder.dimPolygon(for: dim), level: .aboveRoads)
-        }
+        drawBaseMapDim(plan.baseMapDim)
         mapView.addOverlays(plan.tileFills.map { ActivityOverlayBuilder.tilePolygon(for: $0) },
                             level: .aboveRoads)
         mapView.addOverlays(plan.strikeMarks.map {
@@ -476,6 +579,25 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                     textColor: UIColor(packed: label.textColor,
                                                        alpha: CGFloat(label.alpha)))
         })
+    }
+
+    /// Draws the base-map wash, keeping the one already on the map when it did
+    /// not change.
+    ///
+    /// The wash spans the whole map and depends only on the fade setting and the
+    /// base map, so it survives camera changes. MapKit rebuilds an overlay's
+    /// tiles when it is added, and doing that on every pan and pinch tick makes
+    /// the wash appear as separate rectangles over the map.
+    private func drawBaseMapDim(_ dim: ActivityRenderPlan.BaseMapDim?) {
+        guard drawnDim != dim else { return }
+
+        for overlay in mapView.overlays where overlay is ActivityDimPolygon {
+            mapView.removeOverlay(overlay)
+        }
+        if let dim = dim {
+            mapView.addOverlay(ActivityOverlayBuilder.dimPolygon(for: dim), level: .aboveRoads)
+        }
+        drawnDim = dim
     }
 
     /// The grid cells in a result: strikes that cover an area.
@@ -500,6 +622,186 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     private static func isTile(_ strike: Strike) -> Bool {
         return strike.envelope.span.longitudeDelta > 0 || strike.envelope.span.latitudeDelta > 0
+    }
+
+    // MARK: - Chrome
+
+    /// Rebuilds the chrome's content from the displayed result, the active
+    /// settings, the current location, and the map's visible rect.
+    func refreshChrome() {
+        refreshLegend()
+        refreshHistogram()
+        refreshRadar()
+        refreshOverview()
+    }
+
+    /// Refreshes the legend from the active scheme, region, and grid.
+    func refreshLegend() {
+        let content = LegendContentBuilder.make(colorHandler: colorHandler,
+                                               intervalDuration: timeModel.interval.duration,
+                                               regionName: activeRegionName,
+                                               region: regionSetting,
+                                               dataArea: localData.dataArea,
+                                               gridBaselineMetres: parameters.rasterBaselength)
+        legendContent = content
+        legendView.configure(content: content)
+    }
+
+    /// Refreshes the histogram from the displayed result's histogram values.
+    ///
+    /// A result that carries no histogram leaves the view empty rather than
+    /// failing, and no request of its own is made.
+    func refreshHistogram() {
+        let content = HistogramContentBuilder.make(values: lastResult?.histogram,
+                                                  intervalDuration: timeModel.interval.duration,
+                                                  colorHandler: colorHandler)
+        histogramContent = content
+        histogramView.configure(content: content)
+    }
+
+    /// Refreshes the radar from the aggregation of the displayed activity.
+    func refreshRadar() {
+        let content = RadarContentBuilder.make(aggregation: currentAggregation(),
+                                               colorHandler: colorHandler,
+                                               intervalDuration: timeModel.interval.duration,
+                                               measurementUnit: settings.measurementUnit)
+        radarContent = content
+        radarView.configure(content: content)
+    }
+
+    /// Refreshes the data-area overview from the result and the visible rect.
+    func refreshOverview() {
+        let content = DataAreaOverviewContentBuilder.make(grid: lastResult?.rasterParameters,
+                                                          viewport: viewExtent,
+                                                          zoomLevel: currentZoomLevel)
+        overviewContent = content
+        overviewView.configure(content: content)
+    }
+
+    /// The aggregation of the displayed activity around the current location.
+    func currentAggregation() -> AlertAggregation {
+        return alertAggregator.aggregate(strikes: lastResult?.strikes,
+                                         dataArea: lastResult?.rasterParameters,
+                                         location: location,
+                                         isRealtime: lastResult?.parameters.isRealtime() ?? false,
+                                         referenceTime: lastResult?.referenceTimestamp ?? 0)
+    }
+
+    /// The map's current zoom level, as a fractional tile zoom.
+    var currentZoomLevel: Double {
+        let span = mapView.region.span.longitudeDelta
+        guard span > 0 else { return 0 }
+        return log2(360 / span)
+    }
+
+    // MARK: - Chrome interaction
+
+    /// Opens the quick-settings dialog over the map.
+    @objc func legendTapped() {
+        let controller = QuickSettingsViewController(settings: settings)
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    /// Zooms the map out to the active data area.
+    @objc func histogramTapped() {
+        guard let grid = lastResult?.rasterParameters else { return }
+        let centre = CLLocationCoordinate2D(latitude: (grid.latitudeStart + grid.latitudeEnd) / 2,
+                                            longitude: (grid.longitudeStart + grid.longitudeEnd) / 2)
+        let span = MKCoordinateSpan(latitudeDelta: abs(grid.latitudeStart - grid.latitudeEnd),
+                                    longitudeDelta: abs(grid.longitudeEnd - grid.longitudeStart))
+        mapView.setRegion(MKCoordinateRegion(center: centre, span: span), animated: true)
+    }
+
+    /// Centres the map on the current location.
+    ///
+    /// The radar's own content is left as it is, so a radar that cannot centre -
+    /// because no location is known - keeps presenting its state.
+    @objc func radarTapped() {
+        centerOnLocation()
+    }
+
+    /// Opens the enlarged radar without changing the small one's state.
+    @objc func radarLongPressed(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        let controller = EnlargedRadarViewController()
+        controller.configure(content: radarContent)
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    // MARK: - Location
+
+    /// The current location, if one is known.
+    var location: Location? {
+        return locationSource.location
+    }
+
+    /// The location under a point in the map view.
+    func location(for point: CGPoint) -> Location {
+        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+        return Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+
+    /// Sets the current location from a point in the map view.
+    ///
+    /// Only a source that accepts a set position - the manual one - takes it,
+    /// and the new position replaces any previous one.
+    func setLocation(at point: CGPoint) {
+        guard let settable = locationSource as? SettableLocationSource else { return }
+        settable.setLocation(location(for: point))
+    }
+
+    /// Sets the current location from a long press on the map.
+    @objc func mapLongPressed(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        setLocation(at: gesture.location(in: mapView))
+    }
+
+    /// Redraws the own-location marker when the location changes.
+    private func observeLocation() {
+        locationObserver = locationSource.observe { [weak self] in
+            self?.applyLocation()
+            self?.refreshRadar()
+        }
+    }
+
+    /// Keeps the own-location marker in step with the location source.
+    ///
+    /// One marker is drawn while a location is known and moves with it; no
+    /// marker is drawn when none is known.
+    func applyLocation() {
+        let shown = mapView.annotations.compactMap { $0 as? OwnLocationAnnotation }
+        ownLocationMarker = OwnLocationMarker.make(location: location)
+
+        guard let marker = ownLocationMarker else {
+            if !shown.isEmpty {
+                mapView.removeAnnotations(shown)
+            }
+            return
+        }
+
+        let coordinate = CLLocationCoordinate2D(latitude: marker.location.latitude,
+                                                longitude: marker.location.longitude)
+        if let first = shown.first {
+            mapView.removeAnnotations(Array(shown.dropFirst()))
+            first.coordinate = coordinate
+            // The annotation moved, but MapKit does not rebuild its view for a
+            // coordinate change, so refresh what the view draws and reports.
+            (mapView.view(for: first) as? OwnLocationAnnotationView)?.configure(marker: marker)
+        } else {
+            mapView.addAnnotation(OwnLocationAnnotation(marker: marker))
+        }
+    }
+
+    /// Centres the map on the current location.
+    ///
+    /// The map is left unchanged when no location is known.
+    func centerOnLocation(animated: Bool = true) {
+        guard let location = location else { return }
+        mapView.setCenter(CLLocationCoordinate2D(latitude: location.latitude,
+                                                 longitude: location.longitude),
+                          animated: animated)
     }
 
     // MARK: - Rendering settings
@@ -555,13 +857,55 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         }
     }
 
+    /// Reflects a changed region, interval duration, or history step without a
+    /// relaunch, so the quick-settings dialog applies while the map stays up.
+    private func observeSelectableSettings() {
+        settingsObservers.append(settings.observe(.region) { [weak self] in
+            self?.applyRegionSetting()
+        })
+        for key in [SettingsKey.intervalDuration, SettingsKey.historicTimestep] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyIntervalSettings()
+            })
+        }
+    }
+
+    /// The name of the region the app is requesting.
+    var activeRegionName: String {
+        return SelectableSettings.name(for: .region, value: regionSetting)
+            ?? SelectableSettings.regions[0].name
+    }
+
+    /// Adopts the stored region and requests the data it selects.
+    func applyRegionSetting() {
+        regionSetting = settings.choice(for: .region)
+        // The stored data area belongs to the previous region.
+        localData = LocalData()
+        refreshLegend()
+        requestCurrentParameters()
+    }
+
+    /// Adopts the stored interval duration and history step, reshaping the
+    /// slider, and requests the display it selects.
+    func applyIntervalSettings() {
+        timeModel.configure(intervalDuration: settings.choice(for: .intervalDuration),
+                            historicTimestep: settings.choice(for: .historicTimestep))
+        syncModeControls()
+        scheduler.selectionChanged(now: Date())
+        refreshChrome()
+        requestCurrentParameters()
+    }
+
     /// Applies the stored map mode and redraws the displayed activity.
     func applyRenderingSettings() {
         let type = ViewController.mapType(for: settings.string(for: .mapMode))
         if mapView.mapType != type {
             mapView.mapType = type
         }
-        guard let result = lastResult else { return }
+        guard let result = lastResult else {
+            refreshChrome()
+            return
+        }
         render(result: result)
     }
 

@@ -62,6 +62,35 @@ public final class SettingsStore {
         postChange(for: key)
     }
 
+    // MARK: - Selectable settings
+
+    /// The value of a setting restricted to a fixed set of values.
+    ///
+    /// A stored value outside the setting's set is treated as unset and the
+    /// registered default is returned, so a stale or externally written value
+    /// cannot take effect.
+    public func choice(for key: SettingsKey) -> Int {
+        let stored = defaults.integer(forKey: key.rawValue)
+        guard SelectableSettings.values(for: key) != nil,
+              !SelectableSettings.allows(stored, for: key) else {
+            return stored
+        }
+        return SettingsKey.defaultValues[key.rawValue] as? Int ?? stored
+    }
+
+    /// Stores `value` for a setting restricted to a fixed set of values and
+    /// notifies observers of the change.
+    ///
+    /// - Returns: whether the value was accepted. A value outside the setting's
+    ///   set is rejected and nothing changes.
+    @discardableResult
+    public func setChoice(_ value: Int, for key: SettingsKey) -> Bool {
+        guard SelectableSettings.allows(value, for: key) else { return false }
+        defaults.set(value, forKey: key.rawValue)
+        postChange(for: key)
+        return true
+    }
+
     /// Restores every setting to its registered default.
     public func reset() {
         for key in SettingsKey.allCases {

@@ -22,8 +22,8 @@ import XCTest
 final class ParametersValueTests: XCTestCase {
 
     func testEqualParameterSetsCompareEqual() {
-        let first = Parameters(region: 1, rasterBaselength: 10000, intervalDuration: 60, intervalOffset: 0, countThreshold: 0)
-        let second = Parameters(region: 1, rasterBaselength: 10000, intervalDuration: 60, intervalOffset: 0, countThreshold: 0)
+        let first = Parameters(region: 1, rasterBaselength: 10000, intervalDuration: 60, intervalOffset: 0)
+        let second = Parameters(region: 1, rasterBaselength: 10000, intervalDuration: 60, intervalOffset: 0)
 
         XCTAssertEqual(first, second)
         XCTAssertEqual(first.hashValue, second.hashValue)

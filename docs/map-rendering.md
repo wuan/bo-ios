@@ -16,11 +16,25 @@ layer only materialises the plan with MapKit's own renderers:
 | `tileFills` | one `ActivityTilePolygon` per cell, filled by `MKPolygonRenderer` |
 | `countLabels` | one `ActivityCountAnnotation` per cell large enough for text |
 | `strikeMarks` | one `ActivityStrikePolygon` (a plus) per point strike |
-| `baseMapDim` | one `ActivityDimPolygon` over the covered area, added first |
+| `baseMapDim` | one `ActivityDimPolygon` (a `MKMultiPolygon` of the map's two halves) over the whole map, added first |
 | not in the plan | data-area outline keeps its own plain `MKPolygon` |
 
 The plan carries every colour, opacity, and culling decision, so it can be
 asserted in tests; MapKit owns projection and compositing.
+
+## Base-map wash
+
+The wash covers the whole map rather than the visible area, and the drawn one is
+kept while it stays the same. MapKit builds an overlay's tiles asynchronously, so
+a wash sized to the viewport is pieced together from tiles rendered at different
+times while the map moves: zooming out then shows rectangular patches of wash and
+areas that are not dimmed at all.
+
+The wash is one `ActivityDimPolygon` - an `MKMultiPolygon` holding the map's two
+halves. MapKit works out a polygon's points and bounds by taking the shorter way
+round the globe, so a single polygon covering the whole map collapses onto the
+antimeridian and is never drawn; two separate overlays, in turn, can be rendered a
+frame apart, which shows as a hard edge along the prime meridian.
 
 ## Reference values
 
@@ -35,7 +49,7 @@ These mirror the Android client (`wuan/bo-android`) and are asserted in tests.
 | Minimum tile | `TileGeometry.minimumHalfExtent` = 1.5 pt half-extent, so a sparse cell is never invisible |
 | Point strike | plus of `2 * (zoomLevel + 1)` pt, arms `size / 4` wide |
 | Base-map dim | `255 / 100 * mapFade` percent, black on satellite, white on street maps |
-| Covered area | `ActivityRenderPlan.coverage` = 2x the visible map rect per plan |
+| Covered area for activity | `ActivityRenderPlan.coverage` = 2x the visible map rect per plan |
 
 `StrikeMarker.zoomScaleExponentOffset` converts MapKit's `MKZoomScale` (which is
 `2^(zoomLevel - 20)`) into the zoom level the reference sizes markers with.

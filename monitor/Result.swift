@@ -23,11 +23,19 @@ public class Result {
     let referenceTimestamp: Int
     let strikes: [Strike]
     let rasterParameters: RasterParameters?
+    /// The strike-rate histogram the result reports for the displayed period,
+    /// or `nil` when it carries none.
+    let histogram: [Int]?
 
-    init(parameters: Parameters, referenceTimestamp: Int, strikes: [Strike], rasterParameters: RasterParameters? = nil) {
+    init(parameters: Parameters,
+         referenceTimestamp: Int,
+         strikes: [Strike],
+         rasterParameters: RasterParameters? = nil,
+         histogram: [Int]? = nil) {
         self.parameters = parameters
         self.referenceTimestamp = referenceTimestamp
         self.strikes = strikes
         self.rasterParameters = rasterParameters
+        self.histogram = histogram
     }
 }

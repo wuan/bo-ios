@@ -96,4 +96,16 @@ public struct GridParameters: Equatable {
         return longitudeDelta * Double(longitudeCount) > 350 &&
             latitudeDelta * Double(latitudeCount) > 170
     }
+
+    /// Whether a location lies inside the grid.
+    ///
+    /// - Parameter inset: how far inside every edge the location must lie, in
+    ///   degrees, so a location on or near the border can count as outside.
+    public func contains(_ location: Location, inset: Double = 0) -> Bool {
+        let inLongitude = location.longitude >= longitudeStart + inset &&
+            location.longitude <= longitudeEnd - inset
+        let inLatitude = location.latitude >= latitudeEnd + inset &&
+            location.latitude <= latitudeStart - inset
+        return inLongitude && inLatitude
+    }
 }

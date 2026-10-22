@@ -31,6 +31,13 @@ public enum SettingsKey: String, CaseIterable {
     case mapScale
     case mapFade
     case colorScheme
+    case region
+    case intervalDuration
+    case historicTimestep
+    case locationMode
+    case manualLatitude
+    case manualLongitude
+    case manualLocationSet
 
     /// Values used when a setting has never been changed by the user.
     public static var defaultValues: [String: Any] {
@@ -43,6 +50,14 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.mapScale.rawValue: 75,
             SettingsKey.mapFade.rawValue: 55,
             SettingsKey.colorScheme.rawValue: ColorScheme.blitzortung.rawValue,
+            SettingsKey.region.rawValue: SelectableSettings.defaultRegion,
+            SettingsKey.intervalDuration.rawValue: SelectableSettings.defaultIntervalDuration,
+            SettingsKey.historicTimestep.rawValue: SelectableSettings.defaultHistoricTimestep,
+            SettingsKey.locationMode.rawValue: LocationMode.manual.rawValue,
+            SettingsKey.manualLatitude.rawValue: 0.0,
+            SettingsKey.manualLongitude.rawValue: 0.0,
+            // A fresh install has no location until the user sets one.
+            SettingsKey.manualLocationSet.rawValue: false,
         ]
     }
 }

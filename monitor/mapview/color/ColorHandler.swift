@@ -88,6 +88,16 @@ public struct ColorHandler: Equatable {
                                            intervalDuration: intervalDuration))
     }
 
+    /// The palette section of an event, from its age in seconds.
+    public func section(ageSeconds: Int, intervalDuration: Int) -> Int {
+        return colorSection(referenceTime: ageSeconds, eventTime: 0, intervalDuration: intervalDuration)
+    }
+
+    /// The colour of an event, from its age in seconds.
+    public func color(ageSeconds: Int, intervalDuration: Int) -> UInt32 {
+        return color(section: section(ageSeconds: ageSeconds, intervalDuration: intervalDuration))
+    }
+
     /// The colour of a palette section, clamped to the palette's range.
     public func color(section: Int) -> UInt32 {
         guard numberOfColors > 0 else { return 0xffffffff }

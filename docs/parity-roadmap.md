@@ -39,6 +39,12 @@ implementation, are the contract.
 | 1 - Data modes | [`ios-data-modes`](../openspec/changes/archive/2026-10-22-ios-data-modes/proposal.md) | `data-modes`, and `data-providers` (modified) |
 | 2 - Map rendering | [`ios-map-rendering`](../openspec/changes/archive/2026-10-22-ios-map-rendering/proposal.md) | `map-rendering` |
 
+**In flight:** Phase 3 - Map UI overlays, as the change
+[`ios-map-ui-overlays`](../openspec/changes/ios-map-ui-overlays/proposal.md). It also carries the
+manual location slice of `location-handling`, the sector/range aggregation slice of
+`proximity-alerts`, the histogram in `data-providers`, and the retirement of the count-threshold
+requirement from `data-modes`.
+
 Delivered foundations that later phases build on:
 
 - Raised the floor to iOS 16 / Swift 5.0 across all targets (breaking).
@@ -46,8 +52,8 @@ Delivered foundations that later phases build on:
   credentials in the Keychain.
 - Shared data model, provider protocol/factory with JSON-RPC and Blitzortung
   HTTP providers, TTL cache, sequence validation, and lifecycle events.
-- Realtime/history/animation time model with the time slider, region and
-  data-area/grid selection, and count-threshold filtering.
+- Realtime/history/animation time model with the time slider, and region and
+  data-area/grid selection.
 - Age-coloured grid tiles with per-tile counts, translucency, base-map fade,
   three colour schemes with base-map variants, zoom-aware culling, and tap
   selection with a details popup.
@@ -64,29 +70,37 @@ Each phase below becomes its own change when it starts.
 
 ### Phase 3 - Map UI overlays
 
-Sketch: [`map-ui-overlays.md`](parity-capabilities/map-ui-overlays.md)
+Change: [`ios-map-ui-overlays`](../openspec/changes/ios-map-ui-overlays/proposal.md) (in flight)
 
-- Implement the legend (age colour scale, region, grid baseline, local size, threshold-only-when-active); verified by unit tests of its content model plus visual checks.
-- Implement the quick-settings dialog opened from the legend and applied without leaving the map; verified by UI test/manual check.
-- Implement the status line (strike count, interval, refresh countdown); verified by unit tests and manual observation.
-- Implement the histogram of strike rate with tap-to-zoom-out; verified by unit tests on rate aggregation and a visual check.
-- Implement the alarm radar with active/inactive/outside states, tap-to-center, and long-press enlargement; verified by UI tests for each state and interaction.
+- Legend: active colour scale with its age ranges, region name, grid baseline, and local region size.
+- Quick settings, opened from the legend and applied without leaving the map: region, interval duration, historic timestep, data source, colour scheme, map mode, and fade. Region, interval duration, and historic timestep become persisted settings in this phase.
+- Strike-rate histogram for the displayed period, fed by the histogram the grid response already carries, with tap-to-zoom-out to the data area.
+- Alarm radar: activity by distance and direction from the current location, its no-location, no-data, and outside-data-area states, tap-to-centre, and an enlarged view on long-press.
+- Data-area overview: the data area's extent and cell size, the viewport within it, and the zoom level.
+- Manual location, delivered here rather than with the location phase: long-press to set, persisted, published to consumers, shown as a marker, and used for centring.
+- The count-threshold requirement is retired: it was never settable and always inactive.
+
+Dropped from this phase as already delivered: the status line (see the `data-modes` requirement
+for the realtime countdown and the history interval start).
 
 ### Phase 4 - Location handling
 
-Sketch: [`location-handling.md`](parity-capabilities/location-handling.md)
+Sketch: [`location-handling.md`](parity-capabilities/location-handling.md) - reduced to device location.
 
-- Implement location provider modes (network, GPS, passive, manual) behind a provider interface; verified by unit tests with stubbed providers.
+Phase 3 delivers the manual path (set by long-press, persistence, propagation, marker, centring).
+What remains here:
+
+- Implement the device provider modes (network, GPS, passive) behind the location source interface; verified by unit tests with stubbed providers.
 - Implement permission flows including background-location disclosure; verified by manual checks for granted, denied, and disclosure paths.
-- Implement manual location entry and long-press-to-set-location; verified by UI test/manual check that the location changes.
-- Implement own-location display at a configurable size and center-on-location honoring keep-zoom; verified by manual checks of both keep-zoom modes.
-- Emit location-update notifications to consumers; verified by a test observing a location change.
+- Implement the own-location display size setting and the keep-zoom versus default-zoom centring choice; verified by manual checks of both modes.
 
 ### Phase 5 - Proximity alerts
 
-Sketch: [`proximity-alerts.md`](parity-capabilities/proximity-alerts.md)
+Sketch: [`proximity-alerts.md`](parity-capabilities/proximity-alerts.md) - the aggregation lands in Phase 3.
 
-- Implement pure sector/range aggregation with closest-strike tracking and the monitored time window; verified by unit tests porting Android `AlertResult` cases.
+Phase 3 delivers the pure sector/range aggregation with closest-strike tracking, the fixed radar
+geometry, the alert-interval window, and the aggregation states. What remains here:
+
 - Implement enable/disable gating of monitoring; verified by unit tests and manual checks.
 - Implement notification distance limit and signalling distance limit; verified by unit tests on limit boundaries.
 - Implement sound/vibration signals with configurable strength; verified by manual checks on a device.

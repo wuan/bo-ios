@@ -115,7 +115,7 @@ public struct ActivityRenderPlan: Equatable {
     public static let tileAlphaBounds = (maxAlpha: 255, minAlpha: 100)
 
     /// How much larger than the visible map rect a plan covers, so a small pan
-    /// neither reveals an undimmed edge nor drops newly visible activity.
+    /// does not drop newly visible activity.
     public static let coverage: Double = 2.0
 
     /// The map rectangle a plan should cover for the given visible area.
@@ -144,8 +144,7 @@ public struct ActivityRenderPlan: Equatable {
                                   strikeMarks: strikeMarks(activity: activity,
                                                            zoomScale: zoomScale,
                                                            visibleMapRect: visibleMapRect),
-                                  baseMapDim: baseMapDim(activity: activity,
-                                                         visibleMapRect: visibleMapRect))
+                                  baseMapDim: baseMapDim(activity: activity))
     }
 
     // MARK: - Tiles
@@ -206,12 +205,20 @@ public struct ActivityRenderPlan: Equatable {
 
     // MARK: - Base map dim
 
+    /// The area the base-map wash covers: the whole map.
+    public static let dimMapRect = MKMapRect.world
+
     /// The wash over the base map, when the fade setting asks for one.
-    static func baseMapDim(activity: MapActivity,
-                           visibleMapRect: MKMapRect) -> BaseMapDim? {
+    ///
+    /// The wash covers the whole map rather than the visible area. MapKit builds
+    /// an overlay's tiles asynchronously, so a wash sized to the viewport is
+    /// composited from tiles rendered at different times while the map moves,
+    /// and zooming out then shows rectangular patches of wash and undimmed
+    /// areas. A wash over the whole map cannot be outrun by the camera.
+    static func baseMapDim(activity: MapActivity) -> BaseMapDim? {
         guard activity.fadeAlpha > 0 else { return nil }
 
-        return BaseMapDim(mapRect: visibleMapRect,
+        return BaseMapDim(mapRect: dimMapRect,
                           color: activity.colorHandler.baseMapDimColor,
                           alpha: Double(activity.fadeAlpha) / 255.0)
     }

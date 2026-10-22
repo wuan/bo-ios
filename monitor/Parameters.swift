@@ -33,7 +33,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
     public let rasterBaselength: Int
     public let intervalDuration: Int
     public let intervalOffset: Int
-    public let countThreshold: Int
     /// The quantized area a local request is limited to, if any.
     public let dataArea: DataArea?
 
@@ -41,13 +40,11 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                 rasterBaselength: Int = 10000,
                 intervalDuration: Int = 60,
                 intervalOffset: Int = 0,
-                countThreshold: Int = 0,
                 dataArea: DataArea? = nil) {
         self.region = region
         self.rasterBaselength = rasterBaselength
         self.intervalDuration = intervalDuration
         self.intervalOffset = intervalOffset
-        self.countThreshold = countThreshold
         self.dataArea = dataArea
     }
 
@@ -81,7 +78,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                           rasterBaselength: rasterBaselength,
                           intervalDuration: intervalDuration,
                           intervalOffset: intervalOffset,
-                          countThreshold: countThreshold,
                           dataArea: dataArea)
     }
 
@@ -90,7 +86,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                           rasterBaselength: rasterBaselength,
                           intervalDuration: intervalDuration,
                           intervalOffset: intervalOffset,
-                          countThreshold: countThreshold,
                           dataArea: dataArea)
     }
 
@@ -99,7 +94,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                           rasterBaselength: rasterBaselength,
                           intervalDuration: intervalDuration,
                           intervalOffset: intervalOffset,
-                          countThreshold: countThreshold,
                           dataArea: dataArea)
     }
 
@@ -108,7 +102,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                           rasterBaselength: rasterBaselength,
                           intervalDuration: interval.duration,
                           intervalOffset: interval.offset,
-                          countThreshold: countThreshold,
                           dataArea: dataArea)
     }
 
@@ -117,20 +110,6 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
                           rasterBaselength: rasterBaselength,
                           intervalDuration: intervalDuration,
                           intervalOffset: intervalOffset,
-                          countThreshold: countThreshold,
-                          dataArea: dataArea)
-    }
-
-    /// Carries `threshold` as the count threshold. A zero or negative value
-    /// means the threshold is inactive, and leaving it unset is a no-op.
-    public func withCountThreshold(_ threshold: Int) -> Parameters {
-        let active = max(0, threshold)
-        guard active != countThreshold else { return self }
-        return Parameters(region: region,
-                          rasterBaselength: rasterBaselength,
-                          intervalDuration: intervalDuration,
-                          intervalOffset: intervalOffset,
-                          countThreshold: active,
                           dataArea: dataArea)
     }
 
@@ -146,10 +125,10 @@ public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
 
     // MARK: - Source capability
 
-    /// Disables grid-only request fields when the active source cannot serve
-    /// grid data, so a non-grid source never receives a grid size or threshold.
+    /// Disables the grid-only request fields when the active source cannot serve
+    /// grid data, so a non-grid source never receives a grid size.
     public func gatingGrid(on capabilities: DataProviderCapabilities) -> Parameters {
         guard !capabilities.supportsGrid else { return self }
-        return withRasterBaselength(0).withCountThreshold(0)
+        return withRasterBaselength(0)
     }
 }

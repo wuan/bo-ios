@@ -35,7 +35,14 @@ final class ActivityStrikePolygon: MKPolygon {
 }
 
 /// The wash drawn over the base map, beneath the activity.
-final class ActivityDimPolygon: MKPolygon {
+///
+/// It is a single overlay made of the map's two halves. MapKit works out a
+/// polygon's points and bounds by taking the shorter way round the globe, so one
+/// polygon covering the whole map collapses to a line at the antimeridian; two
+/// halves that meet at the prime meridian keep their shape. Keeping them in one
+/// overlay means MapKit draws them together, so they never appear apart while
+/// the map moves.
+final class ActivityDimPolygon: MKMultiPolygon {
     var fillColor: UIColor = .clear
 }
 
@@ -90,14 +97,24 @@ enum ActivityOverlayBuilder {
 
     // MARK: - Base map dim
 
-    /// The polygon washing over the base map.
+    /// The wash covering the base map, drawn as the map's two halves.
     static func dimPolygon(for dim: ActivityRenderPlan.BaseMapDim) -> ActivityDimPolygon {
-        let polygon = ActivityDimPolygon(coordinates: corners(of: dim.mapRect), count: 4)
+        let halves = halves(of: dim.mapRect).map { MKPolygon(coordinates: corners(of: $0), count: 4) }
+        let polygon = ActivityDimPolygon(halves)
         polygon.fillColor = UIColor(packed: dim.color, alpha: CGFloat(dim.alpha))
         return polygon
     }
 
     // MARK: - Corners
+
+    /// A map rectangle split into the two halves that meet at the middle
+    /// meridian, which MapKit can draw without folding either of them around the
+    /// globe.
+    static func halves(of mapRect: MKMapRect) -> [MKMapRect] {
+        let width = mapRect.size.width / 2
+        return [MKMapRect(x: mapRect.minX, y: mapRect.minY, width: width, height: mapRect.size.height),
+                MKMapRect(x: mapRect.midX, y: mapRect.minY, width: width, height: mapRect.size.height)]
+    }
 
     /// The four corners of a map rectangle, wound around its edge.
     static func corners(of mapRect: MKMapRect) -> [CLLocationCoordinate2D] {

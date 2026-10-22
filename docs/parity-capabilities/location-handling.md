@@ -1,8 +1,14 @@
 # Location handling (capability sketch)
 
-Planned capability for the [parity roadmap](../parity-roadmap.md). Lift these
-requirements into `openspec/changes/<phase>/specs/location-handling/spec.md` when the phase
-starts; the delta headers are intentional.
+Planned capability for the [parity roadmap](../parity-roadmap.md).
+
+**Split:** the manual path - manual mode, setting the location by long-press, persistence,
+propagation, the own-location marker, and centring - is being delivered by the
+[`ios-map-ui-overlays`](../../openspec/changes/ios-map-ui-overlays/proposal.md) change, which needs a
+location for the alarm radar. This sketch therefore reduces to device location: the device modes
+(network, GPS, passive), permission flows and background disclosure, the own-location display size
+setting, and the keep-zoom versus default-zoom centring choice. Delete the delivered requirements
+from this sketch when that change is archived.
 
 ## Purpose
 

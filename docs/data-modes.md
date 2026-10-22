@@ -42,13 +42,18 @@ shows the start of the selected interval as a wall-clock time instead
 | Setting | Default | Where |
 | --- | --- | --- |
 | Mode | `realtime` | `TimeModel()` |
-| Interval duration | 60 minutes | `TimeIntervalSelection()` |
+| Interval duration | 60 minutes | `intervalDuration` setting, registered default |
 | History range | 24 hours (1440 min) | `History.maxRange` |
-| History step | 30 minutes | `History.defaultOffsetIncrement` |
-| Region | 1 (a named region) | `Parameters()` |
-| Count threshold | 0 (inactive) | `Parameters()` |
+| History step | 30 minutes | `historicTimestep` setting, registered default |
+| Region | 1 (Europe) | `region` setting, registered default |
 | Query period | 60 s | `ModeRefreshScheduler()` |
 | Animation step | 1 s | `ModeRefreshScheduler()` |
+
+The region, interval duration, and history step are persisted settings; the
+values above are their registered defaults, so an untouched install behaves as
+it did when `TimeIntervalSelection()` and `Parameters()` supplied them. See
+[map-ui-overlays.md](map-ui-overlays.md) for the settings and the chrome that
+edits them.
 
 ## Region and data-area rules
 
@@ -88,19 +93,21 @@ The local/global boundary is the 25 km threshold (`LocalData.localRegionGridSize
 a global request with a finer grid and a known data area is upgraded to local,
 and a global fallback raises the grid size to at least that threshold.
 
-## Count threshold
+## Count threshold (retired)
 
-The threshold is a request parameter, not a client-side filter: zero or negative
-means inactive, and a positive value is carried to the backend, which hides grid
-cells below it. `Parameters.withCountThreshold(_:)` normalizes the value, so a
-zero threshold leaves the parameters unchanged.
+Earlier versions carried a count threshold as a request parameter, but the app
+never exposed a control for it and always sent the inactive value, so the
+`data-modes` requirement for it was removed by the
+[`ios-map-ui-overlays`](../openspec/changes/ios-map-ui-overlays/proposal.md)
+change. The provider's grid method is positional and still expects that
+argument, so requests keep carrying a constant in its place; nothing else about
+the request or the results changes.
 
 ## Source capability
 
 `Parameters.gatingGrid(on:)` consults the active provider's
 `DataProviderCapabilities`: a source that cannot serve grid data (the
-Blitzortung HTTP source) receives no grid size and no threshold, so no grid
-request is issued, while the JSON-RPC source carries the selected grid size. See
+Blitzortung HTTP source) receives no grid size, so no grid request is issued, while the JSON-RPC source carries the selected grid size. See
 [data-providers.md](data-providers.md) for the capability table.
 
 ## Verifying
@@ -115,7 +122,6 @@ The model rules are covered by unit tests:
 | Extent adapter | `ViewExtentTests` |
 | Region/data-area/grid selection | `LocalDataTests` |
 | Grid gating | `GridGatingTests` |
-| Count threshold | `CountThresholdTests` |
 | Mode-driven refresh | `ModeRefreshSchedulerTests` |
 | Slider control | `monitorUITests.testTimeSliderRightmostActivatesRealtime` |
 
