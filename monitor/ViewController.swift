@@ -50,6 +50,15 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private var viewExtent: ViewExtent?
     private var lastGridSize: Int?
 
+    /// The activity currently drawn, and the result it came from so a settings
+    /// change can redraw the same data.
+    private var activity: MapActivity?
+    private var lastResult: Result?
+    /// The area the drawn activity covers, used to avoid redrawing on every pan tick.
+    private var lastPlanVisibleMapRect: MKMapRect?
+    /// Tokens for the rendering settings this screen observes.
+    private var settingsObservers: [NSObjectProtocol] = []
+
     var mapView: MKMapView!
     var statusText: UILabel!
     var settingsButton: UIButton!
@@ -86,6 +95,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     deinit {
         eventTask?.cancel()
+        settingsObservers.forEach { settings.removeObserver($0) }
     }
 
     public override func viewDidLoad() {
@@ -107,16 +117,18 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         view.addSubview(settingsButton)
 
         mapView = MKMapView()
-        mapView.mapType = MKMapType.hybrid
+        mapView.mapType = ViewController.mapType(for: settings.string(for: .mapMode))
         mapView.isRotateEnabled = false
         mapView.showsUserLocation = true
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.delegate = self
+        mapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(mapTapped)))
         view.addSubview(mapView)
 
         buildModeControls()
         constraintsInit()
         syncModeControls()
+        observeRenderingSettings()
 
         pollingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerTick), userInfo: nil, repeats: true)
 
@@ -206,19 +218,66 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     }
 
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is StrikeOverlay {
-            return StrikeOverlayRenderer(overlay: overlay as! StrikeOverlay)
+        switch overlay {
+        case let tile as ActivityTilePolygon:
+            let renderer = MKPolygonRenderer(polygon: tile)
+            renderer.fillColor = tile.fillColor
+            renderer.strokeColor = .clear
+            return renderer
+        case let strike as ActivityStrikePolygon:
+            let renderer = MKPolygonRenderer(polygon: strike)
+            renderer.fillColor = strike.fillColor
+            renderer.strokeColor = .clear
+            return renderer
+        case let dim as ActivityDimPolygon:
+            let renderer = MKPolygonRenderer(polygon: dim)
+            renderer.fillColor = dim.fillColor
+            renderer.strokeColor = .clear
+            return renderer
+        default:
+            let renderer = MKPolygonRenderer(polygon: overlay as! MKPolygon)
+            renderer.strokeColor = UIColor.white
+            renderer.lineWidth = 1
+            return renderer
         }
-
-        let renderer = MKPolygonRenderer.init(polygon: overlay as! MKPolygon)
-        renderer.strokeColor = UIColor.white
-        renderer.lineWidth = 1
-        return renderer
     }
 
-    /// Tracks the visible extent so region and grid selection follow the map.
+    public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let count = annotation as? ActivityCountAnnotation {
+            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: ActivityCountAnnotationView.reuseIdentifier)
+                as? ActivityCountAnnotationView)
+                ?? ActivityCountAnnotationView(annotation: count,
+                                               reuseIdentifier: ActivityCountAnnotationView.reuseIdentifier)
+            view.configure(text: count.text, textSize: count.textSize, textColor: count.textColor)
+            return view
+        }
+
+        guard let selection = annotation as? ActivitySelectionAnnotation else { return nil }
+
+        let view = (mapView.dequeueReusableAnnotationView(withIdentifier: ActivitySelectionAnnotationView.reuseIdentifier)
+            as? ActivitySelectionAnnotationView)
+            ?? ActivitySelectionAnnotationView(annotation: selection,
+                                               reuseIdentifier: ActivitySelectionAnnotationView.reuseIdentifier)
+        view.configure(text: selection.text)
+        return view
+    }
+
+    /// Tracks the visible extent so region and grid selection follow the map,
+    /// and keeps the drawn activity aligned with the visible area.
     public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
         applyExtent(ViewExtent(region: mapView.region))
+        redrawActivityIfVisibleAreaChanged()
+    }
+
+    /// Redraws the activity once the map has moved far enough to matter.
+    ///
+    /// Culling and the base-map wash follow the visible rect, so panning needs a
+    /// fresh plan; rebuilding on every region tick would draw far too often.
+    private func redrawActivityIfVisibleAreaChanged() {
+        guard activity != nil else { return }
+        let visible = mapView.visibleMapRect
+        if let last = lastPlanVisibleMapRect, last.contains(visible) { return }
+        drawActivity()
     }
 
     private func applyExtent(_ extent: ViewExtent) {
@@ -354,26 +413,202 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         return formatter
     }()
 
-    private func render(result: Result) {
-        let overlays = result.strikes.map({
-            (strike) -> MKOverlay in
-            StrikeOverlay(withStrike: strike, andReferenceTimestamp: result.referenceTimestamp, andParameters: result.parameters)
-        })
+    /// Renders the displayed result, replacing any activity already drawn.
+    func render(result: Result) {
+        lastResult = result
+
+        if let rasterParameters = result.rasterParameters {
+            localData.store(gridParameters: rasterParameters)
+        }
+
+        activity = MapActivity(tiles: ViewController.tiles(for: result),
+                               points: ViewController.points(for: result),
+                               referenceTimestamp: result.referenceTimestamp,
+                               intervalDuration: result.parameters.intervalDuration,
+                               colorHandler: colorHandler,
+                               fadeAlpha: baseMapDimAlpha)
 
         strikeStatus = String(format: NSLocalizedString("status.strikeCount",
                                                         comment: "Status line showing strike count and interval in minutes"),
                               countStrikes(strikes: result.strikes),
                               parameters.intervalDuration)
 
-        if let rasterParameters = result.rasterParameters {
-            localData.store(gridParameters: rasterParameters)
-        }
-
-        self.mapView.removeOverlays(self.mapView.overlays)
-        self.mapView.addOverlays(overlays)
+        dismissSelection()
+        drawActivity()
 
         if let rasterParameters = result.rasterParameters {
             self.addDataArea(rasterParameters: rasterParameters)
+        }
+    }
+
+    /// Draws the displayed activity with MapKit's own renderers.
+    ///
+    /// The plan decides colours, opacity, labels, and culling; MapKit builds the
+    /// geometry, so only overlays and annotations are created here.
+    func drawActivity() {
+        mapView.removeOverlays(mapView.overlays.filter { $0 is ActivityTilePolygon
+            || $0 is ActivityStrikePolygon
+            || $0 is ActivityDimPolygon })
+        mapView.removeAnnotations(mapView.annotations.filter { $0 is ActivityCountAnnotation })
+
+        guard let activity = activity else { return }
+
+        let zoomScale = currentZoomScale()
+        let covered = ActivityRenderPlan.coveringRect(for: mapView.visibleMapRect)
+        let plan = ActivityRenderPlan.make(activity: activity,
+                                          zoomScale: zoomScale,
+                                          visibleMapRect: covered)
+        lastPlanVisibleMapRect = covered
+
+        // The dim goes down first so the activity is drawn above it.
+        if let dim = plan.baseMapDim {
+            mapView.addOverlay(ActivityOverlayBuilder.dimPolygon(for: dim), level: .aboveRoads)
+        }
+        mapView.addOverlays(plan.tileFills.map { ActivityOverlayBuilder.tilePolygon(for: $0) },
+                            level: .aboveRoads)
+        mapView.addOverlays(plan.strikeMarks.map {
+            ActivityOverlayBuilder.strikePolygon(for: $0, zoomScale: zoomScale)
+        }, level: .aboveRoads)
+        mapView.addAnnotations(plan.countLabels.map { label in
+            ActivityCountAnnotation(coordinate: label.coordinate,
+                                    text: label.text,
+                                    textSize: label.textSize,
+                                    textColor: UIColor(packed: label.textColor,
+                                                       alpha: CGFloat(label.alpha)))
+        })
+    }
+
+    /// The grid cells in a result: strikes that cover an area.
+    static func tiles(for result: Result) -> [MapActivity.Tile] {
+        return result.strikes.filter { isTile($0) }.map { strike in
+            MapActivity.Tile(center: strike.envelope.center,
+                             longitudeDelta: strike.envelope.span.longitudeDelta,
+                             latitudeDelta: strike.envelope.span.latitudeDelta,
+                             count: strike.multiplicity,
+                             timestamp: strike.timestamp)
+        }
+    }
+
+    /// The individual strikes in a result: those without a covered area.
+    static func points(for result: Result) -> [MapActivity.Point] {
+        return result.strikes.filter { !isTile($0) }.map { strike in
+            MapActivity.Point(coordinate: strike.envelope.center,
+                              count: strike.multiplicity,
+                              timestamp: strike.timestamp)
+        }
+    }
+
+    private static func isTile(_ strike: Strike) -> Bool {
+        return strike.envelope.span.longitudeDelta > 0 || strike.envelope.span.latitudeDelta > 0
+    }
+
+    // MARK: - Rendering settings
+
+    /// Maps the stored map mode to the map type it names.
+    static func mapType(for mode: String) -> MKMapType {
+        switch mode.lowercased() {
+        case "satellite":
+            return .satellite
+        case "standard", "street", "streetmap":
+            return .standard
+        case "mutedstandard":
+            return .mutedStandard
+        default:
+            return .hybrid
+        }
+    }
+
+    /// Whether activity is drawn over a light base map.
+    static func baseType(for mapType: MKMapType) -> MapBaseType {
+        switch mapType {
+        case .standard, .mutedStandard:
+            return .streetMap
+        default:
+            return .satellite
+        }
+    }
+
+    /// The colours the displayed activity is drawn with.
+    var activityColorHandler: ColorHandler {
+        return activity?.colorHandler ?? colorHandler
+    }
+
+    /// The colours for the stored scheme and the active base map.
+    var colorHandler: ColorHandler {
+        let scheme = ColorScheme(rawValue: settings.string(for: .colorScheme)) ?? .blitzortung
+        return ColorHandler(scheme: scheme, baseType: ViewController.baseType(for: mapView.mapType))
+    }
+
+    /// The opacity of the base-map dim, from the stored fade percentage.
+    var baseMapDimAlpha: Int {
+        let percent = min(max(settings.int(for: .mapFade), 0), 100)
+        // Multiply before dividing so the half-way cases stay exact.
+        return Int((Double(percent) * 255.0 / 100.0).rounded())
+    }
+
+    /// Redraws when one of the rendering settings changes.
+    private func observeRenderingSettings() {
+        for key in [SettingsKey.colorScheme, SettingsKey.mapFade, SettingsKey.mapMode] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyRenderingSettings()
+            })
+        }
+    }
+
+    /// Applies the stored map mode and redraws the displayed activity.
+    func applyRenderingSettings() {
+        let type = ViewController.mapType(for: settings.string(for: .mapMode))
+        if mapView.mapType != type {
+            mapView.mapType = type
+        }
+        guard let result = lastResult else { return }
+        render(result: result)
+    }
+
+    // MARK: - Selection
+
+    /// The scale the map is drawn at, in points per map point.
+    func currentZoomScale() -> MKZoomScale {
+        let visibleWidth = mapView.visibleMapRect.size.width
+        guard visibleWidth > 0, mapView.bounds.width > 0 else { return 1 }
+        return MKZoomScale(mapView.bounds.width / CGFloat(visibleWidth))
+    }
+
+    /// Shows details for the activity under a tap, or clears any shown popup.
+    @objc func mapTapped(_ gesture: UITapGestureRecognizer) {
+        dismissSelection()
+
+        if let selection = selection(at: gesture.location(in: mapView)) {
+            present(selection)
+        }
+    }
+
+    /// Resolves the activity under a point in the map view, if any.
+    ///
+    /// Nothing is resolved when no activity is drawn there, so a tap on empty
+    /// map shows no popup.
+    func selection(at mapPoint: MKMapPoint) -> MapActivitySelection? {
+        return activity?.selection(at: mapPoint, zoomScale: currentZoomScale())
+    }
+
+    /// The activity under a point in the map view, if any.
+    func selection(at point: CGPoint) -> MapActivitySelection? {
+        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+        return selection(at: MKMapPoint(coordinate))
+    }
+
+    /// Shows the details popup for a selected tile or strike.
+    func present(_ selection: MapActivitySelection) {
+        let annotation = ActivitySelectionAnnotation(coordinate: selection.coordinate,
+                                                     text: selection.detailsText())
+        mapView.addAnnotation(annotation)
+    }
+
+    /// Removes the details popup, if one is shown.
+    func dismissSelection() {
+        let shown = mapView.annotations.filter { $0 is ActivitySelectionAnnotation }
+        if !shown.isEmpty {
+            mapView.removeAnnotations(shown)
         }
     }
 

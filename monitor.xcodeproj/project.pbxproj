@@ -41,8 +41,6 @@
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
 		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
-		A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */; };
-		A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */; };
 		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; };
 		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; };
 		A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Strike.swift */; };
@@ -82,6 +80,22 @@
 		AB0000000000000000000406 /* GridGatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000306 /* GridGatingTests.swift */; };
 		AB0000000000000000000407 /* CountThresholdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000307 /* CountThresholdTests.swift */; };
 		AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */; };
+		AC0000000000000000000201 /* ColorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000101 /* ColorHandler.swift */; };
+		AC0000000000000000000202 /* ShapeAlpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000102 /* ShapeAlpha.swift */; };
+		AC0000000000000000000203 /* TileGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000103 /* TileGeometry.swift */; };
+		AC0000000000000000000204 /* MapActivityShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000104 /* MapActivityShapes.swift */; };
+		AC0000000000000000000207 /* ActivitySelectionAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */; };
+		AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000301 /* ColorSchemeTests.swift */; };
+		AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000302 /* ShapeAlphaTests.swift */; };
+		AC0000000000000000000403 /* TileGeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000303 /* TileGeometryTests.swift */; };
+		AC0000000000000000000404 /* MapActivityShapesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000304 /* MapActivityShapesTests.swift */; };
+		AC0000000000000000000405 /* MapActivitySelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000305 /* MapActivitySelectionTests.swift */; };
+		AC0000000000000000000406 /* MapRenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000306 /* MapRenderingTests.swift */; };
+		AC0000000000000000000208 /* MapActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000108 /* MapActivity.swift */; };
+		AC0000000000000000000209 /* ActivityRenderPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000109 /* ActivityRenderPlan.swift */; };
+		AC000000000000000000020A /* ActivityOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010A /* ActivityOverlayBuilder.swift */; };
+		AC000000000000000000020B /* ActivityCountAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010B /* ActivityCountAnnotationView.swift */; };
+		AC0000000000000000000407 /* ActivityRenderPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000307 /* ActivityRenderPlanTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,8 +156,6 @@
 		A96639871BD56A2C004E2537 /* monitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = monitorUITests.swift; sourceTree = "<group>"; };
 		A96639891BD56A2C004E2537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96639951BD56B6D004E2537 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlay.swift; path = mapview/overlay/StrikeOverlay.swift; sourceTree = "<group>"; };
-		A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlayRenderer.swift; path = mapview/view/StrikeOverlayRenderer.swift; sourceTree = "<group>"; };
 		A96639A71BD56EE8004E2537 /* RasterElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterElement.swift; path = data/RasterElement.swift; sourceTree = "<group>"; };
 		A96639A81BD56EE8004E2537 /* RasterParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterParameters.swift; path = data/RasterParameters.swift; sourceTree = "<group>"; };
 		A96639A91BD56EE8004E2537 /* Strike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Strike.swift; path = data/Strike.swift; sourceTree = "<group>"; };
@@ -183,6 +195,22 @@
 		AB0000000000000000000306 /* GridGatingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridGatingTests.swift; path = GridGatingTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000307 /* CountThresholdTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CountThresholdTests.swift; path = CountThresholdTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModeRefreshSchedulerTests.swift; path = ModeRefreshSchedulerTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000101 /* ColorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorHandler.swift; path = mapview/color/ColorHandler.swift; sourceTree = "<group>"; };
+		AC0000000000000000000102 /* ShapeAlpha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlpha.swift; path = mapview/ShapeAlpha.swift; sourceTree = "<group>"; };
+		AC0000000000000000000103 /* TileGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileGeometry.swift; path = mapview/TileGeometry.swift; sourceTree = "<group>"; };
+		AC0000000000000000000104 /* MapActivityShapes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivityShapes.swift; path = mapview/MapActivityShapes.swift; sourceTree = "<group>"; };
+		AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivitySelectionAnnotationView.swift; path = mapview/view/ActivitySelectionAnnotationView.swift; sourceTree = "<group>"; };
+		AC0000000000000000000301 /* ColorSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorSchemeTests.swift; path = ColorSchemeTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000302 /* ShapeAlphaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlphaTests.swift; path = ShapeAlphaTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000303 /* TileGeometryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileGeometryTests.swift; path = TileGeometryTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000304 /* MapActivityShapesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivityShapesTests.swift; path = MapActivityShapesTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000305 /* MapActivitySelectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivitySelectionTests.swift; path = MapActivitySelectionTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000306 /* MapRenderingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapRenderingTests.swift; path = MapRenderingTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000108 /* MapActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivity.swift; path = mapview/MapActivity.swift; sourceTree = "<group>"; };
+		AC0000000000000000000109 /* ActivityRenderPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityRenderPlan.swift; path = mapview/ActivityRenderPlan.swift; sourceTree = "<group>"; };
+		AC000000000000000000010A /* ActivityOverlayBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityOverlayBuilder.swift; path = mapview/view/ActivityOverlayBuilder.swift; sourceTree = "<group>"; };
+		AC000000000000000000010B /* ActivityCountAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityCountAnnotationView.swift; path = mapview/view/ActivityCountAnnotationView.swift; sourceTree = "<group>"; };
+		AC0000000000000000000307 /* ActivityRenderPlanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityRenderPlanTests.swift; path = ActivityRenderPlanTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */,
+				AC0000000000000000000101 /* ColorHandler.swift */,
 			);
 			name = color;
 			sourceTree = "<group>";
@@ -327,6 +356,13 @@
 				AB0000000000000000000306 /* GridGatingTests.swift */,
 				AB0000000000000000000307 /* CountThresholdTests.swift */,
 				AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */,
+				AC0000000000000000000301 /* ColorSchemeTests.swift */,
+				AC0000000000000000000302 /* ShapeAlphaTests.swift */,
+				AC0000000000000000000303 /* TileGeometryTests.swift */,
+				AC0000000000000000000304 /* MapActivityShapesTests.swift */,
+				AC0000000000000000000305 /* MapActivitySelectionTests.swift */,
+				AC0000000000000000000306 /* MapRenderingTests.swift */,
+				AC0000000000000000000307 /* ActivityRenderPlanTests.swift */,
 				A966397C1BD56A2C004E2537 /* monitorTests.swift */,
 				A966397E1BD56A2C004E2537 /* Info.plist */,
 			);
@@ -348,6 +384,11 @@
 				A96639A11BD56E97004E2537 /* overlay */,
 				A96639A01BD56E8D004E2537 /* view */,
 				2DC17E515D78B3496817F744 /* color */,
+				AC0000000000000000000102 /* ShapeAlpha.swift */,
+				AC0000000000000000000103 /* TileGeometry.swift */,
+				AC0000000000000000000104 /* MapActivityShapes.swift */,
+				AC0000000000000000000108 /* MapActivity.swift */,
+				AC0000000000000000000109 /* ActivityRenderPlan.swift */,
 			);
 			name = mapview;
 			sourceTree = "<group>";
@@ -355,7 +396,9 @@
 		A96639A01BD56E8D004E2537 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */,
+				AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */,
+				AC000000000000000000010A /* ActivityOverlayBuilder.swift */,
+				AC000000000000000000010B /* ActivityCountAnnotationView.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -363,7 +406,6 @@
 		A96639A11BD56E97004E2537 /* overlay */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */,
 			);
 			name = overlay;
 			sourceTree = "<group>";
@@ -559,10 +601,17 @@
 				AB0000000000000000000204 /* ViewExtent+MapKit.swift in Sources */,
 				AB0000000000000000000205 /* LocalData.swift in Sources */,
 				AB0000000000000000000206 /* ModeRefreshScheduler.swift in Sources */,
-				A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */,
+				AC0000000000000000000201 /* ColorHandler.swift in Sources */,
+				AC0000000000000000000202 /* ShapeAlpha.swift in Sources */,
+				AC0000000000000000000203 /* TileGeometry.swift in Sources */,
+				AC0000000000000000000204 /* MapActivityShapes.swift in Sources */,
+				AC0000000000000000000207 /* ActivitySelectionAnnotationView.swift in Sources */,
+				AC0000000000000000000208 /* MapActivity.swift in Sources */,
+				AC0000000000000000000209 /* ActivityRenderPlan.swift in Sources */,
+				AC000000000000000000020A /* ActivityOverlayBuilder.swift in Sources */,
+				AC000000000000000000020B /* ActivityCountAnnotationView.swift in Sources */,
 				A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */,
 				A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */,
-				A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */,
 				A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */,
 				A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */,
 				A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */,
@@ -606,6 +655,13 @@
 				AB0000000000000000000406 /* GridGatingTests.swift in Sources */,
 				AB0000000000000000000407 /* CountThresholdTests.swift in Sources */,
 				AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */,
+				AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */,
+				AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */,
+				AC0000000000000000000403 /* TileGeometryTests.swift in Sources */,
+				AC0000000000000000000404 /* MapActivityShapesTests.swift in Sources */,
+				AC0000000000000000000405 /* MapActivitySelectionTests.swift in Sources */,
+				AC0000000000000000000406 /* MapRenderingTests.swift in Sources */,
+				AC0000000000000000000407 /* ActivityRenderPlanTests.swift in Sources */,
 				A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

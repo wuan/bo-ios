@@ -38,6 +38,14 @@ public final class SettingsViewController: UIViewController {
     private let endpointLabel = UILabel()
     private let endpointField = UITextField()
     private let endpointHint = UILabel()
+    private let colorSchemeLabel = UILabel()
+    private let colorSchemeControl = UISegmentedControl(items: ColorScheme.allCases.map {
+        NSLocalizedString("settings.scheme.\($0.rawValue.lowercased())", comment: "Colour scheme name")
+    })
+    private let mapModeLabel = UILabel()
+    private let mapModeControl = UISegmentedControl(items: SettingsViewController.mapModes.map {
+        NSLocalizedString("settings.mapmode.\($0)", comment: "Map type name")
+    })
     private let usernameLabel = UILabel()
     private let usernameField = UITextField()
     private let passwordLabel = UILabel()
@@ -104,6 +112,16 @@ public final class SettingsViewController: UIViewController {
         endpointHint.textColor = .secondaryLabel
         endpointHint.numberOfLines = 0
 
+        colorSchemeLabel.text = NSLocalizedString("settings.colorscheme", comment: "Label for the colour scheme selector")
+        colorSchemeLabel.font = .preferredFont(forTextStyle: .subheadline)
+        colorSchemeControl.accessibilityIdentifier = "settings.colorscheme"
+        colorSchemeControl.addTarget(self, action: #selector(colorSchemeChanged), for: .valueChanged)
+
+        mapModeLabel.text = NSLocalizedString("settings.mapmode", comment: "Label for the map type selector")
+        mapModeLabel.font = .preferredFont(forTextStyle: .subheadline)
+        mapModeControl.accessibilityIdentifier = "settings.mapmode"
+        mapModeControl.addTarget(self, action: #selector(mapModeChanged), for: .valueChanged)
+
         usernameLabel.text = NSLocalizedString("settings.username", comment: "Label for the username field")
         usernameLabel.font = .preferredFont(forTextStyle: .subheadline)
 
@@ -134,6 +152,10 @@ public final class SettingsViewController: UIViewController {
             endpointLabel,
             endpointField,
             endpointHint,
+            colorSchemeLabel,
+            colorSchemeControl,
+            mapModeLabel,
+            mapModeControl,
             usernameLabel,
             usernameField,
             passwordLabel,
@@ -159,11 +181,24 @@ public final class SettingsViewController: UIViewController {
         sourceControl.selectedSegmentIndex = DataProviderType.allCases.firstIndex(of: type) ?? 0
         endpointField.text = settings.string(for: .serviceEndpoint)
 
+        let scheme = ColorScheme(rawValue: settings.string(for: .colorScheme)) ?? .blitzortung
+        colorSchemeControl.selectedSegmentIndex = ColorScheme.allCases.firstIndex(of: scheme) ?? 0
+        mapModeControl.selectedSegmentIndex = SettingsViewController.mapModes.firstIndex(of: mapModeSetting) ?? 0
+
         let credentials = credentialStore.load()
         usernameField.text = credentials.username
         passwordField.text = credentials.password
 
         updateHint()
+    }
+
+    /// The map types the selector offers.
+    static let mapModes = ["hybrid", "satellite", "standard"]
+
+    /// The stored map type, defaulting to the hybrid map.
+    private var mapModeSetting: String {
+        let stored = settings.string(for: .mapMode)
+        return SettingsViewController.mapModes.contains(stored) ? stored : SettingsViewController.mapModes[0]
     }
 
     private var selectedType: DataProviderType {
@@ -182,6 +217,20 @@ public final class SettingsViewController: UIViewController {
 
     @objc private func sourceChanged() {
         updateHint()
+    }
+
+    /// Applies a scheme change immediately, so the map behind the sheet redraws.
+    @objc private func colorSchemeChanged() {
+        let index = colorSchemeControl.selectedSegmentIndex
+        guard index >= 0, index < ColorScheme.allCases.count else { return }
+        settings.set(ColorScheme.allCases[index].rawValue, for: .colorScheme)
+    }
+
+    /// Applies a map type change immediately, so the map behind the sheet redraws.
+    @objc private func mapModeChanged() {
+        let index = mapModeControl.selectedSegmentIndex
+        guard index >= 0, index < SettingsViewController.mapModes.count else { return }
+        settings.set(SettingsViewController.mapModes[index], for: .mapMode)
     }
 
     @objc private func save() {

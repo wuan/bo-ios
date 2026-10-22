@@ -97,6 +97,23 @@ final class SettingsStoreTests: XCTestCase {
         XCTAssertEqual(store.string(for: .serviceEndpoint), "")
     }
 
+    func testColorSchemeDefaultsToBlitzortung() {
+        let store = SettingsStore(defaults: defaults)
+        XCTAssertEqual(store.string(for: .colorScheme), "BLITZORTUNG")
+        XCTAssertEqual(ColorScheme(rawValue: store.string(for: .colorScheme)), ColorScheme.blitzortung)
+    }
+
+    func testColorSchemeChangePersistsAndResets() {
+        let store = SettingsStore(defaults: defaults)
+        store.set(ColorScheme.temperature.rawValue, for: .colorScheme)
+
+        let reloaded = SettingsStore(defaults: defaults)
+        XCTAssertEqual(reloaded.string(for: .colorScheme), "TEMPERATURE")
+
+        reloaded.reset()
+        XCTAssertEqual(reloaded.string(for: .colorScheme), "BLITZORTUNG")
+    }
+
     func testObserverNotifiedForChangedKey() {
         let store = SettingsStore(defaults: defaults)
         let changed = expectation(description: "observer notified")

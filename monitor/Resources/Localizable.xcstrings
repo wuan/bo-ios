@@ -1,242 +1,352 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "animation.start" : {
-      "comment" : "Start or stop animation playback",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animate"
+  "sourceLanguage": "en",
+  "strings": {
+    "animation.start": {
+      "comment": "Start or stop animation playback",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animate"
           }
         }
       }
     },
-    "animation.stop" : {
-      "comment" : "Start or stop animation playback",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop"
+    "animation.stop": {
+      "comment": "Start or stop animation playback",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
           }
         }
       }
     },
-    "mode.animation" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animation"
+    "mode.animation": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animation"
           }
         }
       }
     },
-    "mode.history" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
+    "mode.history": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
           }
         }
       }
     },
-    "mode.realtime" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Realtime"
+    "mode.realtime": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Realtime"
           }
         }
       }
     },
-    "settings.close" : {
-      "comment" : "Close settings button",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
+    "selection.strike": {
+      "comment": "Strike details popup for a single strike: time and position",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (%.4f %.4f)"
           }
         }
       }
     },
-    "settings.endpoint" : {
-      "comment" : "Label for the service endpoint field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Service URL"
+    "selection.tile": {
+      "comment": "Strike details popup for a grid cell: time and count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, #%d"
           }
         }
       }
     },
-    "settings.endpoint.placeholder" : {
-      "comment" : "Placeholder for the service endpoint field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave empty to use the default"
+    "settings.close": {
+      "comment": "Close settings button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         }
       }
     },
-    "settings.endpoint.resolved" : {
-      "comment" : "Shows the endpoint that will be used",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Using: %@"
+    "settings.colorscheme": {
+      "comment": "Label for the colour scheme selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colour scheme"
           }
         }
       }
     },
-    "settings.open" : {
-      "comment" : "Button opening the data source settings",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.endpoint": {
+      "comment": "Label for the service endpoint field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service URL"
           }
         }
       }
     },
-    "settings.password" : {
-      "comment" : "Label for the password field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password"
+    "settings.endpoint.placeholder": {
+      "comment": "Placeholder for the service endpoint field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave empty to use the default"
           }
         }
       }
     },
-    "settings.save" : {
-      "comment" : "Save settings button",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "settings.endpoint.resolved": {
+      "comment": "Shows the endpoint that will be used",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Using: %@"
           }
         }
       }
     },
-    "settings.source" : {
-      "comment" : "Label for the data source selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.mapmode": {
+      "comment": "Label for the map type selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
           }
         }
       }
     },
-    "settings.source.http" : {
-      "comment" : "Blitzortung HTTP data source name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HTTP"
+    "settings.mapmode.hybrid": {
+      "comment": "Map type name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid"
           }
         }
       }
     },
-    "settings.source.rpc" : {
-      "comment" : "JSON-RPC data source name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "JSON-RPC"
+    "settings.mapmode.satellite": {
+      "comment": "Map type name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satellite"
           }
         }
       }
     },
-    "settings.title" : {
-      "comment" : "Settings screen title",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.mapmode.standard": {
+      "comment": "Map type name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Street map"
           }
         }
       }
     },
-    "settings.username" : {
-      "comment" : "Label for the username field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Username"
+    "settings.open": {
+      "comment": "Button opening the data source settings",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
           }
         }
       }
     },
-    "status.intervalStart" : {
-      "comment" : "Status line showing the start time of the selected interval",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "@ %@"
+    "settings.password": {
+      "comment": "Label for the password field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password"
           }
         }
       }
     },
-    "status.refreshCountdown" : {
-      "comment" : "Status line refresh countdown, e.g. 12/60 s",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld/%lld s"
+    "settings.save": {
+      "comment": "Save settings button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
           }
         }
       }
     },
-    "status.strikeCount" : {
-      "comment" : "Status line showing strike count and interval in minutes",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld strikes/%lld minutes"
+    "settings.scheme.blitzortung": {
+      "comment": "Colour scheme name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blitzortung"
           }
         }
       }
     },
-    "status.unavailable" : {
-      "comment" : "Status line shown before the first data arrives",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "n/a"
+    "settings.scheme.rainbow": {
+      "comment": "Colour scheme name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow"
+          }
+        }
+      }
+    },
+    "settings.scheme.temperature": {
+      "comment": "Colour scheme name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature"
+          }
+        }
+      }
+    },
+    "settings.source": {
+      "comment": "Label for the data source selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
+          }
+        }
+      }
+    },
+    "settings.source.http": {
+      "comment": "Blitzortung HTTP data source name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTP"
+          }
+        }
+      }
+    },
+    "settings.source.rpc": {
+      "comment": "JSON-RPC data source name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON-RPC"
+          }
+        }
+      }
+    },
+    "settings.title": {
+      "comment": "Settings screen title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
+          }
+        }
+      }
+    },
+    "settings.username": {
+      "comment": "Label for the username field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Username"
+          }
+        }
+      }
+    },
+    "status.intervalStart": {
+      "comment": "Status line showing the start time of the selected interval",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "@ %@"
+          }
+        }
+      }
+    },
+    "status.refreshCountdown": {
+      "comment": "Status line refresh countdown, e.g. 12/60 s",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld s"
+          }
+        }
+      }
+    },
+    "status.strikeCount": {
+      "comment": "Status line showing strike count and interval in minutes",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld strikes/%lld minutes"
+          }
+        }
+      }
+    },
+    "status.unavailable": {
+      "comment": "Status line shown before the first data arrives",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n/a"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

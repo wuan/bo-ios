@@ -30,6 +30,7 @@ public enum SettingsKey: String, CaseIterable {
     case alertEnabled
     case mapScale
     case mapFade
+    case colorScheme
 
     /// Values used when a setting has never been changed by the user.
     public static var defaultValues: [String: Any] {
@@ -41,6 +42,7 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.alertEnabled.rawValue: true,
             SettingsKey.mapScale.rawValue: 75,
             SettingsKey.mapFade.rawValue: 55,
+            SettingsKey.colorScheme.rawValue: ColorScheme.blitzortung.rawValue,
         ]
     }
 }
