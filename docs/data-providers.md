@@ -2,7 +2,7 @@
 
 How the iOS app fetches lightning data, and how that behaviour is configured.
 This documents the `data-providers` capability delivered by the
-[`ios-data-providers`](../openspec/changes/ios-data-providers/proposal.md) change.
+[`ios-data-providers`](../openspec/changes/archive/2026-10-22-ios-data-providers/proposal.md) change.
 
 ## Selecting the source
 

@@ -1,6 +1,6 @@
 # iOS foundation
 
-Phase 0 of the [Android feature-parity roadmap](../openspec/changes/android-feature-parity/proposal.md) establishes a shared foundation for later phases. It is delivered by the [`ios-foundation`](../openspec/changes/ios-foundation/proposal.md) change.
+Phase 0 of the [Android feature-parity roadmap](parity-roadmap.md) establishes a shared foundation for later phases. It is delivered by the [`ios-foundation`](../openspec/changes/archive/2026-10-22-ios-foundation/proposal.md) change.
 
 ## Module layout
 

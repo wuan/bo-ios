@@ -1,4 +1,8 @@
-# Spec Delta
+# Proximity alerts (capability sketch)
+
+Planned capability for the [parity roadmap](../parity-roadmap.md). Lift these
+requirements into `openspec/changes/<phase>/specs/proximity-alerts/spec.md` when the phase
+starts; the delta headers are intentional.
 
 ## Purpose
 

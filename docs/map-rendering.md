@@ -2,7 +2,7 @@
 
 How the iOS app draws lightning activity on the map. This documents the
 `map-rendering` capability delivered by the
-[`ios-map-rendering`](../openspec/changes/ios-map-rendering/proposal.md) change.
+[`ios-map-rendering`](../openspec/changes/archive/2026-10-22-ios-map-rendering/proposal.md) change.
 
 ## Shapes
 

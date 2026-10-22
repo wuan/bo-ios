@@ -1,4 +1,8 @@
-# Spec Delta
+# Localization (capability sketch)
+
+Planned capability for the [parity roadmap](../parity-roadmap.md). Lift these
+requirements into `openspec/changes/<phase>/specs/localization/spec.md` when the phase
+starts; the delta headers are intentional.
 
 ## Purpose
 

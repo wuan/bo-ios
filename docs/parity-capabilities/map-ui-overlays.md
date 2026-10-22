@@ -1,4 +1,8 @@
-# Spec Delta
+# Map UI overlays (capability sketch)
+
+Planned capability for the [parity roadmap](../parity-roadmap.md). Lift these
+requirements into `openspec/changes/<phase>/specs/map-ui-overlays/spec.md` when the phase
+starts; the delta headers are intentional.
 
 ## Purpose
 

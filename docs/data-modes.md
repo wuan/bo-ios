@@ -2,7 +2,7 @@
 
 How the iOS app chooses the time range and geographic extent of the data it
 displays. This documents the `data-modes` capability delivered by the
-[`ios-data-modes`](../openspec/changes/ios-data-modes/proposal.md) change.
+[`ios-data-modes`](../openspec/changes/archive/2026-10-22-ios-data-modes/proposal.md) change.
 
 ## Modes
 
