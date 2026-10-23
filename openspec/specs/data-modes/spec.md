@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Controls which time range and geographic extent of lightning data the app displays, covering realtime, historical, and animated playback modes and the region, grid, and threshold selection that accompanies them.
+Controls which time range and geographic extent of lightning data the app displays, covering realtime, historical, and animated playback modes and the region and grid selection that accompanies them.
 
 ## Requirements
 
@@ -71,17 +71,6 @@ The app SHALL derive a quantized local data area and SHALL select a grid size ap
 #### Scenario: Large extent falls back to global
 - **WHEN** the visible extent is too large for a local data area
 - **THEN** the app uses global data instead
-
-### Requirement: Count threshold filtering
-The app SHALL support a count threshold that hides grid cells whose strike count is below the threshold, and SHALL treat a zero threshold as inactive.
-
-#### Scenario: Threshold hides sparse cells
-- **WHEN** a count threshold greater than zero is set
-- **THEN** only grid cells whose counts meet or exceed the threshold are displayed
-
-#### Scenario: Zero threshold inactive
-- **WHEN** the count threshold is zero
-- **THEN** no cells are filtered out
 
 ### Requirement: Grid requests respect source capability
 The app SHALL issue grid-data requests only when the active data source supports grid data, and SHALL otherwise request the non-grid strike representation.
