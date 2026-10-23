@@ -75,6 +75,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     var timeSlider: UISlider!
     var animationButton: UIButton!
     var modeLabel: UILabel!
+    var rangeStartLabel: UILabel!
+    var rangeEndLabel: UILabel!
 
     /// The chrome framing the map.
     var legendView: LegendView!
@@ -246,7 +248,28 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         modeRow.alignment = .firstBaseline
         modeRow.translatesAutoresizingMaskIntoConstraints = false
 
-        let controls = UIStackView(arrangedSubviews: [modeRow, timeSlider])
+        // The slider spans the history range, so its ends are labelled: the
+        // oldest selectable interval on the left, the present on the right.
+        rangeStartLabel = UILabel()
+        rangeStartLabel.translatesAutoresizingMaskIntoConstraints = false
+        rangeStartLabel.accessibilityIdentifier = "time.range.start"
+        rangeStartLabel.font = .preferredFont(forTextStyle: .caption2)
+        rangeStartLabel.textColor = .secondaryLabel
+        rangeStartLabel.text = ViewController.rangeStartText
+
+        rangeEndLabel = UILabel()
+        rangeEndLabel.translatesAutoresizingMaskIntoConstraints = false
+        rangeEndLabel.accessibilityIdentifier = "time.range.end"
+        rangeEndLabel.font = .preferredFont(forTextStyle: .caption2)
+        rangeEndLabel.textColor = .secondaryLabel
+        rangeEndLabel.text = NSLocalizedString("time.range.now", comment: "History slider end: the present")
+
+        let rangeRow = UIStackView(arrangedSubviews: [rangeStartLabel, rangeEndLabel])
+        rangeRow.axis = .horizontal
+        rangeRow.distribution = .equalSpacing
+        rangeRow.translatesAutoresizingMaskIntoConstraints = false
+
+        let controls = UIStackView(arrangedSubviews: [modeRow, timeSlider, rangeRow])
         controls.axis = .vertical
         controls.spacing = 8
         controls.translatesAutoresizingMaskIntoConstraints = false
@@ -254,6 +277,14 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         view.addSubview(controls)
 
         self.modeControls = controls
+    }
+
+    /// The label for the oldest end of the history range, e.g. `-24 h`.
+    static var rangeStartText: String {
+        let hours = History.maxRange / 60
+        return String(format: NSLocalizedString("time.range.start",
+                                                comment: "History slider start, e.g. -24 h"),
+                      hours)
     }
 
     private var modeControls: UIStackView!

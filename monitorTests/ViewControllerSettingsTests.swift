@@ -130,4 +130,12 @@ final class ViewControllerSettingsTests: XCTestCase {
         XCTAssertEqual(controller.requestCurrentParameters().region, Parameters.globalRegion)
         XCTAssertEqual(controller.activeRegionName, "Local")
     }
+
+    // MARK: - Mode controls
+
+    func testTheSliderRangeIsLabelledFromHistoryToNow() {
+        XCTAssertEqual(ViewController.rangeStartText, "-24 h")
+        XCTAssertEqual(controller.rangeStartLabel.text, "-24 h")
+        XCTAssertEqual(controller.rangeEndLabel.text, "now")
+    }
 }
