@@ -233,7 +233,20 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         animationButton.accessibilityIdentifier = "animation.toggle"
         animationButton.addTarget(self, action: #selector(animationToggled), for: .touchUpInside)
 
-        let controls = UIStackView(arrangedSubviews: [modeLabel, timeSlider, animationButton])
+        // The mode name and the animation control share one line, so the button
+        // does not take a row of its own; the label absorbs the free space and
+        // the button sits at the trailing edge.
+        modeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        animationButton.setContentHuggingPriority(.required, for: .horizontal)
+        animationButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let modeRow = UIStackView(arrangedSubviews: [modeLabel, animationButton])
+        modeRow.axis = .horizontal
+        modeRow.spacing = 8
+        modeRow.alignment = .firstBaseline
+        modeRow.translatesAutoresizingMaskIntoConstraints = false
+
+        let controls = UIStackView(arrangedSubviews: [modeRow, timeSlider])
         controls.axis = .vertical
         controls.spacing = 8
         controls.translatesAutoresizingMaskIntoConstraints = false
