@@ -46,7 +46,11 @@ public final class SystemAlertSignaller: AlertSignalling {
 }
 
 /// The notification centre, behind ``AlertNotifying``.
-public final class LocalAlertNotifier: AlertNotifying {
+///
+/// Also the centre's delegate, so a notification raised while the app is open is
+/// presented rather than swallowed: the app only evaluates the alert in the
+/// foreground, so without this the notification limit would never be visible.
+public final class LocalAlertNotifier: NSObject, AlertNotifying, UNUserNotificationCenterDelegate {
 
     private let center: UNUserNotificationCenter
     private let measurementUnit: () -> MeasurementUnit
@@ -55,6 +59,8 @@ public final class LocalAlertNotifier: AlertNotifying {
                 measurementUnit: @escaping () -> MeasurementUnit = { .metric }) {
         self.center = center
         self.measurementUnit = measurementUnit
+        super.init()
+        center.delegate = self
     }
 
     /// Asks for the authorisation a notification needs.
@@ -81,5 +87,12 @@ public final class LocalAlertNotifier: AlertNotifying {
                                            content: content,
                                            trigger: nil)
         center.add(request)
+    }
+
+    /// Presents an alert's notification while the app is open.
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       willPresent notification: UNNotification,
+                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
     }
 }

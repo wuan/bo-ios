@@ -66,11 +66,15 @@ HTTP source and the live sweep across history/animation and both grid extremes w
 never observed by hand (recorded when the change was archived). Later phases should
 fold those checks into their manual pass.
 
-Open residual from Phase 5: the alert's mark and the notification were not observed
-in the simulator against live data, because the live backend was unreachable while
-the phase was verified; the audible signal and the felt vibration need a device.
-A later pass should press a location into live data with the limits opened up and
-confirm the radar's alert mark, the notification, the sound, and the haptics.
+Open residual from Phase 5: the radar's alert mark was observed in the simulator
+against live data (with the limits opened up, the mark showed and the run kept a
+screenshot), and the decision behind it is covered by the monitor's unit tests and
+the controller's integration tests, including the mark clearing when the activity
+leaves the range. Unobserved: the notification banner - the app asking for
+authorisation is verified, the request it posts is unit-tested, but whether a
+strike qualifies is data-dependent and the rendered banner did not appear to the
+UI test's queries; and the audible signal and the felt vibration, which need a
+device.
 
 ## Remaining phases
 

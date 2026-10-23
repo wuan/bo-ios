@@ -15,11 +15,11 @@
 
 ## 3. The system effects
 
-- [ ] 3.1 Implement `SystemAlertSignaller` (haptics at the stored strength, and a sound only when one is configured) and `LocalAlertNotifier` (a notification carrying the closest strike, asking for notification authorisation when alerts are switched on); verified by unit tests over the stored strength and sound reaching the ports, by a simulator check that a notification is delivered when a qualifying strike arrives, and by recording the audible and haptic effect as a device check.
+- [ ] 3.1 Implement `SystemAlertSignaller` (haptics at the stored strength, and a sound only when one is configured) and `LocalAlertNotifier` (a notification carrying the closest strike, asking for notification authorisation the first time alerts are on and a location is known); verified by unit tests over the stored strength and sound reaching the ports, by a simulator check that a notification is delivered when a qualifying strike arrives, and by recording the audible and haptic effect as a device check.
 
 ## 4. The radar's alert indication
 
-- [ ] 4.1 Extend the radar's content and view with the alert indication, leaving its activity states as they are; verified by unit tests that the content carries the alert while one is active and not once it is cancelled, and by a simulator check that the radar marks it.
+- [x] 4.1 Extend the radar's content and view with the alert indication, leaving its activity states as they are; verified by unit tests that the content carries the alert while one is active and not once it is cancelled, and by a simulator check that the radar marks it.
 
 ## 5. Wiring
 
@@ -40,18 +40,31 @@
 
 ## Residuals
 
-Tasks 3.1, 4.1, and 7.2 each also ask for a simulator observation, and 3.1 for a
-device one. Neither could be made:
+The radar's alert mark is verified in the simulator against live data: with the
+limits opened up, a location pressed into the live data area showed the mark
+(`testAnActiveAlertMarksTheRadar`), and the run kept a screenshot. The live UI
+tests that had been skipping now pass with the backend back.
 
-- The live backend became unreachable partway through the phase (`curl` returns
-  no response), so every check that needs realtime strikes now skips: the radar's
-  alert mark, the notification, and the alert's clearing. The decision behind all
-  three is covered by `ProximityAlertMonitorTests` and by the controller
-  integration tests through the real content builder.
+Still outstanding for tasks 3.1 and 7.2:
+
+- The notification banner was not observed. That the app asks for authorisation
+  once alerts are on and a location is known is verified
+  (`testAlertsAskForTheNotificationAuthorisationOnceALocationIsKnown`, with a
+  screenshot of the prompt, run against a freshly installed app because the
+  decision is per install; the test skips when it has already been answered), and
+  the controller asks only with a location. Whether a strike qualifies is
+  data-dependent, though, and the system-rendered banner never appeared to the UI
+  test's queries in three attempts.
 - The audible signal and the felt vibration need a device, not a simulator.
 
-Both are recorded in `docs/parity-roadmap.md` as the phase's open residual; the
-implementation tasks themselves are complete.
+The mark's own live check is data-dependent too: it passed once with a screenshot
+(`testAnActiveAlertMarksTheRadar`) and now skips when the live window has no
+activity within range of the pressed point, which is what it was changed to do.
+
+The alert's clearing is covered by `ProximityAlertMonitorTests` and by the
+controller's integration test rather than by a live UI run, which cannot age the
+same strike out of the window. What remains is recorded in
+`docs/parity-roadmap.md` as the phase's open residual.
 
 ## Workflow follow-up
 

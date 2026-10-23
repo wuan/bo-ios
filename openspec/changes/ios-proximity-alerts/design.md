@@ -39,7 +39,13 @@ See `proposal.md` - Why. What exists to build on:
 
 **The sound setting names a sound; empty means no extra signal sound.** The reference treats an empty sound as the system default notification sound. On iOS the notification already carries the system sound, so an empty setting only means the *signalling* path adds no sound of its own; a stored value is played as a system sound. Recorded as a deviation with its reason.
 
-**Authorization follows the alert switch, not the launch.** The notifier requests notification authorisation when alerts are switched on; a refusal silently drops notifications while the state reporting and the signals keep working. Asking at launch instead would put a system prompt in front of a user who has not asked for alerts, and would make every unrelated test run meet the prompt.
+**Authorization follows the first warning the app could give.** The notifier
+requests notification authorisation once, the first time alerts are on and a
+location is known - the moment the app can actually warn. Asking at launch would
+put a system prompt in front of a user the app cannot warn yet; asking only when
+the alert switch is toggled would leave a default install unauthorised forever,
+because the switch has no UI until the preferences phase. A refusal silently
+drops notifications while the state reporting and the signals keep working.
 
 ## Risks / Trade-offs
 

@@ -316,13 +316,30 @@ final class ViewControllerChromeTests: XCTestCase {
         XCTAssertEqual(controller.radarContent?.alert, false)
     }
 
-    func testSwitchingAlertsOnAsksForTheNotificationAuthorisation() {
+    func testAlertsAskForTheNotificationAuthorisationOnceALocationIsKnown() {
         settings.set(false, for: .alertEnabled)
-        XCTAssertEqual(notifier.authorizationRequests, 0)
+        source.setLocation(Location(latitude: 50.5, longitude: 10.5))
+
+        XCTAssertEqual(notifier.authorizationRequests, 0,
+                       "alerts are off, so there is nothing to ask for")
 
         settings.set(true, for: .alertEnabled)
 
         XCTAssertEqual(notifier.authorizationRequests, 1)
+
+        // Asked once, however often the location changes afterwards.
+        source.setLocation(Location(latitude: 50.5, longitude: 10.6))
+
+        XCTAssertEqual(notifier.authorizationRequests, 1)
+    }
+
+    func testAlertsDoNotAskForAuthorisationWithoutALocation() {
+        source = ManualLocationSource(settings: settings)
+        settings.set(false, for: .alertEnabled)
+        settings.set(true, for: .alertEnabled)
+
+        XCTAssertEqual(notifier.authorizationRequests, 0,
+                       "a user the app cannot warn must not be asked")
     }
 
     func testALimitThatNoLongerCoversTheStrikeClearsTheAlert() {

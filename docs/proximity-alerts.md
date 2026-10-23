@@ -77,10 +77,12 @@ Two deliberate deviations from the reference client, both narrow:
   haptic intensity, so the stored value maps to an intensity of `0.1...1.0`
   across that range and `0` disables the haptic.
 
-The notifier asks for notification authorisation when alerts are switched on -
-not at launch, which would put a system prompt in front of a user who has not
-asked for alerts. A refusal drops the notification while the state reporting and
-the signals keep working.
+The notifier asks for notification authorisation once, the first time alerts are
+on and a location is known - the moment the app could actually warn. Asking at
+launch would prompt a user the app cannot warn yet; asking only when the switch
+is toggled would leave a default install unauthorised until the preferences phase
+provides that switch. A refusal drops the notification while the state reporting
+and the signals keep working.
 
 ## The state and the radar
 

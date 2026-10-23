@@ -709,14 +709,19 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// moments the answer can change - so a signal or a notification follows the
     /// activity rather than the chrome's refresh cadence.
     func applyAlerts() {
+        if settings.alertsEnabled, location != nil {
+            requestNotificationAuthorizationIfNeeded()
+        }
         alertState = alertMonitor.evaluate(currentAggregation())
         refreshRadar()
     }
 
-    /// Asks for the notification authorisation once, when alerts are switched on.
+    /// Asks for the notification authorisation once, the first time alerts are
+    /// on and a location is known - the moment the app could actually warn.
     ///
-    /// Asking at launch would put a system prompt in front of a user who has not
-    /// asked for alerts yet, so the request follows the switch instead.
+    /// Asking at launch would put a system prompt in front of a user the app
+    /// cannot warn yet, and asking only when the switch is toggled would leave a
+    /// default install's notifications unauthorised forever.
     func requestNotificationAuthorizationIfNeeded() {
         guard !hasRequestedNotificationAuthorization else { return }
         hasRequestedNotificationAuthorization = true
@@ -856,11 +861,9 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// limit or a switched-on alert applies without a relaunch.
     private func observeAlertSettings() {
         settingsObservers.append(settings.observe(.alertEnabled) { [weak self] in
-            guard let self = self else { return }
-            if self.settings.alertsEnabled {
-                self.requestNotificationAuthorizationIfNeeded()
-            }
-            self.applyAlerts()
+            // applyAlerts takes the authorisation request with it when alerts
+            // are on and a location is known.
+            self?.applyAlerts()
         })
         for key in [SettingsKey.notificationDistanceLimit, SettingsKey.signalingDistanceLimit,
                     SettingsKey.signalingSuppressionTime, SettingsKey.alertVibrationSignal,
