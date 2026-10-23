@@ -17,9 +17,16 @@ policy, so the content is decided - and tested - in a builder:
 | Data-area overview (above the histogram) | `DataAreaOverviewView` | `DataAreaOverviewContentBuilder` |
 | Histogram (above the time slider) | `HistogramView` | `HistogramContentBuilder` |
 
-The status row, the time slider, and the animation control keep the places they
-had; the chrome is laid out into the reference client's corners and is verified
-on the smallest supported screen (the 375 x 667 pt class).
+The status row and the bottom controls both float over a map that is full-bleed
+to all four screen edges. Each sits in a material-backed bar whose content is
+held clear of the safe area - the status row below the top safe area, so a
+Dynamic Island or notch never obscures it, and the controls above the home
+indicator - while the material itself reaches the screen edge, so the map shows
+through the translucent background. The status row keeps a single line; the
+controls are two rows, with the range labels sharing the slider's row to use less
+vertical space. The chrome is laid out into the reference client's corners and is
+verified on the smallest supported screen (the 375 x 667 pt class) as well as on a
+cutout device.
 
 Tapping the legend opens the quick-settings sheet over the map, which writes the
 same `SettingsStore` the map already observes. A change therefore applies behind

@@ -398,6 +398,68 @@ final class ViewControllerChromeTests: XCTestCase {
         XCTAssertEqual(notifier.notifications.count, 1)
         XCTAssertEqual(settings.notificationDistanceLimit, 10)
     }
+
+    // MARK: - Top status row
+
+    func testTheStatusRowSitsBelowTheTopSafeArea() {
+        XCTAssertEqual(controller.statusBar.frame.minY, controller.view.bounds.minY, accuracy: 0.5,
+                       "the material must reach the top edge so there is no seam under the cutout")
+        let statusTop = controller.view.convert(controller.statusText.bounds, from: controller.statusText).minY
+        XCTAssertEqual(statusTop, controller.view.safeAreaInsets.top, accuracy: 0.5,
+                       "the status text must clear the status bar / Dynamic Island")
+    }
+
+    func testTheMapIsFullBleedToTheTop() {
+        XCTAssertEqual(controller.mapView.frame.minY, controller.view.bounds.minY, accuracy: 0.5)
+    }
+
+    func testTheStatusBarIsDrawnOverTheMap() {
+        let centre = controller.view.convert(CGPoint(x: controller.statusText.bounds.midX,
+                                                      y: controller.statusText.bounds.midY),
+                                              from: controller.statusText)
+        let hit = controller.view.hitTest(centre, with: nil)
+        XCTAssertTrue(hit === controller.statusBar || (hit?.isDescendant(of: controller.statusBar) ?? false),
+                      "the status row must be in front of the full-bleed map, not behind it")
+    }
+
+    func testTheLegendSitsBelowTheStatusRow() {
+        let statusBottom = controller.view.convert(controller.statusText.bounds, from: controller.statusText).maxY
+        XCTAssertGreaterThan(controller.legendView.frame.minY, statusBottom)
+    }
+
+    func testTheSystemStatusBarIsShown() {
+        XCTAssertFalse(controller.prefersStatusBarHidden)
+    }
+
+    func testTheMapIsFullBleedToTheBottom() {
+        XCTAssertEqual(controller.mapView.frame.maxY, controller.view.bounds.maxY, accuracy: 0.5)
+    }
+
+    func testTheBottomControlsSitInAMaterialBarOverTheMap() {
+        XCTAssertNotNil(controller.modeBar)
+        XCTAssertTrue(controller.timeSlider.isDescendant(of: controller.modeBar))
+        let centre = controller.view.convert(CGPoint(x: controller.timeSlider.bounds.midX,
+                                                      y: controller.timeSlider.bounds.midY),
+                                              from: controller.timeSlider)
+        let hit = controller.view.hitTest(centre, with: nil)
+        XCTAssertTrue(hit === controller.modeBar || (hit?.isDescendant(of: controller.modeBar) ?? false),
+                      "the bottom bar must be in front of the full-bleed map, not behind it")
+    }
+
+    func testTheRangeLabelsShareTheSliderRow() {
+        XCTAssertTrue(controller.rangeStartLabel.superview === controller.timeSlider.superview)
+        XCTAssertTrue(controller.rangeEndLabel.superview === controller.timeSlider.superview)
+    }
+
+    func testTheBottomControlsAreTwoRows() {
+        let sliderRow = controller.timeSlider.superview as? UIStackView
+        XCTAssertEqual(sliderRow?.axis, .horizontal)
+        XCTAssertEqual(sliderRow?.arrangedSubviews.count, 3, "the range labels flank the slider")
+
+        let controls = sliderRow?.superview as? UIStackView
+        XCTAssertEqual(controls?.axis, .vertical)
+        XCTAssertEqual(controls?.arrangedSubviews.count, 2, "the compact bar is two rows tall")
+    }
 }
 
 /// Provider that records the parameters it is asked for.

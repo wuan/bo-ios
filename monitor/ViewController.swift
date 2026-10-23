@@ -70,6 +70,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private(set) var ownLocationMarker: OwnLocationMarker?
 
     var mapView: MKMapView!
+    /// The material-backed bar that floats the status row over the map.
+    var statusBar: UIVisualEffectView!
+    /// The material-backed bar that floats the mode controls over the map.
+    var modeBar: UIVisualEffectView!
     var statusText: UILabel!
     var settingsButton: UIButton!
     var timeSlider: UISlider!
@@ -175,11 +179,19 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = .white
 
+        // The status row floats over the map: a material-backed bar spanning the
+        // full width and top edge, with its content below the top safe area so a
+        // Dynamic Island or notch never obscures it.
+        statusBar = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+        statusBar.translatesAutoresizingMaskIntoConstraints = false
+        statusBar.accessibilityIdentifier = "status.bar"
+        view.addSubview(statusBar)
+
         statusText = UILabel(frame: .zero)
         statusText.translatesAutoresizingMaskIntoConstraints = false
         statusText.clearsContextBeforeDrawing = true
         statusText.accessibilityIdentifier = "status.text"
-        view.addSubview(statusText);
+        statusBar.contentView.addSubview(statusText)
 
         settingsButton = UIButton(type: .system)
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -187,7 +199,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         settingsButton.setTitle(NSLocalizedString("settings.open", comment: "Button opening the data source settings"),
                                 for: .normal)
         settingsButton.addTarget(self, action: #selector(showSettings), for: .touchUpInside)
-        view.addSubview(settingsButton)
+        statusBar.contentView.addSubview(settingsButton)
 
         mapView = MKMapView()
         mapView.mapType = ViewController.mapType(for: settings.string(for: .mapMode))
@@ -206,6 +218,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         buildModeControls()
         buildChrome()
+        // The map is full-bleed, so the status bar has to sit above it.
+        view.bringSubviewToFront(statusBar)
         constraintsInit()
         syncModeControls()
         observeRenderingSettings()
@@ -226,7 +240,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         modeLabel = UILabel()
         modeLabel.translatesAutoresizingMaskIntoConstraints = false
         modeLabel.accessibilityIdentifier = "mode.indicator"
-        modeLabel.font = .preferredFont(forTextStyle: .subheadline)
+        modeLabel.font = .preferredFont(forTextStyle: .footnote)
 
         timeSlider = UISlider()
         timeSlider.translatesAutoresizingMaskIntoConstraints = false
@@ -254,6 +268,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         // The slider spans the history range, so its ends are labelled: the
         // oldest selectable interval on the left, the present on the right.
+        // The labels share the slider's row so the bar stays two rows tall.
         rangeStartLabel = UILabel()
         rangeStartLabel.translatesAutoresizingMaskIntoConstraints = false
         rangeStartLabel.accessibilityIdentifier = "time.range.start"
@@ -267,17 +282,25 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         rangeEndLabel.textColor = .secondaryLabel
         rangeEndLabel.text = NSLocalizedString("time.range.now", comment: "History slider end: the present")
 
-        let rangeRow = UIStackView(arrangedSubviews: [rangeStartLabel, rangeEndLabel])
-        rangeRow.axis = .horizontal
-        rangeRow.distribution = .equalSpacing
-        rangeRow.translatesAutoresizingMaskIntoConstraints = false
+        let sliderRow = UIStackView(arrangedSubviews: [rangeStartLabel, timeSlider, rangeEndLabel])
+        sliderRow.axis = .horizontal
+        sliderRow.alignment = .center
+        sliderRow.spacing = 8
+        sliderRow.translatesAutoresizingMaskIntoConstraints = false
 
-        let controls = UIStackView(arrangedSubviews: [modeRow, timeSlider, rangeRow])
+        let controls = UIStackView(arrangedSubviews: [modeRow, sliderRow])
         controls.axis = .vertical
-        controls.spacing = 8
+        controls.spacing = 4
         controls.translatesAutoresizingMaskIntoConstraints = false
         controls.accessibilityIdentifier = "mode.controls"
-        view.addSubview(controls)
+
+        // The controls float over the map in a material bar, matching the top
+        // status row.
+        modeBar = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+        modeBar.translatesAutoresizingMaskIntoConstraints = false
+        modeBar.accessibilityIdentifier = "mode.bar"
+        modeBar.contentView.addSubview(controls)
+        view.addSubview(modeBar)
 
         self.modeControls = controls
     }
@@ -333,33 +356,48 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     func constraintsInit() {
         NSLayoutConstraint.activate([
-            statusText.leftAnchor.constraint(equalTo: view.leftAnchor),
-            statusText.topAnchor.constraint(equalTo: view.topAnchor),
+            statusBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            statusBar.topAnchor.constraint(equalTo: view.topAnchor),
+            statusBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            statusBar.bottomAnchor.constraint(equalTo: statusText.bottomAnchor, constant: 8),
 
-            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8),
+            // The content clears the status bar / Dynamic Island, while the
+            // material itself reaches the top edge so there is no seam under
+            // the cutout.
+            statusText.leftAnchor.constraint(equalTo: statusBar.contentView.leftAnchor, constant: 16),
+            statusText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+
+            settingsButton.rightAnchor.constraint(equalTo: statusBar.contentView.rightAnchor, constant: -8),
             settingsButton.centerYAnchor.constraint(equalTo: statusText.centerYAnchor),
             statusText.rightAnchor.constraint(lessThanOrEqualTo: settingsButton.leftAnchor, constant: -8),
 
-            mapView.leftAnchor.constraint(equalTo: statusText.leftAnchor),
-            mapView.topAnchor.constraint(equalTo: statusText.bottomAnchor),
+            mapView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            mapView.topAnchor.constraint(equalTo: view.topAnchor),
             mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            mapView.bottomAnchor.constraint(equalTo: modeControls.topAnchor, constant: -8),
+            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            modeControls.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            modeControls.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            // The bottom controls mirror the top bar: material to the bottom
+            // edge, content held above the home indicator.
+            modeBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            modeBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            modeBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            modeBar.topAnchor.constraint(equalTo: modeControls.topAnchor, constant: -8),
+
+            modeControls.leadingAnchor.constraint(equalTo: modeBar.contentView.leadingAnchor, constant: 16),
+            modeControls.trailingAnchor.constraint(equalTo: modeBar.contentView.trailingAnchor, constant: -16),
             modeControls.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
 
             // The reference's corners: legend top-left, radar bottom-left,
             // overview above the histogram bottom-right, histogram above the
-            // time slider.
+            // bottom controls bar.
             legendView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            legendView.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 8),
+            legendView.topAnchor.constraint(equalTo: statusBar.bottomAnchor, constant: 8),
 
             radarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            radarView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -8),
+            radarView.bottomAnchor.constraint(equalTo: modeBar.topAnchor, constant: -8),
 
             histogramView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
-            histogramView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -8),
+            histogramView.bottomAnchor.constraint(equalTo: modeBar.topAnchor, constant: -8),
 
             overviewView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
             overviewView.bottomAnchor.constraint(equalTo: histogramView.topAnchor, constant: -8),
@@ -1230,6 +1268,6 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         mapView.addOverlay(ActivityOverlayBuilder.dataAreaPolygon(for: rasterParameters))
     }
 
-    public override var prefersStatusBarHidden: Bool { return true }
+    public override var prefersStatusBarHidden: Bool { return false }
 
 }

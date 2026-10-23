@@ -346,8 +346,10 @@ class monitorUITests: XCTestCase {
         let map = app.descendants(matching: .any)["map.view"]
         XCTAssertTrue(map.waitForExistence(timeout: 15))
 
-        // Set a location well away from the map's centre.
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.8)).press(forDuration: 1.2)
+        // Set a location well away from the map's centre, clear of the chrome
+        // that now overlays the full-bleed map (legend top-left, radar
+        // bottom-left, overview and histogram bottom-right).
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.4)).press(forDuration: 1.2)
 
         let marker = app.descendants(matching: .any)["own.location"]
         XCTAssertTrue(marker.waitForExistence(timeout: 10), "no own-location marker after a long press")
