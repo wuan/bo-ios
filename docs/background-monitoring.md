@@ -3,7 +3,7 @@
 Running the proximity alert decision while the app is not in the foreground, so a
 qualifying strike still reaches the user with the screen off. This documents the
 `background-monitoring` capability delivered by the
-[`ios-background-monitoring`](../openspec/changes/ios-background-monitoring/proposal.md)
+[`ios-background-monitoring`](../openspec/changes/archive/2026-10-23-ios-background-monitoring/proposal.md)
 change, on top of the alert decision the
 [`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md)
 change delivered.
