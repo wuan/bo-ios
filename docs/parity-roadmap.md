@@ -40,6 +40,7 @@ implementation, are the contract.
 | 2 - Map rendering | [`ios-map-rendering`](../openspec/changes/archive/2026-10-22-ios-map-rendering/proposal.md) | `map-rendering` |
 | 3 - Map UI overlays | [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md) | `map-ui-overlays`, `location-handling` (manual path), `proximity-alerts` (aggregation), and `data-providers` and `data-modes` (modified) |
 | 4 - Location handling | [`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
+| 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
 
 Delivered foundations that later phases build on:
 
@@ -53,6 +54,8 @@ Delivered foundations that later phases build on:
 - One location seam with manual and device-backed (network, GPS, passive) modes,
   permission gating, the background-location disclosure, and the own-location
   display and centring choices.
+- Proximity alerts with the enable switch, the notification and signalling
+  limits, sound and vibration, suppression, and the alert state the radar marks.
 - Age-coloured grid tiles with per-tile counts, translucency, base-map fade,
   three colour schemes with base-map variants, zoom-aware culling, and tap
   selection with a details popup.
@@ -63,23 +66,15 @@ HTTP source and the live sweep across history/animation and both grid extremes w
 never observed by hand (recorded when the change was archived). Later phases should
 fold those checks into their manual pass.
 
+Open residual from Phase 5: the alert's mark and the notification were not observed
+in the simulator against live data, because the live backend was unreachable while
+the phase was verified; the audible signal and the felt vibration need a device.
+A later pass should press a location into live data with the limits opened up and
+confirm the radar's alert mark, the notification, the sound, and the haptics.
+
 ## Remaining phases
 
 Each phase below becomes its own change when it starts.
-
-### Phase 5 - Proximity alerts
-
-Sketch: [`proximity-alerts.md`](parity-capabilities/proximity-alerts.md) - the aggregation is already delivered.
-
-The pure sector/range aggregation with closest-strike tracking, the fixed radar
-geometry, the alert-interval window, and the aggregation states are delivered (Phase 3).
-What remains here:
-
-- Implement enable/disable gating of monitoring; verified by unit tests and manual checks.
-- Implement notification distance limit and signalling distance limit; verified by unit tests on limit boundaries.
-- Implement sound/vibration signals with configurable strength; verified by manual checks on a device.
-- Implement signal suppression for the configured duration; verified by unit tests on the suppression window.
-- Implement alert-state reporting (active/cancelled) consumed by the alarm radar; verified by integration test with simulated strikes.
 
 ### Phase 6 - Background monitoring
 

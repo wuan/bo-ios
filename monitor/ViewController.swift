@@ -90,12 +90,22 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     /// Aggregates realtime activity for the radar.
     let alertAggregator = AlertAggregator()
+    /// Turns the aggregation into the alert decision.
+    private let alertMonitor: ProximityAlertMonitor
+    /// Where an alert's notification goes.
+    let alertNotifier: AlertNotifying
+    /// Whether the notification authorisation has been asked for.
+    private var hasRequestedNotificationAuthorization = false
+    /// The alert state the monitor last reported.
+    private(set) var alertState: ProximityAlertState = .cancelled
 
     init(dataSource: DataEventSource,
          settings: SettingsStore = SettingsStore(),
          credentialStore: CredentialStore = KeychainCredentialStore(),
          locationSource: LocationSource? = nil,
-         locationSourceFactory: LocationSourceFactory = LocationSourceFactory()) {
+         locationSourceFactory: LocationSourceFactory = LocationSourceFactory(),
+         alertSignaller: AlertSignalling? = nil,
+         alertNotifier: AlertNotifying? = nil) {
         self.dataSource = dataSource
         self.settings = settings
         self.credentialStore = credentialStore
@@ -103,6 +113,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         self.activeLocationMode = settings.locationMode
         self.locationSource = locationSource ?? locationSourceFactory.makeSource(for: settings.locationMode,
                                                                                settings: settings)
+        self.alertNotifier = alertNotifier ?? LocalAlertNotifier(measurementUnit: { settings.measurementUnit })
+        self.alertMonitor = ProximityAlertMonitor(settings: settings,
+                                                  signaller: alertSignaller ?? SystemAlertSignaller(),
+                                                  notifier: self.alertNotifier)
         self.regionSetting = settings.choice(for: .region)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(nibName: nil, bundle: nil)
@@ -128,6 +142,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         self.activeLocationMode = settings.locationMode
         self.locationSource = LocationSourceFactory().makeSource(for: settings.locationMode,
                                                                 settings: settings)
+        self.alertNotifier = LocalAlertNotifier()
+        self.alertMonitor = ProximityAlertMonitor(settings: settings,
+                                                  signaller: SystemAlertSignaller(),
+                                                  notifier: self.alertNotifier)
         self.regionSetting = settings.choice(for: .region)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(coder: coder)
@@ -188,6 +206,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         observeSelectableSettings()
         observeLocation()
         observeLocationDisplay()
+        observeAlertSettings()
         applyLocation()
         refreshChrome()
 
@@ -550,6 +569,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         dismissSelection()
         drawActivity()
+        applyAlerts()
         refreshChrome()
 
         if let rasterParameters = result.rasterParameters {
@@ -677,9 +697,30 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         let content = RadarContentBuilder.make(aggregation: currentAggregation(),
                                                colorHandler: colorHandler,
                                                intervalDuration: timeModel.interval.duration,
-                                               measurementUnit: settings.measurementUnit)
+                                               measurementUnit: settings.measurementUnit,
+                                               alert: alertState.isActive)
         radarContent = content
         radarView.configure(content: content)
+    }
+
+    /// Evaluates the alert decision and reflects it on the radar.
+    ///
+    /// Called when the data changes and when the location changes - the two
+    /// moments the answer can change - so a signal or a notification follows the
+    /// activity rather than the chrome's refresh cadence.
+    func applyAlerts() {
+        alertState = alertMonitor.evaluate(currentAggregation())
+        refreshRadar()
+    }
+
+    /// Asks for the notification authorisation once, when alerts are switched on.
+    ///
+    /// Asking at launch would put a system prompt in front of a user who has not
+    /// asked for alerts yet, so the request follows the switch instead.
+    func requestNotificationAuthorizationIfNeeded() {
+        guard !hasRequestedNotificationAuthorization else { return }
+        hasRequestedNotificationAuthorization = true
+        alertNotifier.requestAuthorization()
     }
 
     /// Refreshes the data-area overview from the result and the visible rect.
@@ -783,7 +824,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private func observeLocationSource() {
         locationObserver = locationSource.observe { [weak self] in
             self?.applyLocation()
-            self?.refreshRadar()
+            self?.applyAlerts()
         }
     }
 
@@ -808,7 +849,26 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         locationSource = locationSourceFactory.makeSource(for: mode, settings: settings)
         observeLocationSource()
         applyLocation()
-        refreshRadar()
+        applyAlerts()
+    }
+
+    /// Re-evaluates the alert decision when an alert setting changes, so a new
+    /// limit or a switched-on alert applies without a relaunch.
+    private func observeAlertSettings() {
+        settingsObservers.append(settings.observe(.alertEnabled) { [weak self] in
+            guard let self = self else { return }
+            if self.settings.alertsEnabled {
+                self.requestNotificationAuthorizationIfNeeded()
+            }
+            self.applyAlerts()
+        })
+        for key in [SettingsKey.notificationDistanceLimit, SettingsKey.signalingDistanceLimit,
+                    SettingsKey.signalingSuppressionTime, SettingsKey.alertVibrationSignal,
+                    SettingsKey.alertSoundSignal] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyAlerts()
+            })
+        }
     }
 
     /// Redraws the own-location marker when the location changes.

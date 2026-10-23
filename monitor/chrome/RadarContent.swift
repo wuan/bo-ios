@@ -86,17 +86,22 @@ public struct RadarContent: Equatable {
     /// The closest strike as shown, e.g. `SW 12.3 km`; `nil` when no sector
     /// holds a strike.
     public let closestStrikeText: String?
+    /// Whether an alert is active, so a warning can be told apart from activity
+    /// that is merely in range.
+    public let alert: Bool
 
     public init(state: RadarState,
                 sectors: [RadarSector],
                 ringLabels: [RadarRingLabel],
                 distanceUnit: String,
-                closestStrikeText: String?) {
+                closestStrikeText: String?,
+                alert: Bool = false) {
         self.state = state
         self.sectors = sectors
         self.ringLabels = ringLabels
         self.distanceUnit = distanceUnit
         self.closestStrikeText = closestStrikeText
+        self.alert = alert
     }
 }
 
@@ -113,11 +118,13 @@ public enum RadarContentBuilder {
     ///     colour sections divide.
     ///   - measurementUnit: the unit ring labels are shown in.
     ///   - geometry: the radar's geometry.
+    ///   - alert: whether an alert is active, which the radar marks.
     public static func make(aggregation: AlertAggregation,
                             colorHandler: ColorHandler,
                             intervalDuration: Int,
                             measurementUnit: MeasurementUnit,
-                            geometry: AlertGeometry = .standard) -> RadarContent {
+                            geometry: AlertGeometry = .standard,
+                            alert: Bool = false) -> RadarContent {
         let ringLabels = geometry.ranges.enumerated().map { index, range in
             RadarRingLabel(kilometres: range.maximum,
                            text: measurementUnit.wholeValue(kilometres: range.maximum),
@@ -129,7 +136,8 @@ public enum RadarContentBuilder {
                                 sectors: emptySectors(geometry),
                                 ringLabels: ringLabels,
                                 distanceUnit: measurementUnit.unitName,
-                                closestStrikeText: nil)
+                                closestStrikeText: nil,
+                                alert: alert)
         }
 
         let sectors = activity.sectors.map { sector -> RadarSector in
@@ -156,7 +164,8 @@ public enum RadarContentBuilder {
                             sectors: sectors,
                             ringLabels: ringLabels,
                             distanceUnit: measurementUnit.unitName,
-                            closestStrikeText: closestStrikeText)
+                            closestStrikeText: closestStrikeText,
+                            alert: alert)
     }
 
     private static func state(for aggregation: AlertAggregation) -> RadarState {

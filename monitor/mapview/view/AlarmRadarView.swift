@@ -51,7 +51,11 @@ final class AlarmRadarView: UIControl {
     /// Draws the given content, or a placeholder when there is none.
     func configure(content: RadarContent?) {
         self.content = content
-        accessibilityValue = content.map { AlarmRadarView.name(for: $0.state) }
+        accessibilityValue = content.map { content in
+            guard content.alert else { return AlarmRadarView.name(for: content.state) }
+            return "\(AlarmRadarView.name(for: content.state)), "
+                + NSLocalizedString("radar.alert", comment: "Radar accessibility value while an alert is active")
+        }
         setNeedsDisplay()
     }
 
@@ -107,6 +111,19 @@ final class AlarmRadarView: UIControl {
                                      y: center.y - radius * cos(AlarmRadarView.radians(bearing))))
             path.lineWidth = 1
             path.stroke()
+        }
+
+        // An active alert marks the face, so a warning is not mistaken for
+        // activity that is merely in range.
+        if content.alert {
+            UIColor.systemRed.setStroke()
+            let mark = UIBezierPath(arcCenter: center,
+                                    radius: radius,
+                                    startAngle: 0,
+                                    endAngle: 2 * .pi,
+                                    clockwise: true)
+            mark.lineWidth = 4
+            mark.stroke()
         }
 
         let attributes: [NSAttributedString.Key: Any] = [

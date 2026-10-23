@@ -1,809 +1,842 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "animation.start" : {
-      "comment" : "Start or stop animation playback",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animate"
+  "sourceLanguage": "en",
+  "strings": {
+    "alert.notification.body": {
+      "comment": "Body of the proximity alert notification, e.g. SW 12.3 km",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %.1f %@"
           }
         }
       }
     },
-    "animation.stop" : {
-      "comment" : "Start or stop animation playback",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop"
+    "alert.notification.title": {
+      "comment": "Title of the proximity alert notification",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lightning nearby"
           }
         }
       }
     },
-    "histogram.rate" : {
-      "comment" : "Strike rate shown above the histogram, e.g. 3.0/min",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%.1f/min"
+    "animation.start": {
+      "comment": "Start or stop animation playback",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animate"
           }
         }
       }
     },
-    "histogram.title" : {
-      "comment" : "Histogram accessibility label",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Strike rate"
+    "animation.stop": {
+      "comment": "Start or stop animation playback",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
           }
         }
       }
     },
-    "legend.over" : {
-      "comment" : "Oldest legend entry, e.g. > 60 min",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "> %d min"
+    "histogram.rate": {
+      "comment": "Strike rate shown above the histogram, e.g. 3.0/min",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f/min"
           }
         }
       }
     },
-    "legend.regionSize" : {
-      "comment" : "Local region size in degrees, e.g. 5°",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d°"
+    "histogram.title": {
+      "comment": "Histogram accessibility label",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strike rate"
           }
         }
       }
     },
-    "legend.title" : {
-      "comment" : "Legend accessibility label",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Legend"
+    "legend.over": {
+      "comment": "Oldest legend entry, e.g. > 60 min",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "> %d min"
           }
         }
       }
     },
-    "legend.under" : {
-      "comment" : "Legend entry, e.g. < 20 min",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "< %d min"
+    "legend.regionSize": {
+      "comment": "Local region size in degrees, e.g. 5°",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d°"
           }
         }
       }
     },
-    "location.own" : {
-      "comment" : "Accessibility label for the own-location marker",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Own location"
+    "legend.title": {
+      "comment": "Legend accessibility label",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legend"
           }
         }
       }
     },
-    "mode.animation" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animation"
+    "legend.under": {
+      "comment": "Legend entry, e.g. < 20 min",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "< %d min"
           }
         }
       }
     },
-    "mode.history" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
+    "location.own": {
+      "comment": "Accessibility label for the own-location marker",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Own location"
           }
         }
       }
     },
-    "mode.realtime" : {
-      "comment" : "Time mode indicator",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Realtime"
+    "mode.animation": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animation"
           }
         }
       }
     },
-    "overview.cellSize" : {
-      "comment" : "Data area cell size, e.g. 1.0 1.0",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%.1f %.1f"
+    "mode.history": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
           }
         }
       }
     },
-    "overview.range" : {
-      "comment" : "Data area range, e.g. -10.0..10.0",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%.1f..%.1f"
+    "mode.realtime": {
+      "comment": "Time mode indicator",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Realtime"
           }
         }
       }
     },
-    "overview.title" : {
-      "comment" : "Data area overview accessibility label",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data area"
+    "overview.cellSize": {
+      "comment": "Data area cell size, e.g. 1.0 1.0",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f %.1f"
           }
         }
       }
     },
-    "overview.zoom" : {
-      "comment" : "Map zoom level, e.g. Zoom 7.0",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zoom %.1f"
+    "overview.range": {
+      "comment": "Data area range, e.g. -10.0..10.0",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f..%.1f"
           }
         }
       }
     },
-    "quick.close" : {
-      "comment" : "Close quick settings button",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
+    "overview.title": {
+      "comment": "Data area overview accessibility label",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data area"
           }
         }
       }
     },
-    "quick.colorScheme" : {
-      "comment" : "Label for the colour scheme selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Colour scheme"
+    "overview.zoom": {
+      "comment": "Map zoom level, e.g. Zoom 7.0",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom %.1f"
           }
         }
       }
     },
-    "quick.dataSource" : {
-      "comment" : "Label for the data source selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "quick.close": {
+      "comment": "Close quick settings button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
           }
         }
       }
     },
-    "quick.fade" : {
-      "comment" : "Label for the base-map fade slider",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map fade"
+    "quick.colorScheme": {
+      "comment": "Label for the colour scheme selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colour scheme"
           }
         }
       }
     },
-    "quick.historicTimestep" : {
-      "comment" : "Label for the historic timestep selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Historic timestep"
+    "quick.dataSource": {
+      "comment": "Label for the data source selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
           }
         }
       }
     },
-    "quick.intervalDuration" : {
-      "comment" : "Label for the interval duration selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Time interval"
+    "quick.fade": {
+      "comment": "Label for the base-map fade slider",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map fade"
           }
         }
       }
     },
-    "quick.mapMode" : {
-      "comment" : "Label for the map mode selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map mode"
+    "quick.historicTimestep": {
+      "comment": "Label for the historic timestep selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historic timestep"
           }
         }
       }
     },
-    "quick.region" : {
-      "comment" : "Label for the region selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Region"
+    "quick.intervalDuration": {
+      "comment": "Label for the interval duration selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time interval"
           }
         }
       }
     },
-    "quick.title" : {
-      "comment" : "Quick settings sheet title",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick settings"
+    "quick.mapMode": {
+      "comment": "Label for the map mode selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map mode"
           }
         }
       }
     },
-    "radar.closestStrike" : {
-      "comment" : "Closest strike, e.g. SW 12.3 km",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ %.1f %@"
+    "quick.region": {
+      "comment": "Label for the region selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Region"
           }
         }
       }
     },
-    "radar.enlarged.title" : {
-      "comment" : "Enlarged radar title",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radar"
+    "quick.title": {
+      "comment": "Quick settings sheet title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick settings"
           }
         }
       }
     },
-    "radar.state.active" : {
-      "comment" : "Radar state: activity in range",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active"
+    "radar.alert": {
+      "comment": "Radar accessibility value while an alert is active",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "alert"
           }
         }
       }
     },
-    "radar.state.inactive" : {
-      "comment" : "Radar state: no activity in range",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No activity"
+    "radar.closestStrike": {
+      "comment": "Closest strike, e.g. SW 12.3 km",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %.1f %@"
           }
         }
       }
     },
-    "radar.state.noData" : {
-      "comment" : "Radar state: no data",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No data"
+    "radar.enlarged.title": {
+      "comment": "Enlarged radar title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radar"
           }
         }
       }
     },
-    "radar.state.noLocation" : {
-      "comment" : "Radar state: no location known",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No location"
+    "radar.state.active": {
+      "comment": "Radar state: activity in range",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
           }
         }
       }
     },
-    "radar.state.outsideDataArea" : {
-      "comment" : "Radar state: outside the data area",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outside data area"
+    "radar.state.inactive": {
+      "comment": "Radar state: no activity in range",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No activity"
           }
         }
       }
     },
-    "radar.title" : {
-      "comment" : "Alarm radar accessibility label",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lightning radar"
+    "radar.state.noData": {
+      "comment": "Radar state: no data",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No data"
           }
         }
       }
     },
-    "region.africa" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Africa"
+    "radar.state.noLocation": {
+      "comment": "Radar state: no location known",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No location"
           }
         }
       }
     },
-    "region.asia" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Asia"
+    "radar.state.outsideDataArea": {
+      "comment": "Radar state: outside the data area",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outside data area"
           }
         }
       }
     },
-    "region.centralAmerica" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "C. America"
+    "radar.title": {
+      "comment": "Alarm radar accessibility label",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lightning radar"
           }
         }
       }
     },
-    "region.europe" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Europe"
+    "region.africa": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Africa"
           }
         }
       }
     },
-    "region.global" : {
-      "comment" : "Region name: the whole globe",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Global"
+    "region.asia": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asia"
           }
         }
       }
     },
-    "region.local" : {
-      "comment" : "Region name: the visible extent",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local"
+    "region.centralAmerica": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C. America"
           }
         }
       }
     },
-    "region.northAmerica" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "N. America"
+    "region.europe": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Europe"
           }
         }
       }
     },
-    "region.oceania" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oceania"
+    "region.global": {
+      "comment": "Region name: the whole globe",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Global"
           }
         }
       }
     },
-    "region.southAmerica" : {
-      "comment" : "Region name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S. America"
+    "region.local": {
+      "comment": "Region name: the visible extent",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local"
           }
         }
       }
     },
-    "selection.strike" : {
-      "comment" : "Strike details popup for a single strike: time and position",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ (%.4f %.4f)"
+    "region.northAmerica": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N. America"
           }
         }
       }
     },
-    "selection.tile" : {
-      "comment" : "Strike details popup for a grid cell: time and count",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@, #%d"
+    "region.oceania": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oceania"
           }
         }
       }
     },
-    "settings.close" : {
-      "comment" : "Close settings button",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
+    "region.southAmerica": {
+      "comment": "Region name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S. America"
           }
         }
       }
     },
-    "settings.colorscheme" : {
-      "comment" : "Label for the colour scheme selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Colour scheme"
+    "selection.strike": {
+      "comment": "Strike details popup for a single strike: time and position",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (%.4f %.4f)"
           }
         }
       }
     },
-    "settings.endpoint" : {
-      "comment" : "Label for the service endpoint field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Service URL"
+    "selection.tile": {
+      "comment": "Strike details popup for a grid cell: time and count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, #%d"
           }
         }
       }
     },
-    "settings.endpoint.placeholder" : {
-      "comment" : "Placeholder for the service endpoint field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave empty to use the default"
+    "settings.close": {
+      "comment": "Close settings button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         }
       }
     },
-    "settings.endpoint.resolved" : {
-      "comment" : "Shows the endpoint that will be used",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Using: %@"
+    "settings.colorscheme": {
+      "comment": "Label for the colour scheme selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colour scheme"
           }
         }
       }
     },
-    "settings.mapmode" : {
-      "comment" : "Label for the map type selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map"
+    "settings.endpoint": {
+      "comment": "Label for the service endpoint field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service URL"
           }
         }
       }
     },
-    "settings.mapmode.hybrid" : {
-      "comment" : "Map type name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hybrid"
+    "settings.endpoint.placeholder": {
+      "comment": "Placeholder for the service endpoint field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave empty to use the default"
           }
         }
       }
     },
-    "settings.mapmode.satellite" : {
-      "comment" : "Map type name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Satellite"
+    "settings.endpoint.resolved": {
+      "comment": "Shows the endpoint that will be used",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Using: %@"
           }
         }
       }
     },
-    "settings.mapmode.standard" : {
-      "comment" : "Map type name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Street map"
+    "settings.mapmode": {
+      "comment": "Label for the map type selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
           }
         }
       }
     },
-    "settings.minutes" : {
-      "comment" : "Duration in minutes, e.g. 60 min",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d min"
+    "settings.mapmode.hybrid": {
+      "comment": "Map type name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid"
           }
         }
       }
     },
-    "settings.open" : {
-      "comment" : "Button opening the data source settings",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.mapmode.satellite": {
+      "comment": "Map type name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satellite"
           }
         }
       }
     },
-    "settings.password" : {
-      "comment" : "Label for the password field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password"
+    "settings.mapmode.standard": {
+      "comment": "Map type name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Street map"
           }
         }
       }
     },
-    "settings.save" : {
-      "comment" : "Save settings button",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "settings.minutes": {
+      "comment": "Duration in minutes, e.g. 60 min",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d min"
           }
         }
       }
     },
-    "settings.scheme.blitzortung" : {
-      "comment" : "Colour scheme name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blitzortung"
+    "settings.open": {
+      "comment": "Button opening the data source settings",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
           }
         }
       }
     },
-    "settings.scheme.rainbow" : {
-      "comment" : "Colour scheme name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rainbow"
+    "settings.password": {
+      "comment": "Label for the password field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password"
           }
         }
       }
     },
-    "settings.scheme.temperature" : {
-      "comment" : "Colour scheme name",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Temperature"
+    "settings.save": {
+      "comment": "Save settings button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
           }
         }
       }
     },
-    "settings.source" : {
-      "comment" : "Label for the data source selector",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.scheme.blitzortung": {
+      "comment": "Colour scheme name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blitzortung"
           }
         }
       }
     },
-    "settings.source.http" : {
-      "comment" : "Blitzortung HTTP data source name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HTTP"
+    "settings.scheme.rainbow": {
+      "comment": "Colour scheme name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow"
           }
         }
       }
     },
-    "settings.source.rpc" : {
-      "comment" : "JSON-RPC data source name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "JSON-RPC"
+    "settings.scheme.temperature": {
+      "comment": "Colour scheme name",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature"
           }
         }
       }
     },
-    "settings.title" : {
-      "comment" : "Settings screen title",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
+    "settings.source": {
+      "comment": "Label for the data source selector",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
           }
         }
       }
     },
-    "settings.username" : {
-      "comment" : "Label for the username field",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Username"
+    "settings.source.http": {
+      "comment": "Blitzortung HTTP data source name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTP"
           }
         }
       }
     },
-    "status.intervalStart" : {
-      "comment" : "Status line showing the start time of the selected interval",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "@ %@"
+    "settings.source.rpc": {
+      "comment": "JSON-RPC data source name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON-RPC"
           }
         }
       }
     },
-    "status.refreshCountdown" : {
-      "comment" : "Status line refresh countdown, e.g. 12/60 s",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld/%lld s"
+    "settings.title": {
+      "comment": "Settings screen title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data source"
           }
         }
       }
     },
-    "status.strikeCount" : {
-      "comment" : "Status line showing strike count and interval in minutes",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld strikes/%lld minutes"
+    "settings.username": {
+      "comment": "Label for the username field",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Username"
           }
         }
       }
     },
-    "status.unavailable" : {
-      "comment" : "Status line shown before the first data arrives",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "n/a"
+    "status.intervalStart": {
+      "comment": "Status line showing the start time of the selected interval",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "@ %@"
           }
         }
       }
     },
-    "unit.kilometres.value" : {
-      "comment" : "Distance in kilometres, e.g. 10 km",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%.0f km"
+    "status.refreshCountdown": {
+      "comment": "Status line refresh countdown, e.g. 12/60 s",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld s"
           }
         }
       }
     },
-    "unit.km" : {
-      "comment" : "Kilometre unit name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "km"
+    "status.strikeCount": {
+      "comment": "Status line showing strike count and interval in minutes",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld strikes/%lld minutes"
           }
         }
       }
     },
-    "unit.miles" : {
-      "comment" : "Miles unit name",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "mi"
+    "status.unavailable": {
+      "comment": "Status line shown before the first data arrives",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n/a"
+          }
+        }
+      }
+    },
+    "unit.kilometres.value": {
+      "comment": "Distance in kilometres, e.g. 10 km",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.0f km"
+          }
+        }
+      }
+    },
+    "unit.km": {
+      "comment": "Kilometre unit name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "km"
+          }
+        }
+      }
+    },
+    "unit.miles": {
+      "comment": "Miles unit name",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mi"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

@@ -30,6 +30,8 @@ final class ViewControllerChromeTests: XCTestCase {
     private var manager: StubLocationManager!
     private var provider: ChromeRecordingProvider!
     private var controller: ViewController!
+    private var signaller: StubAlertSignaller!
+    private var notifier: StubAlertNotifier!
 
     private let referenceTime = 1_500_000_000
     private let grid = GridParameters(longitudeStart: 0,
@@ -47,6 +49,8 @@ final class ViewControllerChromeTests: XCTestCase {
         source = ManualLocationSource(settings: settings)
         manager = StubLocationManager()
         provider = ChromeRecordingProvider()
+        signaller = StubAlertSignaller()
+        notifier = StubAlertNotifier()
 
         controller = ViewController(dataSource: DataHandler(provider: provider),
                                     settings: settings,
@@ -54,7 +58,9 @@ final class ViewControllerChromeTests: XCTestCase {
                                     locationSource: source,
                                     locationSourceFactory: LocationSourceFactory(managerFactory: { [manager] in
                                         manager!
-                                    }))
+                                    }),
+                                    alertSignaller: signaller,
+                                    alertNotifier: notifier)
         controller.loadViewIfNeeded()
         controller.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
         controller.view.layoutIfNeeded()
@@ -66,6 +72,8 @@ final class ViewControllerChromeTests: XCTestCase {
         provider = nil
         manager = nil
         source = nil
+        signaller = nil
+        notifier = nil
         settings = nil
         defaults.removePersistentDomain(forName: suiteName)
         defaults = nil
@@ -262,6 +270,78 @@ final class ViewControllerChromeTests: XCTestCase {
         XCTAssertEqual(parameters.intervalDuration, 60, "the default interval is unchanged")
         XCTAssertEqual(parameters.intervalOffset, 0, "realtime is still the default")
         XCTAssertEqual(JsonRpcDataProvider.countThresholdArgument, 0, "the retired threshold is still sent inactive")
+    }
+
+    // MARK: - Alerts (5.1, 5.2)
+
+    func testAStrikeInsideTheLimitSignalsAndNotifiesOnce() {
+        controller.render(result: result())
+        XCTAssertTrue(signaller.signals.isEmpty)
+
+        source.setLocation(Location(latitude: 50.5, longitude: 10.5))
+
+        XCTAssertEqual(signaller.signals.count, 1)
+        XCTAssertEqual(notifier.notifications.count, 1)
+        XCTAssertTrue(controller.alertState.isActive)
+
+        // The same activity evaluated again must not warn twice.
+        controller.applyAlerts()
+
+        XCTAssertEqual(signaller.signals.count, 1)
+        XCTAssertEqual(notifier.notifications.count, 1)
+    }
+
+    func testTheRadarMarksAnActiveAlertAndClearsItWhenTheActivityLeavesTheRange() {
+        controller.render(result: result())
+        source.setLocation(Location(latitude: 50.5, longitude: 10.5))
+        XCTAssertEqual(controller.radarContent?.alert, true, "a qualifying strike must mark the radar")
+
+        // Far enough away that the strike falls outside the radar's outer ring.
+        source.setLocation(Location(latitude: 50.5, longitude: 40.0))
+
+        XCTAssertEqual(controller.radarContent?.alert, false)
+        XCTAssertFalse(controller.alertState.isActive)
+    }
+
+    func testSwitchingAlertsOffStopsTheSignalsWithoutARelaunch() {
+        source.setLocation(Location(latitude: 50.5, longitude: 10.5))
+        controller.render(result: result())
+        let signalled = signaller.signals.count
+
+        settings.set(false, for: .alertEnabled)
+        source.setLocation(Location(latitude: 50.5, longitude: 10.6))
+
+        XCTAssertFalse(controller.alertState.isActive)
+        XCTAssertEqual(signaller.signals.count, signalled)
+        XCTAssertEqual(controller.radarContent?.alert, false)
+    }
+
+    func testSwitchingAlertsOnAsksForTheNotificationAuthorisation() {
+        settings.set(false, for: .alertEnabled)
+        XCTAssertEqual(notifier.authorizationRequests, 0)
+
+        settings.set(true, for: .alertEnabled)
+
+        XCTAssertEqual(notifier.authorizationRequests, 1)
+    }
+
+    func testALimitThatNoLongerCoversTheStrikeClearsTheAlert() {
+        // Just outside the strike's grid cell, about 14 km away: inside both
+        // limits, and outside a tightened one.
+        source.setLocation(Location(latitude: 50.5, longitude: 11.2))
+        controller.render(result: result())
+
+        XCTAssertEqual(controller.radarContent?.alert, true)
+        XCTAssertEqual(signaller.signals.count, 1)
+        XCTAssertEqual(notifier.notifications.count, 1)
+
+        settings.set(10.0, for: .notificationDistanceLimit)
+        settings.set(10.0, for: .signalingDistanceLimit)
+
+        XCTAssertEqual(controller.radarContent?.alert, false, "the smaller limit no longer covers the strike")
+        XCTAssertEqual(signaller.signals.count, 1, "no further signal for the same activity")
+        XCTAssertEqual(notifier.notifications.count, 1)
+        XCTAssertEqual(settings.notificationDistanceLimit, 10)
     }
 }
 

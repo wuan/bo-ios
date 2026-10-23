@@ -126,6 +126,15 @@ when no location is known the map is left unchanged and the radar's state is
 left intact. Long-pressing it opens the enlarged radar, which draws the same
 content larger.
 
+The radar also marks an **active alert**: `ProximityAlertMonitor` decides whether
+the closest strike lies inside the notification limit and reports
+`.active(closestStrike)` or `.cancelled`, which reaches the content as
+`RadarContent.alert`. The view draws a red outer ring for it and says so in the
+accessibility value, so a warning can be told apart from activity that is merely
+in range - the activity states above are unchanged by it. The decision, its
+limits, and its suppression are documented in
+[`proximity-alerts.md`](proximity-alerts.md).
+
 ## Data-area overview
 
 `DataAreaOverviewContentBuilder.make(grid:viewport:zoomLevel:)` returns `nil`
@@ -172,6 +181,10 @@ location source, so the marker is the same in every mode.
 | `showOwnLocation` | `true` | Whether the own-location marker is drawn |
 | `ownLocationSize` | `100` | The marker's diameter as a percentage of 14 pt |
 | `keepZoomOnCenter` | `false` | Whether centring keeps the current zoom level |
+| `alertEnabled` | `true` | Whether proximity alerts are evaluated |
+| `notificationDistanceLimit` | `50` | The notification limit in kilometres |
+| `signalingDistanceLimit` | `25` | The signalling limit in kilometres |
+| `signalingSuppressionTime` | `0` | The suppression window in minutes |
 | `measurementUnit` | `metric` | Kilometres or miles for the radar's labels (1 mile = 1.609344 km) |
 
 ## Verifying

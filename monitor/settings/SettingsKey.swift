@@ -42,6 +42,11 @@ public enum SettingsKey: String, CaseIterable {
     case ownLocationSize
     case keepZoomOnCenter
     case backgroundLocationDisclosureShown
+    case notificationDistanceLimit
+    case signalingDistanceLimit
+    case signalingSuppressionTime
+    case alertVibrationSignal
+    case alertSoundSignal
 
     /// Values used when a setting has never been changed by the user.
     public static var defaultValues: [String: Any] {
@@ -70,6 +75,12 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.keepZoomOnCenter.rawValue: false,
             // The background-location explanation has not been shown yet.
             SettingsKey.backgroundLocationDisclosureShown.rawValue: false,
+            // The alert limits and signals, at the reference client's defaults.
+            SettingsKey.notificationDistanceLimit.rawValue: AlertSettingsValues.defaultNotificationDistanceLimit,
+            SettingsKey.signalingDistanceLimit.rawValue: AlertSettingsValues.defaultSignalingDistanceLimit,
+            SettingsKey.signalingSuppressionTime.rawValue: AlertSettingsValues.defaultSuppressionTime,
+            SettingsKey.alertVibrationSignal.rawValue: AlertSettingsValues.defaultVibrationStrength,
+            SettingsKey.alertSoundSignal.rawValue: "",
         ]
     }
 }

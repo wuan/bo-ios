@@ -624,6 +624,63 @@ class monitorUITests: XCTestCase {
         return width
     }
 
+    /// LIVE CHECK: needs the backend. With generous limits, a location pressed
+    /// into the live data area is warned about, which the radar reports and
+    /// marks.
+    ///
+    /// The alert needs a strike near the pressed point, so the limits are opened
+    /// up: within 500 km the live data almost always has something.
+    func testAnActiveAlertMarksTheRadar() throws {
+        try requireLiveBackend()
+
+        let app = XCUIApplication()
+        app.launchArguments += ["-alertEnabled", "YES",
+                                "-notificationDistanceLimit", "500",
+                                "-signalingDistanceLimit", "500"]
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+        let radar = app.descendants(matching: .any)["radar.view"]
+        XCTAssertTrue(radar.waitForExistence(timeout: 15))
+
+        // A point in the middle of the live data area.
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).press(forDuration: 1.2)
+
+        XCTAssertTrue(waitForValue(of: radar, toContain: "alert", timeout: 90),
+                      "the radar did not mark an alert: '\(radar.value ?? "")'")
+        attachScreenshot("alert-marked-radar")
+    }
+
+    /// The alert mark clears once the activity is out of range, while the radar
+    /// keeps showing what is in range.
+    func testTheAlertMarkClearsWhenTheLocationMovesAway() throws {
+        try requireLiveBackend()
+
+        let app = XCUIApplication()
+        app.launchArguments += ["-alertEnabled", "YES",
+                                "-notificationDistanceLimit", "25",
+                                "-signalingDistanceLimit", "25"]
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+        let radar = app.descendants(matching: .any)["radar.view"]
+        XCTAssertTrue(radar.waitForExistence(timeout: 15))
+
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).press(forDuration: 1.2)
+        let valueAfterPress = radar.value as? String
+
+        // Far out in the Atlantic: inside no ring, so nothing can qualify.
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.8)).press(forDuration: 1.2)
+
+        XCTAssertTrue(waitForValue(of: radar, toDifferFrom: valueAfterPress, timeout: 60),
+                      "the radar did not change after the location moved")
+        XCTAssertFalse((radar.value as? String ?? "").contains("alert"),
+                       "the alert persisted after the location left the data area")
+        attachScreenshot("alert-cleared-radar")
+    }
+
     // MARK: - Helpers
 
     /// Keeps a screenshot of the current screen in the test result.
