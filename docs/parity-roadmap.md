@@ -40,7 +40,7 @@ implementation, are the contract.
 | 2 - Map rendering | [`ios-map-rendering`](../openspec/changes/archive/2026-10-22-ios-map-rendering/proposal.md) | `map-rendering` |
 | 3 - Map UI overlays | [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md) | `map-ui-overlays`, `location-handling` (manual path), `proximity-alerts` (aggregation), and `data-providers` and `data-modes` (modified) |
 | 4 - Location handling | [`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
-| 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
+| 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
 
 Delivered foundations that later phases build on:
 

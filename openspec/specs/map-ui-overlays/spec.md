@@ -52,7 +52,7 @@ The app SHALL display a histogram of the strike rate across the displayed period
 - **THEN** the histogram is drawn from that result and needs no request of its own
 
 ### Requirement: Alarm radar display
-The app SHALL display an alarm radar showing lightning activity by distance and direction from the current location while realtime data and a location are available, and SHALL indicate when no location is known, when no activity is present within range, and when the location lies outside the data area.
+The app SHALL display an alarm radar showing lightning activity by distance and direction from the current location while realtime data and a location are available, SHALL indicate when no location is known, when no activity is present within range, and when the location lies outside the data area, and SHALL mark an active alert.
 
 #### Scenario: Active radar
 - **WHEN** realtime data and a known location inside the data area are available and activity is present
@@ -73,6 +73,14 @@ The app SHALL display an alarm radar showing lightning activity by distance and 
 #### Scenario: Radar without realtime data
 - **WHEN** the displayed data is not realtime
 - **THEN** the radar shows no activity
+
+#### Scenario: Active alert marked
+- **WHEN** an alert is active
+- **THEN** the radar marks it, so a warning is distinguishable from activity that is merely in range
+
+#### Scenario: Alert cleared
+- **WHEN** the alert is cancelled
+- **THEN** the radar stops marking it while it keeps showing the activity in range
 
 ### Requirement: Alarm radar interaction
 The app SHALL centre the map on the current location when the alarm radar is tapped, and SHALL open an enlarged alarm radar when the radar is long-pressed.

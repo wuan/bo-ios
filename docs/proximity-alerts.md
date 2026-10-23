@@ -3,7 +3,7 @@
 Warning the user when lightning comes close: the decision that turns the alarm
 radar's aggregation into a notification and a signal. This documents the
 `proximity-alerts` capability delivered by the
-[`ios-proximity-alerts`](../openspec/changes/ios-proximity-alerts/proposal.md)
+[`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md)
 change, on top of the aggregation the
 [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md)
 change delivered.
