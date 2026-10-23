@@ -177,7 +177,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
 
         // The status row floats over the map: a material-backed bar spanning the
         // full width and top edge, with its content below the top safe area so a
