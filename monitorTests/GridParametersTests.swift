@@ -63,6 +63,66 @@ final class GridParametersTests: XCTestCase {
         XCTAssertEqual(grid.rectCenterLatitude, 45.0, accuracy: 0.0001)
     }
 
+    /// A world-spanning grid as the global strike-grid method reports it: the
+    /// endpoints are the live values from `get_global_strikes_grid` at a 25 km
+    /// grid size.
+    private let globalGrid = GridParameters(longitudeStart: -180.0,
+                                            longitudeDelta: 0.318399,
+                                            longitudeCount: 1130,
+                                            latitudeStart: 90.0263,
+                                            latitudeDelta: 0.235637,
+                                            latitudeCount: 763)
+
+    /// A world-spanning grid numbers its offsets from the origin, not from its
+    /// reported north-western corner: the backend measures them east of the
+    /// prime meridian and south of the equator. Anchoring them at the corner
+    /// displaced every global cell about 180° west and 90° north, drawing a
+    /// storm over Queensland at Greenland instead.
+    func testWorldSpanningGridCellCentersAreDerivedFromTheOrigin() {
+        XCTAssertEqual(globalGrid.getCenterLongitude(offset: 455), 145.0, accuracy: 0.05,
+                       "column 455 of the live response lies over Queensland")
+        XCTAssertEqual(globalGrid.getCenterLatitude(offset: 99), -23.4, accuracy: 0.05,
+                       "row 99 of the live response is in the southern hemisphere")
+    }
+
+    /// Every offset a live response carries decodes to a centre inside the
+    /// globe. The corner anchor produced latitudes above 90° and longitudes
+    /// below -180° for the same offsets.
+    func testWorldSpanningGridCellCentersStayInsideTheGlobe() {
+        // The offsets whose centres fall inside the globe for the live deltas:
+        // ±180 / xd and ±90 / yd, within half a cell.
+        for offset in -565...564 {
+            XCTAssertTrue((-180.0...180.0).contains(globalGrid.getCenterLongitude(offset: offset)),
+                          "longitude for column offset \(offset)")
+        }
+        for offset in -382...381 {
+            XCTAssertTrue((-90.0...90.0).contains(globalGrid.getCenterLatitude(offset: offset)),
+                          "latitude for row offset \(offset)")
+        }
+    }
+
+    /// The reported bounds of a world-spanning grid still describe the area the
+    /// grid covers, because containment, the data-area overview and the
+    /// histogram zoom read them.
+    func testWorldSpanningGridKeepsItsGeographicBounds() {
+        XCTAssertTrue(globalGrid.isGlobal)
+        XCTAssertEqual(globalGrid.longitudeStart, -180.0, accuracy: 0.0001)
+        XCTAssertEqual(globalGrid.longitudeEnd, -180.0 + 0.318399 * 1130, accuracy: 0.0001)
+        XCTAssertEqual(globalGrid.latitudeStart, 90.0263, accuracy: 0.0001)
+        XCTAssertEqual(globalGrid.latitudeEnd, 90.0263 - 0.235637 * 763, accuracy: 0.0001)
+    }
+
+    /// Containment follows the reported bounds, not the offset anchor: a
+    /// location inside the covered area is inside, one beyond an edge is not.
+    func testWorldSpanningGridContainmentKeepsItsResult() {
+        XCTAssertTrue(globalGrid.contains(Location(latitude: -23.4, longitude: 145.0)))
+        XCTAssertTrue(globalGrid.contains(Location(latitude: 52.0, longitude: 13.4)))
+        XCTAssertFalse(globalGrid.contains(Location(latitude: 0.0, longitude: 179.9)),
+                       "east of the reported eastern edge")
+        XCTAssertFalse(globalGrid.contains(Location(latitude: 0.0, longitude: -180.5)),
+                       "west of the reported western edge")
+    }
+
     func testParsesFromDictionary() {
         let dict: [String: AnyObject] = [
             "x0": -10.0 as AnyObject,

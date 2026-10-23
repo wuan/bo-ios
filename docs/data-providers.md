@@ -111,17 +111,36 @@ cannot be bounded, and any other region falls back to the global method.
 ### Grid geometry
 
 A JSON-RPC grid result carries its own raster geometry: `x0`/`xd`/`xc` for
-longitude and `y1`/`yd`/`yc` for latitude, where the column count `xc` starts at
-`x0` and the row count `yc` starts at `y1` and runs southwards. The strike arrays
-are `[x, y, count, age]`, with **zero-based** offsets into that raster.
+longitude and `y1`/`yd`/`yc` for latitude. The strike arrays are
+`[x, y, count, age]`, with **zero-based** offsets into that raster.
 
-`GridParameters.getCenterLongitude(offset:)` and `getCenterLatitude(offset:)`
-turn an offset into the cell's centre, as `x0 + xd * (offset + 0.5)` and
-`y1 - yd * (offset + 0.5)`: the first cell's centre lies half a cell inside the
-north-western corner of the grid, and the last half a cell inside the
+The offsets are anchored differently per method, although both responses report
+`x0` and `y1` as the geographic north-western corner of the grid:
+
+| Method | Anchor of the offsets | Cell centre |
+| --- | --- | --- |
+| Local (`get_local_strikes_grid`) | the reported north-western corner | `x0 + xd * (offset + 0.5)`, `y1 - yd * (offset + 0.5)` |
+| Global (`get_global_strikes_grid`) | the origin, rows negated | `xd * (offset + 0.5)`, `-yd * (offset + 0.5)` |
+
+For a bounded grid the column count `xc` starts at `x0` and the row count `yc`
+starts at `y1` and runs southwards, so the first cell's centre lies half a cell
+inside the north-western corner and the last half a cell inside the
 south-eastern. Both axes use the same half-cell inset, as the reference client
 does; a centre placed on the wrong side of an edge shifts every drawn cell by one
 whole cell in that direction.
+
+The global grid numbers its columns from the prime meridian and its rows from the
+equator, writing a negated row index, so its offsets can be negative and its
+cells are **not** anchored at `x0`/`y1`. The reported bounds remain the world
+extent used for containment and the data-area overlay; only the offset-to-
+coordinate mapping differs. Anchoring a global offset at the corner puts every
+cell about 180° west and 90° north of where it belongs. The Android reference
+client applies the same rule by overwriting `x0` and `y1` with `0` on the global
+response.
+
+`GridParameters` always reports `longitudeStart`/`longitudeEnd` and
+`latitudeStart`/`latitudeEnd` as the geographic area the grid covers, whichever
+anchor its offsets use.
 
 ## Caching and freshness
 

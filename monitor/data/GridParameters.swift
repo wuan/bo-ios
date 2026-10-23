@@ -74,17 +74,39 @@ public struct GridParameters: Equatable {
         return latitudeStart - latitudeDelta * Double(latitudeCount) / 2.0
     }
 
-    /// The longitude at the centre of the cell `offset` cells east of the grid's
-    /// western edge.
+    /// The longitude a cell offset is measured from.
     ///
-    /// The offsets are zero-based, so the first cell's centre lies half a cell
-    /// inside the edge; the reference client uses the same `+ 0.5` on both axes.
-    public func getCenterLongitude(offset: Int) -> Double {
-        return longitudeStart + longitudeDelta * (Double(offset) + 0.5)
+    /// A bounded grid numbers its columns from its western edge. A
+    /// world-spanning grid numbers them from the prime meridian instead, even
+    /// though `longitudeStart` still reports the geographic western edge.
+    private var offsetOriginLongitude: Double {
+        return isGlobal ? 0 : longitudeStart
     }
 
+    /// The latitude a cell offset is measured from.
+    ///
+    /// A bounded grid numbers its rows southwards from `latitudeStart`. A
+    /// world-spanning grid numbers them southwards from the equator, writing a
+    /// negated index, even though `latitudeStart` still reports the geographic
+    /// northern edge.
+    private var offsetOriginLatitude: Double {
+        return isGlobal ? 0 : latitudeStart
+    }
+
+    /// The longitude at the centre of the cell `offset` cells east of the grid's
+    /// anchor.
+    ///
+    /// The offsets are zero-based, so the first cell's centre lies half a cell
+    /// inside the anchor; the reference client uses the same `+ 0.5` on both
+    /// axes. The anchor itself depends on the grid: see `offsetOriginLongitude`.
+    public func getCenterLongitude(offset: Int) -> Double {
+        return offsetOriginLongitude + longitudeDelta * (Double(offset) + 0.5)
+    }
+
+    /// The latitude at the centre of the row `offset` rows south of the grid's
+    /// anchor. See `offsetOriginLatitude` for the anchor.
     public func getCenterLatitude(offset: Int) -> Double {
-        return latitudeStart - latitudeDelta * (Double(offset) + 0.5)
+        return offsetOriginLatitude - latitudeDelta * (Double(offset) + 0.5)
     }
 
     public var longitudeEnd: Double {

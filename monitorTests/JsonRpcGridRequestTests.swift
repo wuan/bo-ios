@@ -104,9 +104,46 @@ final class JsonRpcGridRequestTests: XCTestCase {
         XCTAssertEqual((json["params"] as? [Any])?.count, 4)
     }
 
+    /// A world-spanning response numbers its cells from the origin, so column
+    /// 10 / row 30 is at 10.5, -30.5 and column -45 / row -20 at -44.5, 19.5.
+    /// The corner anchor would have decoded them to 169.5, 59.5 and 134.5,
+    /// 109.5 instead.
+    func testGlobalResponseDecodesItsCellsFromTheOrigin() async throws {
+        StubURLProtocol.responseBody = Data(Self.globalResponse.utf8)
+        let provider = JsonRpcDataProvider(serviceEndpoint: "http://example.com",
+                                           session: makeStubbedSession())
+
+        let result = try await fetchResult(from: provider,
+                                           parameters: Parameters(region: Parameters.globalRegion,
+                                                                  rasterBaselength: 100000))
+
+        let grid = try XCTUnwrap(result.rasterParameters)
+        XCTAssertTrue(grid.isGlobal)
+        XCTAssertEqual(result.strikes.count, 2)
+
+        XCTAssertEqual(result.strikes[0].location.longitude, 10.5, accuracy: 0.0001)
+        XCTAssertEqual(result.strikes[0].location.latitude, -30.5, accuracy: 0.0001)
+        XCTAssertEqual(result.strikes[1].location.longitude, -44.5, accuracy: 0.0001)
+        XCTAssertEqual(result.strikes[1].location.latitude, 19.5, accuracy: 0.0001)
+    }
+
     private static let globalResponse = #"""
-    {"id":1,"result":{"x0":-180.0,"xd":1.0,"xc":360,"y1":90.0,"yd":1.0,"yc":180,"t":"20160101T12:00:00","r":[]}}
+    {"id":1,"result":{"x0":-180.0,"xd":1.0,"xc":360,"y1":90.0,"yd":1.0,"yc":180,"t":"20160101T12:00:00","r":[[10,30,5,-120],[-45,-20,1,-60]]}}
     """#
+
+    /// Fetches once and returns the parsed result, failing on a provider error.
+    private func fetchResult(from provider: JsonRpcDataProvider,
+                             parameters: Parameters) async throws -> Result {
+        return try await withCheckedThrowingContinuation { continuation in
+            provider.fetchData(parameters: parameters) { result, error in
+                if let result = result {
+                    continuation.resume(returning: result)
+                } else {
+                    continuation.resume(throwing: error ?? StrikeDataParserError.missingResult)
+                }
+            }
+        }
+    }
 
     private func capturedRequestJSON() throws -> [String: Any] {
         let request = try XCTUnwrap(StubURLProtocol.capturedRequests.last)

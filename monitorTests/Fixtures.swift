@@ -31,6 +31,13 @@ enum Fixtures {
     {"id":1,"result":{"t":"20160101T12:00:00","r":[]}}
     """
 
+    /// A response on a world-spanning grid with one cell in the southern
+    /// hemisphere. The grid geometry is a live `get_global_strikes_grid`
+    /// response at a 25 km grid size, and the cell is column 455 / row 99.
+    static let globalResponseJSON = """
+    {"id":1,"result":{"x0":-180.0,"xd":0.318399,"xc":1130,"y1":90.0263,"yd":0.235637,"yc":763,"t":"20160101T12:00:00","r":[[455,99,2,-300]]}}
+    """
+
     /// A response whose reference time cannot be parsed.
     static let responseWithInvalidTimeJSON = """
     {"id":1,"result":{"x0":-10.0,"xd":1.0,"xc":20,"y1":55.0,"yd":1.0,"yc":20,"t":"not-a-time","r":[]}}

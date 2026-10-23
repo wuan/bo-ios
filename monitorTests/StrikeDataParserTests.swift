@@ -61,6 +61,29 @@ final class StrikeDataParserTests: XCTestCase {
         }
     }
 
+    /// A world-spanning grid numbers its offsets from the origin, so column 455
+    /// / row 99 is over Queensland. Anchoring the offsets at the grid's
+    /// north-western corner drew the same cell at Greenland instead.
+    func testParsesStrikesOnAWorldSpanningGrid() throws {
+        let response = Fixtures.decode(Fixtures.globalResponseJSON)
+
+        let result = try parser.parse(response: response, parameters: parameters)
+
+        let grid = try XCTUnwrap(result.rasterParameters)
+        XCTAssertTrue(grid.isGlobal)
+        XCTAssertEqual(result.strikes.count, 1)
+
+        let strike = try XCTUnwrap(result.strikes.first)
+        XCTAssertEqual(strike.multiplicity, 2)
+        XCTAssertEqual(strike.timestamp, Fixtures.referenceTimestamp - 300)
+        XCTAssertEqual(strike.location.longitude, 145.0, accuracy: 0.05)
+        XCTAssertEqual(strike.location.latitude, -23.4, accuracy: 0.05)
+        XCTAssertEqual(strike.envelope.span.longitudeDelta, grid.longitudeDelta, accuracy: 0.0001,
+                       "the cell keeps the grid's longitude delta as its width")
+        XCTAssertEqual(strike.envelope.span.latitudeDelta, grid.latitudeDelta, accuracy: 0.0001,
+                       "the cell keeps the grid's latitude delta as its height")
+    }
+
     func testParsesResponseWithoutGridParameters() throws {
         let response = Fixtures.decode(Fixtures.responseWithoutGridJSON)
 
