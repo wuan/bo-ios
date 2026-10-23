@@ -101,32 +101,37 @@ final class TileGeometryTests: XCTestCase {
         XCTAssertEqual(size.height, CGFloat(mapRect.height * 0.5), accuracy: 0.001)
     }
 
-    func testDrawableRectKeepsALargeCellUnchanged() {
-        let mapRect = TileGeometry.mapRect(center: center, longitudeDelta: 1.0, latitudeDelta: 1.0)
-        let drawn = TileGeometry.drawableRect(mapRect, zoomScale: 0.5)
+    /// A cell is never drawn larger than itself, so neighbouring cells meet
+    /// without overlapping.
+    func testAdjacentCellsShareAnEdgeExactly() {
+        let west = TileGeometry.mapRect(center: CLLocationCoordinate2D(latitude: 50, longitude: 10),
+                                        longitudeDelta: 1.0,
+                                        latitudeDelta: 1.0)
+        let east = TileGeometry.mapRect(center: CLLocationCoordinate2D(latitude: 50, longitude: 11),
+                                        longitudeDelta: 1.0,
+                                        latitudeDelta: 1.0)
+        let north = TileGeometry.mapRect(center: CLLocationCoordinate2D(latitude: 51, longitude: 10),
+                                         longitudeDelta: 1.0,
+                                         latitudeDelta: 1.0)
 
-        XCTAssertEqual(drawn.width, mapRect.width, accuracy: 0.001)
-        XCTAssertEqual(drawn.height, mapRect.height, accuracy: 0.001)
-        XCTAssertEqual(drawn.midX, mapRect.midX, accuracy: 0.001)
-        XCTAssertEqual(drawn.midY, mapRect.midY, accuracy: 0.001)
+        XCTAssertEqual(west.maxX, east.minX, accuracy: 0.001, "east-west neighbours must not overlap")
+        XCTAssertEqual(west.minY, north.maxY, accuracy: 0.001, "north-south neighbours must not overlap")
     }
 
-    func testDrawableRectEnlargesATinyCellToTheMinimum() {
+    func testATinyCellIsNotDrawnAtAll() {
         let tiny = TileGeometry.mapRect(center: center, longitudeDelta: 0.000001, latitudeDelta: 0.000001)
-        let drawn = TileGeometry.drawableRect(tiny, zoomScale: 0.1)
-        let minimum = TileGeometry.minimumSize(zoomScale: 0.1)
 
-        XCTAssertEqual(drawn.width, Double(minimum), accuracy: 0.001)
-        XCTAssertEqual(drawn.height, Double(minimum), accuracy: 0.001)
-        XCTAssertEqual(drawn.midX, tiny.midX, accuracy: 0.001, "the cell stays centered")
+        XCTAssertFalse(TileGeometry.isVisible(tiny, zoomScale: 0.1),
+                       "a cell too small to see is left out rather than enlarged")
     }
 
-    func testMinimumSizeTurnsScreenPointsIntoMapUnits() {
-        XCTAssertEqual(TileGeometry.minimumSize(zoomScale: 0.5),
-                       2 * TileGeometry.minimumHalfExtent / 0.5,
-                       accuracy: 0.001)
-        XCTAssertEqual(TileGeometry.minimumSize(zoomScale: 0),
-                       2 * TileGeometry.minimumHalfExtent,
-                       accuracy: 0.001)
+    func testACellAtTheVisibilityLimitIsDrawnAndJustBelowItIsNot() {
+        let mapRect = TileGeometry.mapRect(center: center, longitudeDelta: 1.0, latitudeDelta: 1.0)
+        let atMinimum = MKZoomScale(1.0 / Double(mapRect.width))
+
+        XCTAssertTrue(TileGeometry.isVisible(mapRect, zoomScale: atMinimum),
+                      "a cell that renders at the minimum extent is still drawn")
+        XCTAssertFalse(TileGeometry.isVisible(mapRect, zoomScale: atMinimum * 0.999),
+                       "a hair below the minimum is not")
     }
 }

@@ -46,7 +46,7 @@ These mirror the Android client (`wuan/bo-android`) and are asserted in tests.
 | Tile opacity | `ShapeAlpha.alpha(tileWidth, 10, 40, 255, 100)` -> opaque at <= 10 pt, 0.39 at >= 40 pt |
 | Count drawn when | `tileHeight / 2.5 >= 8` pt (`TileLabel.minimumSize`) |
 | Count opacity | `ShapeAlpha.alpha(textSize, 20, 80, 255, 60)` |
-| Minimum tile | `TileGeometry.minimumHalfExtent` = 1.5 pt half-extent, so a sparse cell is never invisible |
+| Smallest drawn cell | `TileGeometry.minimumVisibleExtent` = 1 pt: a cell that would render smaller is left out of the plan entirely, so cells tile edge to edge and never overlap |
 | Point strike | plus of `2 * (zoomLevel + 1)` pt, arms `size / 4` wide |
 | Base-map dim | `255 / 100 * mapFade` percent, black on satellite, white on street maps |
 | Covered area for activity | `ActivityRenderPlan.coverage` = 2x the visible map rect per plan |

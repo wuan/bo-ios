@@ -24,11 +24,13 @@ import MapKit
 /// Turns a grid cell into the rectangle it occupies on the map.
 public enum TileGeometry {
 
-    /// The smallest half-extent a tile is drawn with, in points.
+    /// The smallest size a cell is drawn at, in points.
     ///
-    /// A cell whose rendered size falls below this still gets drawn, so sparse
-    /// activity is never invisible.
-    public static let minimumHalfExtent: CGFloat = 1.5
+    /// A cell whose rendered size falls below this is not drawn at all: drawing
+    /// it any smaller than this would be a sub-pixel speck, and drawing it any
+    /// larger would spill into the neighbouring cells and overstate the area the
+    /// activity covers.
+    public static let minimumVisibleExtent: CGFloat = 1.0
 
     /// The latitude beyond which the map projection does not extend.
     static let mercatorLatitudeLimit = 85.05112878
@@ -63,38 +65,19 @@ public enum TileGeometry {
                          height: abs(south.y - north.y))
     }
 
-    /// The rectangle to draw a cell in.
-    ///
-    /// A cell that would render smaller than the supported minimum is enlarged
-    /// around its center, so sparse activity is never invisible.
-    ///
-    /// - Parameters:
-    ///   - mapRect: the cell's rectangle in map space.
-    ///   - zoomScale: the scale the map is drawn at, in points per map point.
-    public static func drawableRect(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> MKMapRect {
-        let minimum = minimumSize(zoomScale: zoomScale)
-        let width = max(mapRect.width, Double(minimum))
-        let height = max(mapRect.height, Double(minimum))
-
-        return MKMapRect(x: mapRect.midX - width / 2,
-                         y: mapRect.midY - height / 2,
-                         width: width,
-                         height: height)
-    }
-
     /// The size a cell occupies on screen, in points.
     public static func renderedSize(of mapRect: MKMapRect, zoomScale: MKZoomScale) -> CGSize {
         return CGSize(width: CGFloat(mapRect.width * Double(zoomScale)),
                       height: CGFloat(mapRect.height * Double(zoomScale)))
     }
 
-    /// The smallest size a tile is drawn with, in map space.
+    /// Whether a cell is large enough on screen to be drawn.
     ///
-    /// The map is drawn in map coordinates, so the on-screen minimum has to be
-    /// scaled back into those units.
-    public static func minimumSize(zoomScale: MKZoomScale) -> CGFloat {
-        guard zoomScale > 0 else { return 2 * minimumHalfExtent }
-        return 2 * minimumHalfExtent / CGFloat(zoomScale)
+    /// The cell is drawn at exactly its own extent, so cells that pass this test
+    /// tile without overlapping.
+    public static func isVisible(_ mapRect: MKMapRect, zoomScale: MKZoomScale) -> Bool {
+        let size = renderedSize(of: mapRect, zoomScale: zoomScale)
+        return size.width >= minimumVisibleExtent && size.height >= minimumVisibleExtent
     }
 
     private static func clampLatitude(_ coordinate: CLLocationCoordinate2D) -> CLLocationCoordinate2D {

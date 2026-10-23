@@ -107,13 +107,24 @@ final class ActivityRenderPlanTests: XCTestCase {
         XCTAssertTrue(renderPlan.countLabels.isEmpty)
     }
 
-    func testSmallTileIsDrawnAtTheMinimumSize() {
+    func testATileTooSmallToSeeIsNotDrawn() {
         let renderPlan = plan(activity(tiles: [tile(delta: 0.00001)]))
-        guard let drawn = renderPlan.tileFills.first?.mapRect else {
-            return XCTFail("expected the tiny cell to be filled")
+
+        XCTAssertTrue(renderPlan.tileFills.isEmpty,
+                      "a cell too small to see is left out rather than enlarged over its neighbours")
+        XCTAssertTrue(renderPlan.countLabels.isEmpty)
+    }
+
+    func testADrawnTileCoversExactlyItsOwnCell() {
+        let cell = tile(delta: 1.0)
+        guard let fill = plan(activity(tiles: [cell])).tileFills.first else {
+            return XCTFail("expected the cell to be filled")
         }
 
-        XCTAssertEqual(drawn.width, Double(TileGeometry.minimumSize(zoomScale: zoomScale)), accuracy: 1)
+        XCTAssertEqual(fill.mapRect.width, cell.mapRect.width, accuracy: 0.001)
+        XCTAssertEqual(fill.mapRect.height, cell.mapRect.height, accuracy: 0.001)
+        XCTAssertEqual(fill.mapRect.midX, cell.mapRect.midX, accuracy: 0.001)
+        XCTAssertEqual(fill.mapRect.midY, cell.mapRect.midY, accuracy: 0.001)
     }
 
     func testSmallTileIsDrawnFullyOpaque() {

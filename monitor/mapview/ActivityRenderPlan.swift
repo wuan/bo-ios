@@ -149,23 +149,30 @@ public struct ActivityRenderPlan: Equatable {
 
     // MARK: - Tiles
 
-    /// The fills for the cells that are on screen.
+    /// The fills for the cells that are on screen and large enough to draw.
+    ///
+    /// Each fill is exactly the cell's own rectangle, so neighbouring cells meet
+    /// without overlapping; a cell too small to be seen is left out rather than
+    /// drawn over its neighbours.
     static func tileFills(activity: MapActivity,
                           zoomScale: MKZoomScale,
                           visibleMapRect: MKMapRect) -> [TileFill] {
-        return activity.tiles.filter { $0.mapRect.intersects(visibleMapRect) }.map { tile in
-            let mapRect = TileGeometry.drawableRect(tile.mapRect, zoomScale: zoomScale)
-            let renderedWidth = Double(mapRect.width * Double(zoomScale))
-            let color = activity.colorHandler.color(referenceTime: activity.referenceTimestamp,
-                                                    eventTime: tile.timestamp,
-                                                    intervalDuration: activity.intervalDuration)
-            let alpha = ShapeAlpha.drawingAlpha(value: renderedWidth,
-                                                minValue: tileAlphaRange.minValue,
-                                                maxValue: tileAlphaRange.maxValue,
-                                                maxAlpha: tileAlphaBounds.maxAlpha,
-                                                minAlpha: tileAlphaBounds.minAlpha)
-            return TileFill(mapRect: mapRect, color: color, alpha: alpha)
-        }
+        return activity.tiles
+            .filter { $0.mapRect.intersects(visibleMapRect) }
+            .filter { TileGeometry.isVisible($0.mapRect, zoomScale: zoomScale) }
+            .map { tile in
+                let mapRect = tile.mapRect
+                let renderedWidth = Double(mapRect.width * Double(zoomScale))
+                let color = activity.colorHandler.color(referenceTime: activity.referenceTimestamp,
+                                                        eventTime: tile.timestamp,
+                                                        intervalDuration: activity.intervalDuration)
+                let alpha = ShapeAlpha.drawingAlpha(value: renderedWidth,
+                                                    minValue: tileAlphaRange.minValue,
+                                                    maxValue: tileAlphaRange.maxValue,
+                                                    maxAlpha: tileAlphaBounds.maxAlpha,
+                                                    minAlpha: tileAlphaBounds.minAlpha)
+                return TileFill(mapRect: mapRect, color: color, alpha: alpha)
+            }
     }
 
     /// The counts for the cells on screen that are large enough to show them.
@@ -173,9 +180,9 @@ public struct ActivityRenderPlan: Equatable {
                             zoomScale: MKZoomScale,
                             visibleMapRect: MKMapRect) -> [CountLabel] {
         var labels: [CountLabel] = []
-        for tile in activity.tiles where tile.mapRect.intersects(visibleMapRect) {
-            let mapRect = TileGeometry.drawableRect(tile.mapRect, zoomScale: zoomScale)
-            let renderedHeight = CGFloat(mapRect.height * Double(zoomScale))
+        for tile in activity.tiles
+        where tile.mapRect.intersects(visibleMapRect) && TileGeometry.isVisible(tile.mapRect, zoomScale: zoomScale) {
+            let renderedHeight = CGFloat(tile.mapRect.height * Double(zoomScale))
             guard let textSize = TileLabel.textSize(tileHeight: renderedHeight) else { continue }
 
             labels.append(CountLabel(coordinate: tile.center,
