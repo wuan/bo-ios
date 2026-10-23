@@ -97,6 +97,16 @@ final class MapRenderingTests: XCTestCase {
         return controller.mapView.overlays.compactMap { $0 as? ActivityDimPolygon }
     }
 
+    private func dataAreaPolygons(in controller: ViewController) -> [ActivityDataAreaPolygon] {
+        return controller.mapView.overlays.compactMap { $0 as? ActivityDataAreaPolygon }
+    }
+
+    /// The corners of a polygon, as coordinates.
+    private func coordinates(of polygon: MKPolygon) -> [CLLocationCoordinate2D] {
+        let points = Array(UnsafeBufferPointer(start: polygon.points(), count: polygon.pointCount))
+        return points.map { $0.coordinate }
+    }
+
     private func countAnnotations(in controller: ViewController) -> [ActivityCountAnnotation] {
         return controller.mapView.annotations.compactMap { $0 as? ActivityCountAnnotation }
     }
@@ -160,6 +170,75 @@ final class MapRenderingTests: XCTestCase {
             !($0 is ActivityTilePolygon) && !($0 is ActivityStrikePolygon) && !($0 is ActivityDimPolygon)
         }
         XCTAssertEqual(plainPolygons.count, 1, "the data area outline keeps its own overlay")
+    }
+
+    func testTheDataAreaPolygonSpansTheGridBounds() {
+        let grid = makeGrid()
+
+        let polygon = ActivityOverlayBuilder.dataAreaPolygon(for: grid)
+
+        XCTAssertEqual(polygon.pointCount, 4, "the outline is the grid's rectangle")
+        let coordinates = coordinates(of: polygon)
+        let latitudes = coordinates.map { $0.latitude }
+        let longitudes = coordinates.map { $0.longitude }
+        XCTAssertEqual(latitudes.min()!, grid.latitudeEnd, accuracy: 0.0001)
+        XCTAssertEqual(latitudes.max()!, grid.latitudeStart, accuracy: 0.0001)
+        XCTAssertEqual(longitudes.min()!, grid.longitudeStart, accuracy: 0.0001)
+        XCTAssertEqual(longitudes.max()!, grid.longitudeEnd, accuracy: 0.0001)
+    }
+
+    func testTheDataAreaBoundaryRendererStrokesWhiteWithoutAFill() throws {
+        let controller = buildController()
+        let polygon = ActivityOverlayBuilder.dataAreaPolygon(for: makeGrid())
+
+        let renderer = try XCTUnwrap(controller.mapView(controller.mapView,
+                                                       rendererFor: polygon) as? MKPolygonRenderer)
+
+        XCTAssertEqual(renderer.strokeColor, .white)
+        XCTAssertEqual(renderer.fillColor, .clear)
+        XCTAssertEqual(renderer.lineWidth, 1)
+    }
+
+    /// Each result replaces the outline rather than adding another, so zooming
+    /// and polling cannot leave a stack of nested rectangles on the map.
+    func testRenderingAnotherResultReplacesTheDataAreaBoundary() {
+        let controller = buildController()
+
+        controller.render(result: makeResult(strikes: [], rasterParameters: makeGrid()))
+        controller.render(result: makeResult(strikes: [], rasterParameters: makeGrid()))
+
+        XCTAssertEqual(dataAreaPolygons(in: controller).count, 1)
+    }
+
+    func testRenderingAnotherResultMovesTheDataAreaBoundary() {
+        let controller = buildController()
+        let moved = GridParameters(longitudeStart: 100.0,
+                                   longitudeDelta: 1.0,
+                                   longitudeCount: 20,
+                                   latitudeStart: -10.0,
+                                   latitudeDelta: 1.0,
+                                   latitudeCount: 20)
+
+        controller.render(result: makeResult(strikes: [], rasterParameters: makeGrid()))
+        controller.render(result: makeResult(strikes: [], rasterParameters: moved))
+
+        let boundaries = dataAreaPolygons(in: controller)
+        XCTAssertEqual(boundaries.count, 1)
+        let longitudes = coordinates(of: boundaries[0]).map { $0.longitude }
+        XCTAssertEqual(longitudes.min()!, moved.longitudeStart, accuracy: 0.0001,
+                       "the outline follows the newly displayed data area")
+        XCTAssertEqual(longitudes.max()!, moved.longitudeEnd, accuracy: 0.0001)
+    }
+
+    func testAResultWithoutAGridLeavesNoDataAreaBoundary() {
+        let controller = buildController()
+
+        controller.render(result: makeResult(strikes: [makeTile(atLongitude: 10.0, count: 1)],
+                                             rasterParameters: makeGrid()))
+        controller.render(result: makeResult(strikes: [], rasterParameters: nil))
+
+        XCTAssertTrue(dataAreaPolygons(in: controller).isEmpty,
+                      "a result without grid parameters leaves no boundary")
     }
 
     func testCellsOfDifferentAgesRenderDifferentColours() throws {

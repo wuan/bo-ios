@@ -46,6 +46,13 @@ final class ActivityDimPolygon: MKMultiPolygon {
     var fillColor: UIColor = .clear
 }
 
+/// The outline of the data area the displayed result covers.
+///
+/// A world-spanning result's outline is the whole map, so it reads as the map's
+/// edge; a local result's is the rectangle the app requested.
+final class ActivityDataAreaPolygon: MKPolygon {
+}
+
 /// Turns a render plan into the MapKit objects that draw it.
 enum ActivityOverlayBuilder {
 
@@ -103,6 +110,22 @@ enum ActivityOverlayBuilder {
         let polygon = ActivityDimPolygon(halves)
         polygon.fillColor = UIColor(packed: dim.color, alpha: CGFloat(dim.alpha))
         return polygon
+    }
+
+    // MARK: - Data area
+
+    /// The outline of the data area a grid covers.
+    ///
+    /// The corners come from the grid's reported bounds, so the outline frames
+    /// the area the displayed result was requested for.
+    static func dataAreaPolygon(for grid: RasterParameters) -> ActivityDataAreaPolygon {
+        var coordinates = [
+            CLLocationCoordinate2D(latitude: grid.latitudeStart, longitude: grid.longitudeStart),
+            CLLocationCoordinate2D(latitude: grid.latitudeStart, longitude: grid.longitudeEnd),
+            CLLocationCoordinate2D(latitude: grid.latitudeEnd, longitude: grid.longitudeEnd),
+            CLLocationCoordinate2D(latitude: grid.latitudeEnd, longitude: grid.longitudeStart),
+        ]
+        return ActivityDataAreaPolygon(coordinates: &coordinates, count: coordinates.count)
     }
 
     // MARK: - Corners

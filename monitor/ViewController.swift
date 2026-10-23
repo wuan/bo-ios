@@ -415,6 +415,12 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             renderer.fillColor = dim.fillColor
             renderer.strokeColor = .clear
             return renderer
+        case let area as ActivityDataAreaPolygon:
+            let renderer = MKPolygonRenderer(polygon: area)
+            renderer.fillColor = .clear
+            renderer.strokeColor = UIColor.white
+            renderer.lineWidth = 1
+            return renderer
         default:
             let renderer = MKPolygonRenderer(polygon: overlay as! MKPolygon)
             renderer.strokeColor = UIColor.white
@@ -648,12 +654,9 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
         dismissSelection()
         drawActivity()
+        drawDataArea(result.rasterParameters)
         applyAlerts()
         refreshChrome()
-
-        if let rasterParameters = result.rasterParameters {
-            self.addDataArea(rasterParameters: rasterParameters)
-        }
     }
 
     /// Draws the displayed activity with MapKit's own renderers.
@@ -1210,22 +1213,21 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         return count
     }
 
-    func addDataArea(rasterParameters: RasterParameters) {
-        let x1 = rasterParameters.longitudeStart
-        let x2 = rasterParameters.longitudeEnd
+    /// Draws the boundary of the data area the displayed result covers.
+    ///
+    /// One outline is kept for the displayed result: the previous one is removed
+    /// first, and a result without grid parameters leaves the map without a
+    /// boundary. The outline is not drawn with the activity overlays because
+    /// `drawActivity()` also runs on map movement, when the displayed result -
+    /// and so its data area - has not changed.
+    func drawDataArea(_ rasterParameters: RasterParameters?) {
+        for overlay in mapView.overlays where overlay is ActivityDataAreaPolygon {
+            mapView.removeOverlay(overlay)
+        }
 
-        let y1 = rasterParameters.latitudeStart
-        let y2 = rasterParameters.latitudeEnd
+        guard let rasterParameters = rasterParameters else { return }
 
-        var worldCoords = [
-            CLLocationCoordinate2D(latitude: y1, longitude: x1),
-            CLLocationCoordinate2D(latitude: y1, longitude: x2),
-            CLLocationCoordinate2D(latitude: y2, longitude: x2),
-            CLLocationCoordinate2D(latitude: y2, longitude: x1)]
-
-        let worldOverlay = MKPolygon(coordinates: &worldCoords, count: 4);
-
-        self.mapView.addOverlay(worldOverlay)
+        mapView.addOverlay(ActivityOverlayBuilder.dataAreaPolygon(for: rasterParameters))
     }
 
     public override var prefersStatusBarHidden: Bool { return true }

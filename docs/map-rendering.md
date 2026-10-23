@@ -17,10 +17,26 @@ layer only materialises the plan with MapKit's own renderers:
 | `countLabels` | one `ActivityCountAnnotation` per cell large enough for text |
 | `strikeMarks` | one `ActivityStrikePolygon` (a plus) per point strike |
 | `baseMapDim` | one `ActivityDimPolygon` (a `MKMultiPolygon` of the map's two halves) over the whole map, added first |
-| not in the plan | data-area outline keeps its own plain `MKPolygon` |
 
 The plan carries every colour, opacity, and culling decision, so it can be
 asserted in tests; MapKit owns projection and compositing.
+
+## Data-area boundary
+
+Outside the plan, because it follows the grid rather than the visible area, the
+app outlines the data area the displayed result covers: one
+`ActivityDataAreaPolygon`, the rectangle of the grid's reported bounds, stroked
+white at 1 pt with no fill.
+
+A rendered result replaces that outline - the previous one is removed first - so
+one result leaves one outline, whatever the zoom level or polling tick. The
+outline is deliberately not rebuilt with the activity overlays: `drawActivity()`
+also runs on map movement, when the displayed result, and so its data area, has
+not changed. A result without grid parameters, such as the Blitzortung HTTP
+source's, leaves no outline.
+
+This follows the reference client, which draws the data-area rectangle from the
+current grid parameters on every draw.
 
 ## Base-map wash
 
@@ -50,6 +66,7 @@ These mirror the Android client (`wuan/bo-android`) and are asserted in tests.
 | Point strike | plus of `2 * (zoomLevel + 1)` pt, arms `size / 4` wide |
 | Base-map dim | `255 / 100 * mapFade` percent, black on satellite, white on street maps |
 | Covered area for activity | `ActivityRenderPlan.coverage` = 2x the visible map rect per plan |
+| Data-area boundary | one `ActivityDataAreaPolygon`, the displayed result's grid bounds, white 1 pt with no fill, replaced on every result |
 
 `StrikeMarker.zoomScaleExponentOffset` converts MapKit's `MKZoomScale` (which is
 `2^(zoomLevel - 20)`) into the zoom level the reference sizes markers with.
