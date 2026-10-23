@@ -232,6 +232,21 @@ final class BackgroundMonitoringTests: XCTestCase {
         XCTAssertEqual(notifier.authorizationRequests, 0)
     }
 
+    // MARK: - Background request parameters
+
+    func testTheLocalParametersUseTheLocationAndTheFinestGrid() {
+        let location = Location(latitude: 43.49, longitude: 7.68)
+
+        let parameters = CoordinatorBackgroundFetcher.localParameters(settings: settings, location: location)
+
+        XCTAssertEqual(parameters.region, Parameters.localRegion, "the background request is local")
+        XCTAssertEqual(parameters.rasterBaselength, 5000, "the finest supported grid")
+        XCTAssertEqual(parameters.dataArea?.scale, LocalData.localDataScale)
+        XCTAssertEqual(parameters.dataArea?.x, LocalData.localCoordinate(7.68))
+        XCTAssertEqual(parameters.dataArea?.y, LocalData.localCoordinate(43.49))
+        XCTAssertTrue(parameters.isRealtime())
+    }
+
     // MARK: - Declared background modes
 
     func testThePlistDeclaresTheBackgroundTaskIdentifier() {

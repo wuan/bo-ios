@@ -42,17 +42,24 @@
 
 The monitor's gating, scheduling, wake-up, dedup, and background-location request
 are covered by unit tests, and the task identifier and background modes are
-asserted against the app's `Info.plist`. Still outstanding for task 7.2:
+asserted against the app's `Info.plist`. The alert decision and its notification
+were observed in the simulator against the live backend - with a position on an
+active cell, the app posted "Lightning nearby / N 0.0 km". Still outstanding for
+task 7.2:
 
-- A background wake-up actually firing with live data was not observed. The
-  simulator does not reliably run a `BGAppRefreshTask` on demand, so whether a
-  qualifying strike arrives as a notification with the screen off needs a device
-  or a data-dependent simulator run.
-- The delivered notification banner was not observed for the same reason.
-- The platform's worst-case scheduling latency is not observable from tests:
-  `BGAppRefreshTask` is best-effort, so the period is a requested cadence and the
-  delay is a property of the system. This is recorded, not solved, in
-  `docs/background-monitoring.md` and `docs/parity-roadmap.md`.
+- A background wake-up firing with live data was not observed, and cannot be in
+  the simulator: `BGTaskScheduler` reports
+  `BGTaskSchedulerErrorDomain Code=1 "BGTaskScheduler is not available on this
+  platform."`, so no `BGAppRefreshTask` can be submitted or fired there. This
+  needs a device.
+- The platform's worst-case scheduling latency is a property of the system, best-
+  effort by design. It is recorded, not solved, in `docs/background-monitoring.md`
+  and `docs/parity-roadmap.md`.
+
+The background request is local, at the finest grid, bounded by the position: a
+global query has no extent to bound it and the backend allows a global grid no
+finer than 25 km, so a global background request would be too coarse (and one
+below that minimum is refused outright).
 
 ## Workflow follow-up
 

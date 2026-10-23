@@ -25,7 +25,7 @@ import Foundation
 public protocol BackgroundDataFetching: AnyObject {
 
     /// Requests the current realtime interval and calls `completion` with the
-    /// result, or `nil` when none arrives in time.
+    /// result, or `nil` when none can be made or none arrives in time.
     func fetchRealtime(completion: @escaping (Result?) -> Void)
 }
 
@@ -33,11 +33,14 @@ public protocol BackgroundDataFetching: AnyObject {
 ///
 /// Subscribes to the source's event stream once and requests through the same
 /// source the foreground uses, so a background result also lands in the shared
-/// cache. A timeout guards the task, which the system may end abruptly.
+/// cache. The request is always local, around the current position, at the
+/// finest grid - a global query has no extent to bound it and is not allowed the
+/// same grid size. A timeout guards the task, which the system may end abruptly.
 public final class CoordinatorBackgroundFetcher: BackgroundDataFetching {
 
     private let source: DataEventSource
-    private let parameters: () -> Parameters
+    private let settings: SettingsStore
+    private let location: () -> Location?
     private let timeout: TimeInterval
 
     private let lock = NSLock()
@@ -46,10 +49,12 @@ public final class CoordinatorBackgroundFetcher: BackgroundDataFetching {
     private var task: Task<Void, Never>?
 
     public init(source: DataEventSource,
-                parameters: @escaping () -> Parameters,
+                settings: SettingsStore,
+                location: @escaping () -> Location?,
                 timeout: TimeInterval = 20) {
         self.source = source
-        self.parameters = parameters
+        self.settings = settings
+        self.location = location
         self.timeout = timeout
     }
 
@@ -58,6 +63,13 @@ public final class CoordinatorBackgroundFetcher: BackgroundDataFetching {
     }
 
     public func fetchRealtime(completion: @escaping (Result?) -> Void) {
+        guard let location = location() else {
+            // Nothing to measure from, so nothing to fetch; the alert decision
+            // would only report no location.
+            completion(nil)
+            return
+        }
+
         lock.lock()
         pending = completion
         let needsSubscription = !subscribed
@@ -68,7 +80,8 @@ public final class CoordinatorBackgroundFetcher: BackgroundDataFetching {
             subscribe()
         }
 
-        source.requestData(parameters: parameters())
+        source.requestData(parameters: CoordinatorBackgroundFetcher.localParameters(settings: settings,
+                                                                                     location: location))
 
         if timeout > 0 {
             DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
@@ -77,17 +90,22 @@ public final class CoordinatorBackgroundFetcher: BackgroundDataFetching {
         }
     }
 
-    /// The realtime parameters a background request uses.
+    /// The local parameters a background request uses.
     ///
-    /// There is no visible extent to size a local area from, so a stored local
-    /// region becomes a global one; a named region is requested as-is.
-    public static func realtimeParameters(settings: SettingsStore) -> Parameters {
-        let region = settings.choice(for: .region)
-        return Parameters(region: region == Parameters.localRegion ? Parameters.globalRegion : region,
-                          rasterBaselength: BackgroundMonitoring.gridSize,
-                          intervalDuration: settings.choice(for: .intervalDuration),
-                          intervalOffset: 0,
-                          dataArea: nil)
+    /// The position selects a data area at the coarsest quantization the local
+    /// method accepts, and the request asks for the finest supported grid, so the
+    /// background evaluation sees activity near the position rather than a
+    /// whole-globe grid.
+    public static func localParameters(settings: SettingsStore, location: Location) -> Parameters {
+        let scale = LocalData.localDataScale
+        return Parameters(
+            region: Parameters.localRegion,
+            rasterBaselength: LocalData.supportedGridSizes.first ?? BackgroundMonitoring.localGridSize,
+            intervalDuration: settings.choice(for: .intervalDuration),
+            intervalOffset: 0,
+            dataArea: DataArea(x: LocalData.localCoordinate(location.longitude, scale: scale),
+                               y: LocalData.localCoordinate(location.latitude, scale: scale),
+                               scale: scale))
     }
 
     private func subscribe() {

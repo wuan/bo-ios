@@ -54,18 +54,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                      notifier: notifier)
             let scheduler = (UIApplication.shared.delegate as? AppDelegate)?.backgroundScheduling
                 ?? BGTaskSchedulerScheduling()
-            let fetcher = CoordinatorBackgroundFetcher(
-                source: coordinator,
-                parameters: { CoordinatorBackgroundFetcher.realtimeParameters(settings: settings) })
+            let backgroundLocation: () -> Location? = {
+                settings.locationMode.isDeviceBacked ? locationManager.location : settings.manualLocation
+            }
+            let fetcher = CoordinatorBackgroundFetcher(source: coordinator,
+                                                       settings: settings,
+                                                       location: backgroundLocation)
             let monitor = BackgroundMonitor(
                 settings: settings,
                 scheduler: scheduler,
                 fetcher: fetcher,
                 alertMonitor: alertMonitor,
                 notifier: notifier,
-                location: {
-                    settings.locationMode.isDeviceBacked ? locationManager.location : settings.manualLocation
-                })
+                location: backgroundLocation)
 
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = ViewController(dataSource: coordinator,

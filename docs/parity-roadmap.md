@@ -81,12 +81,14 @@ UI test's queries; and the audible signal and the felt vibration, which need a
 device.
 
 Open residual from Phase 6: the monitor's gating, scheduling, wake-up, dedup, and
-background-location request are covered by unit tests, and the task identifier and
-background modes are asserted against the app's `Info.plist`. Unobserved: a
-background wake-up actually firing with live data, the delivered notification
-banner, and the platform's worst-case scheduling latency - `BGAppRefreshTask` is
-best-effort, so the period is a requested cadence and the delay is a platform
-property. These need a device or a data-dependent simulator run.
+background-location request are covered by unit tests, the task identifier and
+background modes are asserted against the app's `Info.plist`, and the alert
+decision and its notification were observed in the simulator against the live
+backend (a position on an active cell produced "Lightning nearby / N 0.0 km").
+Unobserved: a background wake-up actually firing with live data - the simulator
+cannot, because `BGTaskScheduler` reports itself unavailable there, so no
+`BGAppRefreshTask` can be submitted or fired - and the platform's worst-case
+scheduling latency, which is best-effort by design. Both need a device.
 
 ## Remaining phases
 

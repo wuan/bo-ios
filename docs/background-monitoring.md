@@ -51,14 +51,21 @@ each wake-up re-arms the next one. Nothing is asked for sooner than
 system may defer or skip a wake-up based on battery, usage, and background
 budget. The period is therefore a requested cadence rather than a promise, and
 the worst case is longer than it - a platform limit, not something this app can
-solve. Background location updates provide a second, movement-driven wake-up.
+solve. Background location keeps the position fresh for the evaluation; it does
+not itself trigger a fetch.
 
 On a wake-up the monitor fetches the current realtime interval through the same
 `DataProviderCoordinator` the foreground uses (so a result also lands in the
 shared cache) and evaluates the same `ProximityAlertMonitor`. The decision, the
-limits, the ports, and the aggregation are unchanged. Because the background
-fetch has no visible extent to size a local area from, a stored *local* region
-becomes a global one for that request; a named region is requested as-is.
+limits, the ports, and the aggregation are unchanged.
+
+The request is always **local**: the current position selects a data area
+(`DataArea` at `LocalData.localDataScale`) and the request asks for the finest
+supported grid (5000 m), so the evaluation sees activity around the position.
+A global query is never issued - it has no position to bound it, and the backend
+allows a global grid no finer than 25 km. With no position known there is nothing
+to measure from, so the fetch does nothing and the decision would only report no
+location.
 
 ## Notification readiness
 
@@ -113,5 +120,9 @@ are documented in [proximity-alerts.md](proximity-alerts.md).
 | Background location behind the disclosure, modes | `BackgroundLocationPermissionTests` |
 
 What cannot be observed hermetically - a background wake-up actually firing with
-live data, and the delivered notification banner - needs a device or a
-data-dependent simulator run and is recorded as a residual check.
+live data, and the delivered notification banner - needs a device and is recorded
+as a residual check. The iOS Simulator cannot stand in: `BGTaskScheduler` reports
+`BGTaskSchedulerErrorDomain Code=1 "BGTaskScheduler is not available on this
+platform."` there, so no `BGAppRefreshTask` can be submitted or fired. The alert
+decision itself, including the delivered notification, is observed in the
+simulator against the live backend; only its background trigger needs a device.

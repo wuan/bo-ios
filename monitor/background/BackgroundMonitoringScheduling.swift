@@ -29,10 +29,11 @@ public enum BackgroundMonitoring {
 
     /// The grid size a background request asks for, in metres.
     ///
-    /// The background fetch has no visible extent to size the grid from, so it
-    /// asks for the app's default baseline; the server raises it to its own
-    /// minimum for a global request.
-    public static let gridSize = 10000
+    /// The background request is always local, bounded by the position, so it
+    /// asks for the finest supported grid. A global query has no such bound and
+    /// is not allowed a grid below the backend's 25 km minimum, which is why the
+    /// background monitor never issues one.
+    public static let localGridSize = 5000
 
     /// The shortest interval a request may be scheduled with, in seconds.
     ///

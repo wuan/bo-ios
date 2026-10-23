@@ -34,7 +34,7 @@ A `BGAppRefreshTask` wakes the app for a short fetch, which is exactly the work 
 The coordinator depends on a protocol - `submit(requestAfter:)`, `cancel()`, and a registration hook - with a `BGTaskScheduler` implementation in production and a recording stub in tests. The same shape the location and alert ports already use, so the decision and the gating are unit-tested without the scheduler.
 
 **3. Reuse the provider coordinator and the alert monitor.**
-A background wake-up requests the current realtime interval through the same `DataProviderCoordinator` and evaluates the same `ProximityAlertMonitor`; nothing about the fetch or the decision is reimplemented. The controller and the background task share one coordinator so a background result also refreshes the cache the foreground would use.
+A background wake-up requests the current realtime interval through the same `DataProviderCoordinator` and evaluates the same `ProximityAlertMonitor`; nothing about the fetch or the decision is reimplemented. The controller and the background task share one coordinator so a background result also refreshes the cache the foreground would use. The request is always **local**, bounded by a data area derived from the current position, at the finest supported grid (5000 m); a global query is never issued because it has no position to bound it and the backend allows a global grid no finer than 25 km, so it would be too coarse - and below that minimum it is refused outright rather than clamped. With no position there is nothing to measure from, so no request is made.
 
 **4. Persist the dedup watermarks.**
 `ProximityAlertMonitor`'s `lastNotifiedTimestamp` / `lastSignalledTimestamp` live in memory. A background task can run in a freshly launched process, so in-memory state would be lost and the same strike could notify again on the next launch. The watermarks are therefore stored in the settings store and read back by the monitor, so a strike that was notified in the background is not notified again when the app opens. Alternative considered: a single long-lived monitor instance - insufficient because the process may not survive.
@@ -53,7 +53,7 @@ When monitoring is enabled in a device-backed mode, the app runs the always-auth
 
 ## Risks / Trade-offs
 
-- **The system may defer or skip a background refresh.** → The period is documented as a requested cadence; background location updates provide a second, movement-driven wake-up, and the worst-case latency is stated in `docs/background-monitoring.md`. This is a platform limit, accepted as the roadmap's background phase records.
+- **The system may defer or skip a background refresh.** → The period is documented as a requested cadence and the worst-case latency is stated in `docs/background-monitoring.md`. This is a platform limit, accepted as the roadmap's background phase records.
 - **A background fetch competes with the foreground timer and cache.** → Both go through the one `DataProviderCoordinator`, whose cache and freshness validator already suppress a duplicate request for the same parameters, so an extra wake-up does not double-fetch or double-render.
 - **Battery and data use.** → Background work only runs when the user sets a non-off period; the shortest cadence (1 minute) is the user's explicit choice, matching the reference client.
 - **Persisting the watermarks adds write traffic.** → Written only when a signal or notification is emitted, not on every evaluation.
