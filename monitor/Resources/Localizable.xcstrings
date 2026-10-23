@@ -1,842 +1,842 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "alert.notification.body": {
-      "comment": "Body of the proximity alert notification, e.g. SW 12.3 km",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ %.1f %@"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "alert.notification.body" : {
+      "comment" : "Closest strike, e.g. SW 12.3 km",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ %.1f %@"
           }
         }
       }
     },
-    "alert.notification.title": {
-      "comment": "Title of the proximity alert notification",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lightning nearby"
+    "alert.notification.title" : {
+      "comment" : "Title of the proximity alert notification",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lightning nearby"
           }
         }
       }
     },
-    "animation.start": {
-      "comment": "Start or stop animation playback",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Animate"
+    "animation.start" : {
+      "comment" : "Start or stop animation playback",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animate"
           }
         }
       }
     },
-    "animation.stop": {
-      "comment": "Start or stop animation playback",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop"
+    "animation.stop" : {
+      "comment" : "Start or stop animation playback",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
           }
         }
       }
     },
-    "histogram.rate": {
-      "comment": "Strike rate shown above the histogram, e.g. 3.0/min",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f/min"
+    "histogram.rate" : {
+      "comment" : "Strike rate shown above the histogram, e.g. 3.0/min",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f/min"
           }
         }
       }
     },
-    "histogram.title": {
-      "comment": "Histogram accessibility label",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Strike rate"
+    "histogram.title" : {
+      "comment" : "Histogram accessibility label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strike rate"
           }
         }
       }
     },
-    "legend.over": {
-      "comment": "Oldest legend entry, e.g. > 60 min",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "> %d min"
+    "legend.over" : {
+      "comment" : "Oldest legend entry, e.g. > 60 min",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "> %d min"
           }
         }
       }
     },
-    "legend.regionSize": {
-      "comment": "Local region size in degrees, e.g. 5°",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d°"
+    "legend.regionSize" : {
+      "comment" : "Local region size in degrees, e.g. 5°",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d°"
           }
         }
       }
     },
-    "legend.title": {
-      "comment": "Legend accessibility label",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Legend"
+    "legend.title" : {
+      "comment" : "Legend accessibility label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legend"
           }
         }
       }
     },
-    "legend.under": {
-      "comment": "Legend entry, e.g. < 20 min",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "< %d min"
+    "legend.under" : {
+      "comment" : "Legend entry, e.g. < 20 min",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "< %d min"
           }
         }
       }
     },
-    "location.own": {
-      "comment": "Accessibility label for the own-location marker",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Own location"
+    "location.own" : {
+      "comment" : "Accessibility label for the own-location marker",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Own location"
           }
         }
       }
     },
-    "mode.animation": {
-      "comment": "Time mode indicator",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Animation"
+    "mode.animation" : {
+      "comment" : "Time mode indicator",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation"
           }
         }
       }
     },
-    "mode.history": {
-      "comment": "Time mode indicator",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "History"
+    "mode.history" : {
+      "comment" : "Time mode indicator",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
           }
         }
       }
     },
-    "mode.realtime": {
-      "comment": "Time mode indicator",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Realtime"
+    "mode.realtime" : {
+      "comment" : "Time mode indicator",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Realtime"
           }
         }
       }
     },
-    "overview.cellSize": {
-      "comment": "Data area cell size, e.g. 1.0 1.0",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f %.1f"
+    "overview.cellSize" : {
+      "comment" : "Data area cell size, e.g. 1.0 1.0",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f %.1f"
           }
         }
       }
     },
-    "overview.range": {
-      "comment": "Data area range, e.g. -10.0..10.0",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f..%.1f"
+    "overview.range" : {
+      "comment" : "Data area range, e.g. -10.0..10.0",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f..%.1f"
           }
         }
       }
     },
-    "overview.title": {
-      "comment": "Data area overview accessibility label",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data area"
+    "overview.title" : {
+      "comment" : "Data area overview accessibility label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data area"
           }
         }
       }
     },
-    "overview.zoom": {
-      "comment": "Map zoom level, e.g. Zoom 7.0",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zoom %.1f"
+    "overview.zoom" : {
+      "comment" : "Map zoom level, e.g. Zoom 7.0",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom %.1f"
           }
         }
       }
     },
-    "quick.close": {
-      "comment": "Close quick settings button",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+    "quick.close" : {
+      "comment" : "Close quick settings button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         }
       }
     },
-    "quick.colorScheme": {
-      "comment": "Label for the colour scheme selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colour scheme"
+    "quick.colorScheme" : {
+      "comment" : "Label for the colour scheme selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colour scheme"
           }
         }
       }
     },
-    "quick.dataSource": {
-      "comment": "Label for the data source selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data source"
+    "quick.dataSource" : {
+      "comment" : "Label for the data source selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
           }
         }
       }
     },
-    "quick.fade": {
-      "comment": "Label for the base-map fade slider",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Map fade"
+    "quick.fade" : {
+      "comment" : "Label for the base-map fade slider",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map fade"
           }
         }
       }
     },
-    "quick.historicTimestep": {
-      "comment": "Label for the historic timestep selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Historic timestep"
+    "quick.historicTimestep" : {
+      "comment" : "Label for the historic timestep selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historic timestep"
           }
         }
       }
     },
-    "quick.intervalDuration": {
-      "comment": "Label for the interval duration selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Time interval"
+    "quick.intervalDuration" : {
+      "comment" : "Label for the interval duration selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time interval"
           }
         }
       }
     },
-    "quick.mapMode": {
-      "comment": "Label for the map mode selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Map mode"
+    "quick.mapMode" : {
+      "comment" : "Label for the map mode selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map mode"
           }
         }
       }
     },
-    "quick.region": {
-      "comment": "Label for the region selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Region"
+    "quick.region" : {
+      "comment" : "Label for the region selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region"
           }
         }
       }
     },
-    "quick.title": {
-      "comment": "Quick settings sheet title",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quick settings"
+    "quick.title" : {
+      "comment" : "Quick settings sheet title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick settings"
           }
         }
       }
     },
-    "radar.alert": {
-      "comment": "Radar accessibility value while an alert is active",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "alert"
+    "radar.alert" : {
+      "comment" : "Radar accessibility value while an alert is active",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "alert"
           }
         }
       }
     },
-    "radar.closestStrike": {
-      "comment": "Closest strike, e.g. SW 12.3 km",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ %.1f %@"
+    "radar.closestStrike" : {
+      "comment" : "Closest strike, e.g. SW 12.3 km",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ %.1f %@"
           }
         }
       }
     },
-    "radar.enlarged.title": {
-      "comment": "Enlarged radar title",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radar"
+    "radar.enlarged.title" : {
+      "comment" : "Enlarged radar title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radar"
           }
         }
       }
     },
-    "radar.state.active": {
-      "comment": "Radar state: activity in range",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Active"
+    "radar.state.active" : {
+      "comment" : "Radar state: activity in range",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
           }
         }
       }
     },
-    "radar.state.inactive": {
-      "comment": "Radar state: no activity in range",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No activity"
+    "radar.state.inactive" : {
+      "comment" : "Radar state: no activity in range",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No activity"
           }
         }
       }
     },
-    "radar.state.noData": {
-      "comment": "Radar state: no data",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No data"
+    "radar.state.noData" : {
+      "comment" : "Radar state: no data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No data"
           }
         }
       }
     },
-    "radar.state.noLocation": {
-      "comment": "Radar state: no location known",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No location"
+    "radar.state.noLocation" : {
+      "comment" : "Radar state: no location known",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No location"
           }
         }
       }
     },
-    "radar.state.outsideDataArea": {
-      "comment": "Radar state: outside the data area",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Outside data area"
+    "radar.state.outsideDataArea" : {
+      "comment" : "Radar state: outside the data area",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outside data area"
           }
         }
       }
     },
-    "radar.title": {
-      "comment": "Alarm radar accessibility label",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lightning radar"
+    "radar.title" : {
+      "comment" : "Alarm radar accessibility label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lightning radar"
           }
         }
       }
     },
-    "region.africa": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Africa"
+    "region.africa" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Africa"
           }
         }
       }
     },
-    "region.asia": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Asia"
+    "region.asia" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asia"
           }
         }
       }
     },
-    "region.centralAmerica": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "C. America"
+    "region.centralAmerica" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C. America"
           }
         }
       }
     },
-    "region.europe": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Europe"
+    "region.europe" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Europe"
           }
         }
       }
     },
-    "region.global": {
-      "comment": "Region name: the whole globe",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Global"
+    "region.global" : {
+      "comment" : "Region name: the whole globe",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Global"
           }
         }
       }
     },
-    "region.local": {
-      "comment": "Region name: the visible extent",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Local"
+    "region.local" : {
+      "comment" : "Region name: the visible extent",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local"
           }
         }
       }
     },
-    "region.northAmerica": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "N. America"
+    "region.northAmerica" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N. America"
           }
         }
       }
     },
-    "region.oceania": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oceania"
+    "region.oceania" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oceania"
           }
         }
       }
     },
-    "region.southAmerica": {
-      "comment": "Region name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "S. America"
+    "region.southAmerica" : {
+      "comment" : "Region name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S. America"
           }
         }
       }
     },
-    "selection.strike": {
-      "comment": "Strike details popup for a single strike: time and position",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ (%.4f %.4f)"
+    "selection.strike" : {
+      "comment" : "Strike details popup for a single strike: time and position",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (%.4f %.4f)"
           }
         }
       }
     },
-    "selection.tile": {
-      "comment": "Strike details popup for a grid cell: time and count",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@, #%d"
+    "selection.tile" : {
+      "comment" : "Strike details popup for a grid cell: time and count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, #%d"
           }
         }
       }
     },
-    "settings.close": {
-      "comment": "Close settings button",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close"
+    "settings.close" : {
+      "comment" : "Close settings button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         }
       }
     },
-    "settings.colorscheme": {
-      "comment": "Label for the colour scheme selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colour scheme"
+    "settings.colorscheme" : {
+      "comment" : "Label for the colour scheme selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colour scheme"
           }
         }
       }
     },
-    "settings.endpoint": {
-      "comment": "Label for the service endpoint field",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Service URL"
+    "settings.endpoint" : {
+      "comment" : "Label for the service endpoint field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service URL"
           }
         }
       }
     },
-    "settings.endpoint.placeholder": {
-      "comment": "Placeholder for the service endpoint field",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leave empty to use the default"
+    "settings.endpoint.placeholder" : {
+      "comment" : "Placeholder for the service endpoint field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave empty to use the default"
           }
         }
       }
     },
-    "settings.endpoint.resolved": {
-      "comment": "Shows the endpoint that will be used",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Using: %@"
+    "settings.endpoint.resolved" : {
+      "comment" : "Shows the endpoint that will be used",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using: %@"
           }
         }
       }
     },
-    "settings.mapmode": {
-      "comment": "Label for the map type selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Map"
+    "settings.mapmode" : {
+      "comment" : "Label for the map type selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map"
           }
         }
       }
     },
-    "settings.mapmode.hybrid": {
-      "comment": "Map type name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hybrid"
+    "settings.mapmode.hybrid" : {
+      "comment" : "Map type name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hybrid"
           }
         }
       }
     },
-    "settings.mapmode.satellite": {
-      "comment": "Map type name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satellite"
+    "settings.mapmode.satellite" : {
+      "comment" : "Map type name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satellite"
           }
         }
       }
     },
-    "settings.mapmode.standard": {
-      "comment": "Map type name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Street map"
+    "settings.mapmode.standard" : {
+      "comment" : "Map type name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Street map"
           }
         }
       }
     },
-    "settings.minutes": {
-      "comment": "Duration in minutes, e.g. 60 min",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d min"
+    "settings.minutes" : {
+      "comment" : "Duration in minutes, e.g. 60 min",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d min"
           }
         }
       }
     },
-    "settings.open": {
-      "comment": "Button opening the data source settings",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data source"
+    "settings.open" : {
+      "comment" : "Button opening the data source settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
           }
         }
       }
     },
-    "settings.password": {
-      "comment": "Label for the password field",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Password"
+    "settings.password" : {
+      "comment" : "Label for the password field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
           }
         }
       }
     },
-    "settings.save": {
-      "comment": "Save settings button",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save"
+    "settings.save" : {
+      "comment" : "Save settings button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         }
       }
     },
-    "settings.scheme.blitzortung": {
-      "comment": "Colour scheme name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blitzortung"
+    "settings.scheme.blitzortung" : {
+      "comment" : "Colour scheme name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blitzortung"
           }
         }
       }
     },
-    "settings.scheme.rainbow": {
-      "comment": "Colour scheme name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rainbow"
+    "settings.scheme.rainbow" : {
+      "comment" : "Colour scheme name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rainbow"
           }
         }
       }
     },
-    "settings.scheme.temperature": {
-      "comment": "Colour scheme name",
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temperature"
+    "settings.scheme.temperature" : {
+      "comment" : "Colour scheme name",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature"
           }
         }
       }
     },
-    "settings.source": {
-      "comment": "Label for the data source selector",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data source"
+    "settings.source" : {
+      "comment" : "Label for the data source selector",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
           }
         }
       }
     },
-    "settings.source.http": {
-      "comment": "Blitzortung HTTP data source name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HTTP"
+    "settings.source.http" : {
+      "comment" : "Blitzortung HTTP data source name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTP"
           }
         }
       }
     },
-    "settings.source.rpc": {
-      "comment": "JSON-RPC data source name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "JSON-RPC"
+    "settings.source.rpc" : {
+      "comment" : "JSON-RPC data source name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON-RPC"
           }
         }
       }
     },
-    "settings.title": {
-      "comment": "Settings screen title",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data source"
+    "settings.title" : {
+      "comment" : "Settings screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
           }
         }
       }
     },
-    "settings.username": {
-      "comment": "Label for the username field",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Username"
+    "settings.username" : {
+      "comment" : "Label for the username field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
           }
         }
       }
     },
-    "status.intervalStart": {
-      "comment": "Status line showing the start time of the selected interval",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "@ %@"
+    "status.intervalStart" : {
+      "comment" : "Status line showing the start time of the selected interval",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "@ %@"
           }
         }
       }
     },
-    "status.refreshCountdown": {
-      "comment": "Status line refresh countdown, e.g. 12/60 s",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld/%lld s"
+    "status.refreshCountdown" : {
+      "comment" : "Status line refresh countdown, e.g. 12/60 s",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/%lld s"
           }
         }
       }
     },
-    "status.strikeCount": {
-      "comment": "Status line showing strike count and interval in minutes",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld strikes/%lld minutes"
+    "status.strikeCount" : {
+      "comment" : "Status line showing strike count and interval in minutes",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld strikes/%lld minutes"
           }
         }
       }
     },
-    "status.unavailable": {
-      "comment": "Status line shown before the first data arrives",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "n/a"
+    "status.unavailable" : {
+      "comment" : "Status line shown before the first data arrives",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "n/a"
           }
         }
       }
     },
-    "unit.kilometres.value": {
-      "comment": "Distance in kilometres, e.g. 10 km",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.0f km"
+    "unit.kilometres.value" : {
+      "comment" : "Distance in kilometres, e.g. 10 km",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.0f km"
           }
         }
       }
     },
-    "unit.km": {
-      "comment": "Kilometre unit name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "km"
+    "unit.km" : {
+      "comment" : "Kilometre unit name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km"
           }
         }
       }
     },
-    "unit.miles": {
-      "comment": "Miles unit name",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "mi"
+    "unit.miles" : {
+      "comment" : "Miles unit name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mi"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

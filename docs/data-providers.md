@@ -91,6 +91,21 @@ Capability limits, declared through `DataProviderCapabilities`:
 So the HTTP source serves strike lists only; it cannot serve grid-aggregated
 data or clusters, and consumers must not request them.
 
+### Grid geometry
+
+A JSON-RPC grid result carries its own raster geometry: `x0`/`xd`/`xc` for
+longitude and `y1`/`yd`/`yc` for latitude, where the column count `xc` starts at
+`x0` and the row count `yc` starts at `y1` and runs southwards. The strike arrays
+are `[x, y, count, age]`, with **zero-based** offsets into that raster.
+
+`GridParameters.getCenterLongitude(offset:)` and `getCenterLatitude(offset:)`
+turn an offset into the cell's centre, as `x0 + xd * (offset + 0.5)` and
+`y1 - yd * (offset + 0.5)`: the first cell's centre lies half a cell inside the
+north-western corner of the grid, and the last half a cell inside the
+south-eastern. Both axes use the same half-cell inset, as the reference client
+does; a centre placed on the wrong side of an edge shifts every drawn cell by one
+whole cell in that direction.
+
 ## Caching and freshness
 
 `DataCache` stores results keyed by the full `Parameters` value, with a

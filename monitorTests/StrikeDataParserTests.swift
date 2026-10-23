@@ -41,7 +41,9 @@ final class StrikeDataParserTests: XCTestCase {
         XCTAssertEqual(third.multiplicity, 2)
         // The delay is in seconds, subtracted from the reference time.
         XCTAssertEqual(third.timestamp, Fixtures.referenceTimestamp - 3_000)
-        XCTAssertEqual(third.location.longitude, 8.5, accuracy: 0.0001)
+        // The cell is offset 19 of 20 in a grid spanning -10.0...10.0, so it is
+        // the last column and its centre is half a cell inside the 10.0 edge.
+        XCTAssertEqual(third.location.longitude, 9.5, accuracy: 0.0001)
         XCTAssertEqual(third.location.latitude, 35.5, accuracy: 0.0001)
     }
 

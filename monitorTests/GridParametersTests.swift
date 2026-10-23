@@ -28,11 +28,32 @@ final class GridParametersTests: XCTestCase {
                                       latitudeDelta: 1.0,
                                       latitudeCount: 20)
 
+    /// The first cell's centre lies half a cell inside the grid's western and
+    /// northern edges, and the last half a cell inside the eastern and southern
+    /// ones - on both axes, as the reference client has it. A centre placed on
+    /// the wrong side of the edge shifts every cell by one whole cell.
     func testCellCentersAreDerivedFromOffsets() {
-        XCTAssertEqual(grid.getCenterLongitude(offset: 0), -10.5, accuracy: 0.0001)
+        XCTAssertEqual(grid.getCenterLongitude(offset: 0), -9.5, accuracy: 0.0001)
         XCTAssertEqual(grid.getCenterLatitude(offset: 0), 54.5, accuracy: 0.0001)
-        XCTAssertEqual(grid.getCenterLongitude(offset: 19), 8.5, accuracy: 0.0001)
+        XCTAssertEqual(grid.getCenterLongitude(offset: 19), 9.5, accuracy: 0.0001)
         XCTAssertEqual(grid.getCenterLatitude(offset: 19), 35.5, accuracy: 0.0001)
+
+        XCTAssertEqual(grid.getCenterLongitude(offset: 0) - grid.longitudeStart,
+                       grid.longitudeDelta / 2,
+                       accuracy: 0.0001,
+                       "the first column's centre is half a cell inside the western edge")
+        XCTAssertEqual(grid.longitudeEnd - grid.getCenterLongitude(offset: 19),
+                       grid.longitudeDelta / 2,
+                       accuracy: 0.0001,
+                       "the last column's centre is half a cell inside the eastern edge")
+        XCTAssertEqual(grid.latitudeStart - grid.getCenterLatitude(offset: 0),
+                       grid.latitudeDelta / 2,
+                       accuracy: 0.0001,
+                       "the first row's centre is half a cell inside the northern edge")
+        XCTAssertEqual(grid.getCenterLatitude(offset: 19) - grid.latitudeEnd,
+                       grid.latitudeDelta / 2,
+                       accuracy: 0.0001,
+                       "the last row's centre is half a cell inside the southern edge")
     }
 
     func testGridBoundsAreDerived() {

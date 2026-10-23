@@ -74,8 +74,13 @@ public struct GridParameters: Equatable {
         return latitudeStart - latitudeDelta * Double(latitudeCount) / 2.0
     }
 
+    /// The longitude at the centre of the cell `offset` cells east of the grid's
+    /// western edge.
+    ///
+    /// The offsets are zero-based, so the first cell's centre lies half a cell
+    /// inside the edge; the reference client uses the same `+ 0.5` on both axes.
     public func getCenterLongitude(offset: Int) -> Double {
-        return longitudeStart + longitudeDelta * (Double(offset) - 0.5)
+        return longitudeStart + longitudeDelta * (Double(offset) + 0.5)
     }
 
     public func getCenterLatitude(offset: Int) -> Double {

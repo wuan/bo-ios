@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "monitor"
+          }
+        }
+      }
+    },
     "NSLocationAlwaysAndWhenInUseUsageDescription" : {
       "comment" : "Why the app would ask for background location: proximity alerts while it is in the background",
       "localizations" : {
