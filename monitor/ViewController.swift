@@ -698,6 +698,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                colorHandler: colorHandler,
                                                intervalDuration: timeModel.interval.duration,
                                                measurementUnit: settings.measurementUnit,
+                                               referenceTime: lastResult?.referenceTimestamp ?? 0,
                                                alert: alertState.isActive)
         radarContent = content
         radarView.configure(content: content)

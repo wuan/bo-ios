@@ -42,11 +42,21 @@ public struct RadarSector: Equatable {
     public let color: UInt32?
     /// The age of the sector's closest strike in minutes, when it has one.
     public let ageMinutes: Int?
+    /// One fill per ring, innermost first: the colour of the activity that ring
+    /// holds, or `nil` when it holds none.
+    ///
+    /// The radar draws these rather than one wedge per sector, so a strike far
+    /// out does not paint the rings inside it.
+    public let ringFills: [UInt32?]
 
-    public init(direction: AlertDirection, color: UInt32?, ageMinutes: Int?) {
+    public init(direction: AlertDirection,
+                color: UInt32?,
+                ageMinutes: Int?,
+                ringFills: [UInt32?] = []) {
         self.direction = direction
         self.color = color
         self.ageMinutes = ageMinutes
+        self.ringFills = ringFills
     }
 
     /// Whether the sector is filled.
@@ -117,12 +127,15 @@ public enum RadarContentBuilder {
     ///   - intervalDuration: the displayed interval in minutes, which the
     ///     colour sections divide.
     ///   - measurementUnit: the unit ring labels are shown in.
+    ///   - referenceTime: the moment the aggregation's ages are measured from,
+    ///     in seconds since the epoch, which the ring fills are coloured by.
     ///   - geometry: the radar's geometry.
     ///   - alert: whether an alert is active, which the radar marks.
     public static func make(aggregation: AlertAggregation,
                             colorHandler: ColorHandler,
                             intervalDuration: Int,
                             measurementUnit: MeasurementUnit,
+                            referenceTime: Int,
                             geometry: AlertGeometry = .standard,
                             alert: Bool = false) -> RadarContent {
         let ringLabels = geometry.ranges.enumerated().map { index, range in
@@ -141,14 +154,24 @@ public enum RadarContentBuilder {
         }
 
         let sectors = activity.sectors.map { sector -> RadarSector in
+            let ringFills = sector.cells.map { cell -> UInt32? in
+                guard cell.strikeCount > 0, cell.latestStrikeTimestamp > 0 else { return nil }
+                let age = max(0, referenceTime - cell.latestStrikeTimestamp)
+                return colorHandler.color(ageSeconds: age, intervalDuration: intervalDuration)
+            }
+
             guard let closest = sector.closestStrike else {
-                return RadarSector(direction: sector.direction, color: nil, ageMinutes: nil)
+                return RadarSector(direction: sector.direction,
+                                   color: nil,
+                                   ageMinutes: nil,
+                                   ringFills: ringFills)
             }
             let minutes = closest.age / 60
             return RadarSector(direction: sector.direction,
                                color: colorHandler.color(ageSeconds: closest.age,
                                                          intervalDuration: intervalDuration),
-                               ageMinutes: minutes)
+                               ageMinutes: minutes,
+                               ringFills: ringFills)
         }
 
         let hasStrike = activity.sectors.contains { $0.closestStrike != nil }
@@ -182,6 +205,11 @@ public enum RadarContentBuilder {
     }
 
     private static func emptySectors(_ geometry: AlertGeometry) -> [RadarSector] {
-        return geometry.directions.map { RadarSector(direction: $0, color: nil, ageMinutes: nil) }
+        return geometry.directions.map {
+            RadarSector(direction: $0,
+                        color: nil,
+                        ageMinutes: nil,
+                        ringFills: Array(repeating: nil, count: geometry.ranges.count))
+        }
     }
 }

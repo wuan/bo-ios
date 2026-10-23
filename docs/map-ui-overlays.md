@@ -117,9 +117,10 @@ known, `noData` when the data is not realtime or no result is available,
 `outsideDataArea` when the location lies outside the data area, and otherwise
 `activity` - which the radar presents as `active` when a sector holds a strike
 within range and `inactive` when none does. A strike beyond the 500 km ring is
-ignored. Sector fills take the colour of the sector's closest strike's age;
-ring labels are shown in the active measurement unit, with the unit name beside
-the outermost ring.
+ignored. Sector fills are drawn **per ring**, from the activity that ring holds -
+its newest strike's age decides the colour - so a strike in the outer ring leaves
+the rings inside it clear; ring labels are shown in the active measurement unit,
+with the unit name beside the outermost ring.
 
 Tapping the radar centres the map on the current location (`centerOnLocation`);
 when no location is known the map is left unchanged and the radar's state is

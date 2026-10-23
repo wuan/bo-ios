@@ -59,6 +59,7 @@ final class RadarContentTests: XCTestCase {
                                         colorHandler: colorHandler,
                                         intervalDuration: intervalDuration,
                                         measurementUnit: measurementUnit,
+                                        referenceTime: referenceTime,
                                         geometry: geometry)
     }
 
@@ -76,6 +77,45 @@ final class RadarContentTests: XCTestCase {
         XCTAssertTrue(north.isFilled)
         XCTAssertEqual(north.color, colorHandler.color(ageSeconds: 0, intervalDuration: 60))
         XCTAssertEqual(north.ageMinutes, 0)
+    }
+
+    /// A strike in the outermost ring must colour only that ring: filling the
+    /// whole sector would show activity in every ring inside it.
+    func testActivityFarOutFillsOnlyTheOutermostRing() throws {
+        let content = self.content(aggregate([strike(northKilometres: 400, age: 0)]))
+
+        let north = try sector(content, "N")
+        XCTAssertEqual(north.ringFills.count, geometry.ranges.count, "one fill per ring")
+        XCTAssertEqual(north.ringFills[geometry.ranges.count - 1],
+                       colorHandler.color(ageSeconds: 0, intervalDuration: 60),
+                       "400 km falls in the 250...500 km ring")
+        XCTAssertTrue(north.ringFills.dropLast().allSatisfy { $0 == nil },
+                      "the inner rings must stay clear")
+    }
+
+    /// Activity in an inner ring leaves the rings outside it clear.
+    func testActivityNearByLeavesTheOuterRingsClear() throws {
+        let content = self.content(aggregate([strike(northKilometres: 5, age: 0)]))
+
+        let north = try sector(content, "N")
+        XCTAssertEqual(north.ringFills.first,
+                       colorHandler.color(ageSeconds: 0, intervalDuration: 60),
+                       "5 km falls in the innermost ring")
+        XCTAssertTrue(north.ringFills.dropFirst().allSatisfy { $0 == nil })
+    }
+
+    func testEachRingTakesTheColourOfItsOwnNewestStrike() throws {
+        let content = self.content(aggregate([strike(northKilometres: 5, age: 0),
+                                              strike(northKilometres: 200, age: 5 * 60)]))
+
+        let north = try sector(content, "N")
+        XCTAssertEqual(north.ringFills.first,
+                       colorHandler.color(ageSeconds: 0, intervalDuration: 60))
+        // 200 km falls in the 100...250 km ring, the fifth of six.
+        XCTAssertEqual(north.ringFills[4],
+                       colorHandler.color(ageSeconds: 5 * 60, intervalDuration: 60))
+        XCTAssertNil(north.ringFills[geometry.ranges.count - 1],
+                     "the outermost ring holds nothing")
     }
 
     func testOlderActivityTakesAnOlderColour() throws {

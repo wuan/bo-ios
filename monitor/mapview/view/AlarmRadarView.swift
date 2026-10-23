@@ -76,23 +76,34 @@ final class AlarmRadarView: UIControl {
 
         guard let content = content, !content.ringLabels.isEmpty else { return }
 
-        // One fill per sector, coloured by its closest strike's age.
-        for sector in content.sectors {
-            guard let color = sector.color else { continue }
-            UIColor(packed: color, alpha: 0.85).setFill()
-            let wedge = UIBezierPath()
-            wedge.move(to: center)
-            wedge.addArc(withCenter: center,
-                         radius: radius,
-                         startAngle: AlarmRadarView.radians(sector.direction.centerBearing - 22.5 - 90),
-                         endAngle: AlarmRadarView.radians(sector.direction.centerBearing + 22.5 - 90),
-                         clockwise: true)
-            wedge.close()
-            wedge.fill()
-        }
-
         let rings = content.ringLabels.count
         let increment = radius / CGFloat(rings)
+
+        // One band per ring that holds activity, so a strike far out does not
+        // paint the rings inside it; an empty ring stays clear.
+        for sector in content.sectors {
+            let start = AlarmRadarView.radians(sector.direction.centerBearing - 22.5 - 90)
+            let end = AlarmRadarView.radians(sector.direction.centerBearing + 22.5 - 90)
+            for (index, fill) in sector.ringFills.enumerated() {
+                guard index < rings, let color = fill else { continue }
+                let band = UIBezierPath()
+                band.addArc(withCenter: center,
+                            radius: CGFloat(index + 1) * increment,
+                            startAngle: start,
+                            endAngle: end,
+                            clockwise: true)
+                band.addArc(withCenter: center,
+                            radius: CGFloat(index) * increment,
+                            startAngle: end,
+                            endAngle: start,
+                            clockwise: false)
+                band.close()
+                band.usesEvenOddFillRule = true
+                UIColor(packed: color, alpha: 0.85).setFill()
+                band.fill()
+            }
+        }
+
         UIColor(white: 1, alpha: 0.8).setStroke()
         for ring in 1 ... rings {
             let path = UIBezierPath(arcCenter: center,

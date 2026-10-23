@@ -641,21 +641,30 @@ class monitorUITests: XCTestCase {
         let radar = app.descendants(matching: .any)["radar.view"]
         XCTAssertTrue(radar.waitForExistence(timeout: 15))
 
-        // A point in the middle of the live data area.
-        map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).press(forDuration: 1.2)
-
         // With the limits opened up, any activity inside the 500 km outer ring
-        // qualifies; a state without activity has nothing to mark.
-        let deadline = Date().addingTimeInterval(90)
+        // qualifies, so a few points across the data area are tried before the
+        // window counts as quiet.
+        let points = [CGVector(dx: 0.5, dy: 0.45),
+                      CGVector(dx: 0.35, dy: 0.35),
+                      CGVector(dx: 0.65, dy: 0.5)]
         var value = ""
-        while Date() < deadline {
-            value = (radar.value as? String) ?? ""
-            if value.contains("alert") { break }
-            if value.hasPrefix("No activity") || value.hasPrefix("No data") {
-                throw XCTSkip("the live data had no activity within range of the pressed point")
+        var quiet = 0
+
+        for point in points {
+            map.coordinate(withNormalizedOffset: point).press(forDuration: 1.2)
+
+            let deadline = Date().addingTimeInterval(45)
+            while Date() < deadline {
+                value = (radar.value as? String) ?? ""
+                if value.contains("alert") { break }
+                usleep(500_000)
             }
-            usleep(500_000)
+            if value.contains("alert") { break }
+            if value.hasPrefix("No activity") || value.hasPrefix("No data") { quiet += 1 }
         }
+
+        try XCTSkipIf(!value.contains("alert") && quiet == points.count,
+                      "the live data had no activity within range of any pressed point")
 
         XCTAssertTrue(value.contains("alert"), "the radar did not mark an alert: '\(value)'")
         attachScreenshot("alert-marked-radar")
