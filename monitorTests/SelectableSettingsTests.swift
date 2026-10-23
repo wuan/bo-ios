@@ -41,7 +41,7 @@ final class SelectableSettingsTests: XCTestCase {
     func testDefaultsMatchTodaysBehaviour() {
         let store = SettingsStore(defaults: defaults)
 
-        XCTAssertEqual(store.choice(for: .region), 1, "region should default to Europe")
+        XCTAssertEqual(store.choice(for: .region), Parameters.globalRegion, "region should default to global")
         XCTAssertEqual(store.choice(for: .intervalDuration), 60)
         XCTAssertEqual(store.choice(for: .historicTimestep), History.defaultOffsetIncrement)
     }
@@ -94,7 +94,7 @@ final class SelectableSettingsTests: XCTestCase {
 
         XCTAssertEqual(store.choice(for: .intervalDuration), 60)
         XCTAssertEqual(store.choice(for: .historicTimestep), History.defaultOffsetIncrement)
-        XCTAssertEqual(store.choice(for: .region), 1)
+        XCTAssertEqual(store.choice(for: .region), Parameters.globalRegion)
     }
 
     func testRejectedValueDoesNotNotifyObservers() {

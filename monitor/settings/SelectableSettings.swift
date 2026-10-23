@@ -36,8 +36,12 @@ public struct SelectableValue: Equatable {
 /// defaults are the ones a fresh install uses.
 public enum SelectableSettings {
 
-    /// The region a fresh install requests, Europe.
-    public static let defaultRegion = 1
+    /// The region a fresh install requests, the whole globe.
+    ///
+    /// This matches the Android client, whose `region` preference defaults to
+    /// `0`; a global request is dispatched to the global grid method rather
+    /// than being clamped to a named region server-side.
+    public static let defaultRegion = Parameters.globalRegion
     /// The interval duration in minutes a fresh install displays.
     public static let defaultIntervalDuration = 60
     /// The history step in minutes a fresh install steps by.

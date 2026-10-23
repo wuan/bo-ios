@@ -107,7 +107,7 @@ final class ViewControllerChromeTests: XCTestCase {
 
         controller.render(result: result())
 
-        XCTAssertEqual(controller.legendContent?.regionName, "Europe")
+        XCTAssertEqual(controller.legendContent?.regionName, "Global")
         XCTAssertEqual(controller.histogramContent?.bars.count, 12, "the bars cover the displayed period")
         XCTAssertEqual(controller.histogramContent?.bars.prefix(4).map { $0.count }, [0, 1, 4, 9])
         XCTAssertEqual(controller.radarContent?.state, .noLocation)
@@ -265,7 +265,7 @@ final class ViewControllerChromeTests: XCTestCase {
     func testDefaultSettingsIssueTheUnchangedRequest() {
         let parameters = controller.baseParameters()
 
-        XCTAssertEqual(parameters.region, 1, "Europe is still the default region")
+        XCTAssertEqual(parameters.region, Parameters.globalRegion, "the globe is the default region")
         XCTAssertEqual(parameters.rasterBaselength, 10000, "the default grid baseline is unchanged")
         XCTAssertEqual(parameters.intervalDuration, 60, "the default interval is unchanged")
         XCTAssertEqual(parameters.intervalOffset, 0, "realtime is still the default")

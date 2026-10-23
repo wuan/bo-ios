@@ -47,7 +47,7 @@ diverge. The value sets reproduce the reference client:
 
 | Entry | Setting | Values | Default |
 | --- | --- | --- | --- |
-| Region | `region` | Local `-1`, Global `0`, Europe `1`, Oceania `2`, N. America `3`, Asia `4`, S. America `5`, Africa `6`, C. America `7` | `1` (Europe) |
+| Region | `region` | Local `-1`, Global `0`, Europe `1`, Oceania `2`, N. America `3`, Asia `4`, S. America `5`, Africa `6`, C. America `7` | `0` (Global) |
 | Interval duration | `intervalDuration` | 30, 60, 90, 120, 240 minutes | `60` |
 | Historic timestep | `historicTimestep` | 15, 30, 60 minutes | `30` (`History.defaultOffsetIncrement`) |
 | Data source | `dataSource` | `rpc`, `http` | `rpc` |
@@ -173,7 +173,7 @@ location source, so the marker is the same in every mode.
 
 | Key | Default | Effect |
 | --- | --- | --- |
-| `region` | `1` | The requested data region |
+| `region` | `0` | The requested data region |
 | `intervalDuration` | `60` | The displayed interval, the legend's age ranges, the histogram's bins, the radar's colour sections |
 | `historicTimestep` | `30` | The history step behind the slider |
 | `locationMode` | `manual` | How the current location is determined |

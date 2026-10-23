@@ -120,6 +120,7 @@
 		AB0000000000000000000405 /* LocalDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000305 /* LocalDataTests.swift */; };
 		AB0000000000000000000406 /* GridGatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000306 /* GridGatingTests.swift */; };
 		AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */; };
+		AB0000000000000000000409 /* JsonRpcGridRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */; };
 		AC0000000000000000000201 /* ColorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000101 /* ColorHandler.swift */; };
 		AC0000000000000000000202 /* ShapeAlpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000102 /* ShapeAlpha.swift */; };
 		AC0000000000000000000203 /* TileGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000103 /* TileGeometry.swift */; };
@@ -275,6 +276,7 @@
 		AB0000000000000000000305 /* LocalDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalDataTests.swift; path = LocalDataTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000306 /* GridGatingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridGatingTests.swift; path = GridGatingTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModeRefreshSchedulerTests.swift; path = ModeRefreshSchedulerTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JsonRpcGridRequestTests.swift; path = JsonRpcGridRequestTests.swift; sourceTree = "<group>"; };
 		AC0000000000000000000101 /* ColorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorHandler.swift; path = mapview/color/ColorHandler.swift; sourceTree = "<group>"; };
 		AC0000000000000000000102 /* ShapeAlpha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlpha.swift; path = mapview/ShapeAlpha.swift; sourceTree = "<group>"; };
 		AC0000000000000000000103 /* TileGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileGeometry.swift; path = mapview/TileGeometry.swift; sourceTree = "<group>"; };
@@ -476,6 +478,7 @@
 				AB0000000000000000000305 /* LocalDataTests.swift */,
 				AB0000000000000000000306 /* GridGatingTests.swift */,
 				AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */,
+				AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */,
 				AC0000000000000000000301 /* ColorSchemeTests.swift */,
 				AC0000000000000000000302 /* ShapeAlphaTests.swift */,
 				AC0000000000000000000303 /* TileGeometryTests.swift */,
@@ -815,6 +818,7 @@
 				AB0000000000000000000405 /* LocalDataTests.swift in Sources */,
 				AB0000000000000000000406 /* GridGatingTests.swift in Sources */,
 				AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */,
+				AB0000000000000000000409 /* JsonRpcGridRequestTests.swift in Sources */,
 				AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */,
 				AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */,
 				AC0000000000000000000403 /* TileGeometryTests.swift in Sources */,

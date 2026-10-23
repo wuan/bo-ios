@@ -299,7 +299,7 @@ class monitorUITests: XCTestCase {
         legend.tap()
         let reopened = app.pickerWheels.firstMatch
         XCTAssertTrue(reopened.waitForExistence(timeout: 10))
-        reopened.adjust(toPickerWheelValue: "Europe")
+        reopened.adjust(toPickerWheelValue: "Global")
         app.buttons["quick.close"].tap()
     }
 
@@ -411,7 +411,7 @@ class monitorUITests: XCTestCase {
         XCTAssertEqual(app.sliders["quick.fade"].value as? String, fadeBefore)
 
         // Restore the documented defaults for later runs.
-        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Europe")
+        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Global")
         app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 1).tap()
         app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 1).tap()
         app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()
@@ -849,7 +849,7 @@ class monitorUITests: XCTestCase {
         request.httpMethod = "POST"
         request.setValue("text/json", forHTTPHeaderField: "Content-Type")
         request.setValue("bo-ios-1", forHTTPHeaderField: "User-Agent")
-        request.httpBody = Data(#"{"id":1,"method":"get_strikes_grid","params":[60,10000,0,1,0]}"#.utf8)
+        request.httpBody = Data(#"{"id":1,"method":"get_global_strikes_grid","params":[60,100000,0,0]}"#.utf8)
 
         let (body, status) = probe(request)
         let text = body.flatMap { String(data: $0, encoding: .utf8) } ?? ""

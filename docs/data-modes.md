@@ -45,7 +45,7 @@ shows the start of the selected interval as a wall-clock time instead
 | Interval duration | 60 minutes | `intervalDuration` setting, registered default |
 | History range | 24 hours (1440 min) | `History.maxRange` |
 | History step | 30 minutes | `historicTimestep` setting, registered default |
-| Region | 1 (Europe) | `region` setting, registered default |
+| Region | 0 (Global) | `region` setting, registered default |
 | Query period | 60 s | `ModeRefreshScheduler()` |
 | Animation step | 1 s | `ModeRefreshScheduler()` |
 

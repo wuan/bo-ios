@@ -47,6 +47,7 @@ public final class JsonRpcDataProvider: DataProvider {
 
     public func fetchData(parameters: Parameters, completion: @escaping (Result?, Error?) -> Void) {
         let parser = self.parser
+        let request = JsonRpcDataProvider.gridRequest(for: parameters)
         client.call(callback: { response, errorInServiceCall in
             if let errorInServiceCall = errorInServiceCall {
                 completion(nil, errorInServiceCall)
@@ -62,11 +63,54 @@ public final class JsonRpcDataProvider: DataProvider {
                 completion(nil, error)
             }
         },
-        methodName: "get_strikes_grid",
-        withArguments: parameters.intervalDuration,
-        parameters.rasterBaselength,
-        parameters.intervalOffset,
-        parameters.region,
-        JsonRpcDataProvider.countThresholdArgument)
+        methodName: request.method,
+        arguments: request.arguments)
+    }
+
+    /// The JSON-RPC method and positional arguments a request must use.
+    ///
+    /// The backend exposes a distinct grid method per region kind, and sending a
+    /// global or local region to the generic method is not equivalent: that
+    /// method clamps its region into the named range, so a global request would
+    /// be served as a named region (Europe) rather than the whole globe. A global
+    /// request therefore drops the region argument, and a local request carries
+    /// its data area instead.
+    static func gridRequest(for parameters: Parameters) -> (method: String, arguments: [Int]) {
+        switch parameters.region {
+        case Parameters.localRegion:
+            guard let dataArea = parameters.dataArea else {
+                // A local request without a data area cannot be bounded, so fall
+                // back to the global method rather than send a region-less call.
+                return (Self.globalMethod, Self.globalArguments(parameters))
+            }
+            return ("get_local_strikes_grid",
+                    [dataArea.x,
+                     dataArea.y,
+                     parameters.rasterBaselength,
+                     parameters.intervalDuration,
+                     parameters.intervalOffset,
+                     JsonRpcDataProvider.countThresholdArgument,
+                     dataArea.scale])
+
+        case Parameters.globalRegion:
+            return (Self.globalMethod, Self.globalArguments(parameters))
+
+        default:
+            return ("get_strikes_grid",
+                    [parameters.intervalDuration,
+                     parameters.rasterBaselength,
+                     parameters.intervalOffset,
+                     parameters.region,
+                     JsonRpcDataProvider.countThresholdArgument])
+        }
+    }
+
+    private static let globalMethod = "get_global_strikes_grid"
+
+    private static func globalArguments(_ parameters: Parameters) -> [Int] {
+        return [parameters.intervalDuration,
+                parameters.rasterBaselength,
+                parameters.intervalOffset,
+                JsonRpcDataProvider.countThresholdArgument]
     }
 }
