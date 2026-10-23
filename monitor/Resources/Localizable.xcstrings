@@ -860,12 +860,12 @@
       }
     },
     "time.range.start" : {
-      "comment" : "History slider start, e.g. -24 h",
+      "comment" : "History slider start, e.g. -23 h",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "-%d h"
+            "value" : "-%@ h"
           }
         }
       }

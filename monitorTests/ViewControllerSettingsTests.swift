@@ -134,8 +134,20 @@ final class ViewControllerSettingsTests: XCTestCase {
     // MARK: - Mode controls
 
     func testTheSliderRangeIsLabelledFromHistoryToNow() {
-        XCTAssertEqual(ViewController.rangeStartText, "-24 h")
-        XCTAssertEqual(controller.rangeStartLabel.text, "-24 h")
+        XCTAssertEqual(ViewController.rangeStartText(lowerLimitMinutes: -1380), "-23 h")
+        XCTAssertEqual(controller.rangeStartLabel.text, "-23 h")
         XCTAssertEqual(controller.rangeEndLabel.text, "now")
+    }
+
+    func testTheRangeStartFollowsTheIntervalDuration() {
+        // The fractional value uses the locale's decimal separator, so only the
+        // magnitude is asserted, not the exact string.
+        let fractional = ViewController.rangeStartText(lowerLimitMinutes: -1410)
+        XCTAssertTrue(fractional.hasPrefix("-23") && fractional.hasSuffix(" h"),
+                      "expected about -23.5 h, got '\(fractional)'")
+
+        settings.setChoice(240, for: .intervalDuration)
+
+        XCTAssertEqual(controller.rangeStartLabel.text, "-20 h")
     }
 }

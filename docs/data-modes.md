@@ -24,8 +24,11 @@ rightmost position maps to a zero offset and therefore activates realtime; any
 other position selects the interval ending at that point. `TimeIntervalSelection`
 provides the mapping (`position(history:)`, `maxPosition(history:)`,
 `withPosition(_:history:)`), so the control stays a plain integer range. The
-slider's ends are labelled with the range it spans, `-24 h` on the left and `now`
-on the right, and the mode name and the animation button share the line above it.
+slider's ends are labelled with the window it spans: the earliest selectable
+interval on the left - `-23 h` at the default 60-minute duration, one interval
+short of the full 24-hour range, so the label follows the interval duration - and
+`now` on the right. The mode name and the animation button share the line above
+it.
 
 An **Animate** button starts animation playback; pressing it again stops and
 holds the interval reached, and the user can resume manual selection. Realtime

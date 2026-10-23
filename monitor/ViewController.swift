@@ -255,7 +255,6 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         rangeStartLabel.accessibilityIdentifier = "time.range.start"
         rangeStartLabel.font = .preferredFont(forTextStyle: .caption2)
         rangeStartLabel.textColor = .secondaryLabel
-        rangeStartLabel.text = ViewController.rangeStartText
 
         rangeEndLabel = UILabel()
         rangeEndLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -279,13 +278,26 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         self.modeControls = controls
     }
 
-    /// The label for the oldest end of the history range, e.g. `-24 h`.
-    static var rangeStartText: String {
-        let hours = History.maxRange / 60
+    /// The label for the oldest end of the history range, e.g. `-23 h`.
+    ///
+    /// The earliest selectable interval ends `lowerLimitMinutes` before the
+    /// present - one interval shorter than the full range - so the label follows
+    /// the interval duration.
+    static func rangeStartText(lowerLimitMinutes: Int) -> String {
+        let hours = Double(abs(lowerLimitMinutes)) / 60.0
+        let number = hoursFormatter.string(from: NSNumber(value: hours)) ?? String(hours)
         return String(format: NSLocalizedString("time.range.start",
-                                                comment: "History slider start, e.g. -24 h"),
-                      hours)
+                                                comment: "History slider start, e.g. -23 h"),
+                      number as NSString)
     }
+
+    private static let hoursFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 1
+        return formatter
+    }()
 
     private var modeControls: UIStackView!
 
@@ -530,13 +542,15 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         requestCurrentParameters()
     }
 
-    /// Reflects the time model in the slider, the animation button, and the
-    /// mode indicator.
+    /// Reflects the time model in the slider, the range labels, the animation
+    /// button, and the mode indicator.
     private func syncModeControls() {
         let maxPosition = max(1, timeModel.maxPosition)
         timeSlider.maximumValue = Float(maxPosition)
         timeSlider.value = Float(timeModel.position)
         timeSlider.isEnabled = timeModel.mode != .animation
+        rangeStartLabel.text = ViewController.rangeStartText(
+            lowerLimitMinutes: timeModel.history.lowerLimit(of: timeModel.interval))
         updateModeIndicator()
         updateAnimationButton()
     }
