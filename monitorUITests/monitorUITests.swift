@@ -256,7 +256,7 @@ class monitorUITests: XCTestCase {
     // MARK: - Chrome
 
     /// Taps the legend and confirms the quick-settings dialog opens with every
-    /// entry present.
+    /// entry present, and that the region row follows the active source.
     func testLegendTapOpensQuickSettingsWithEveryEntry() {
         let app = XCUIApplication()
         app.launch()
@@ -268,14 +268,29 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(app.otherElements["quick.root"].waitForExistence(timeout: 10),
                       "tapping the legend did not open quick settings")
 
-        for identifier in ["quick.region", "quick.intervalDuration", "quick.historicTimestep",
+        for identifier in ["quick.intervalDuration", "quick.historicTimestep",
                            "quick.dataSource", "quick.colorScheme", "quick.mapMode", "quick.fade"] {
             XCTAssertTrue(app.descendants(matching: .any)[identifier].exists, "\(identifier) is missing")
         }
+
+        // The region row is offered only for the HTTP source. Select each source
+        // explicitly so the check does not depend on a previous run's state.
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()  // JSON-RPC
+        XCTAssertFalse(app.descendants(matching: .any)["quick.region"].exists,
+                       "the JSON-RPC source must not offer a region")
+
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).tap()  // HTTP
+        XCTAssertTrue(app.descendants(matching: .any)["quick.region"].waitForExistence(timeout: 5),
+                      "the HTTP source must offer a region without closing the sheet")
+
+        // Restore the default source for later runs.
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()  // JSON-RPC
+        app.buttons["quick.close"].tap()
     }
 
     /// Changes the region in quick settings and confirms the map's legend shows
-    /// it after the dialog closes, with the map still up.
+    /// it after the dialog closes, with the map still up. The region applies only
+    /// to the HTTP source, so that source is selected first.
     func testQuickSettingAppliesToTheMapWithoutLeavingIt() {
         let app = XCUIApplication()
         app.launch()
@@ -283,6 +298,9 @@ class monitorUITests: XCTestCase {
         let legend = app.descendants(matching: .any)["legend.view"]
         XCTAssertTrue(legend.waitForExistence(timeout: 15))
         legend.tap()
+
+        XCTAssertTrue(app.segmentedControls["quick.dataSource"].waitForExistence(timeout: 10))
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).tap()  // HTTP
 
         let picker = app.pickerWheels.firstMatch
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
@@ -295,11 +313,10 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["map.view"].exists,
                       "the map must still be there after the dialog closes")
 
-        // Restore the default region for later runs.
+        // Restore the default source for later runs.
         legend.tap()
-        let reopened = app.pickerWheels.firstMatch
-        XCTAssertTrue(reopened.waitForExistence(timeout: 10))
-        reopened.adjust(toPickerWheelValue: "Global")
+        XCTAssertTrue(app.segmentedControls["quick.dataSource"].waitForExistence(timeout: 10))
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()  // JSON-RPC
         app.buttons["quick.close"].tap()
     }
 
@@ -381,11 +398,15 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(legend.waitForExistence(timeout: 15))
         legend.tap()
 
+        // The region applies only to the HTTP source, so select it before the
+        // region picker is offered.
+        XCTAssertTrue(app.segmentedControls["quick.dataSource"].waitForExistence(timeout: 10))
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).tap()        // HTTP
+
         XCTAssertTrue(app.pickerWheels.firstMatch.waitForExistence(timeout: 10))
         app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Asia")
         app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 3).tap()   // 120 min
         app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 2).tap()  // 60 min
-        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 1).tap()        // HTTP
         app.segmentedControls["quick.colorScheme"].buttons.element(boundBy: 1).tap()       // RAINBOW
         app.segmentedControls["quick.mapMode"].buttons.element(boundBy: 2).tap()           // standard
         app.sliders["quick.fade"].adjust(toNormalizedSliderPosition: 0.2)
@@ -410,14 +431,15 @@ class monitorUITests: XCTestCase {
         XCTAssertNotEqual(fadeBefore, "55 %", "the fade did not change")
         XCTAssertEqual(app.sliders["quick.fade"].value as? String, fadeBefore)
 
-        // Restore the documented defaults for later runs.
-        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Global")
+        // Restore the documented defaults for later runs. The region picker is
+        // only offered for HTTP, so it is set before leaving that source.
+        app.pickerWheels.firstMatch.adjust(toPickerWheelValue: "Europe")
         app.segmentedControls["quick.intervalDuration"].buttons.element(boundBy: 1).tap()
         app.segmentedControls["quick.historicTimestep"].buttons.element(boundBy: 1).tap()
-        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()
         app.segmentedControls["quick.colorScheme"].buttons.element(boundBy: 0).tap()
         app.segmentedControls["quick.mapMode"].buttons.element(boundBy: 0).tap()
         app.sliders["quick.fade"].adjust(toNormalizedSliderPosition: 0.55)
+        app.segmentedControls["quick.dataSource"].buttons.element(boundBy: 0).tap()  // JSON-RPC
         app.buttons["quick.close"].tap()
     }
 

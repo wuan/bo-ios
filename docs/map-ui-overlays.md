@@ -36,9 +36,13 @@ produces one entry per palette section plus the region line and the grid line:
 | Minutes per section | `intervalDuration / numberOfColors` |
 | Entry ages | Section `i` covers `[i * m, (i + 1) * m)` minutes; the last section is open-ended |
 | Entry text | `< %d min` for a bounded section, `> %d min` for the open-ended one |
-| Region name | `ViewController.activeRegionName`, from the `region` setting |
+| Region name | `ViewController.activeRegionName`, from the resolved request's region |
 | Grid baseline | `rasterBaselength / 1000` km, e.g. `Grid: 10 km`; shown only when the source serves a grid |
 | Local region size | The local data area's `scale` in degrees (`%d°`), shown only for the local region (`-1`) with a known data area |
+
+The region name follows the request actually issued rather than the stored
+setting, so an automatically-local JSON-RPC request reads `Local` and shows the
+local region size, and an HTTP request reads its named region.
 
 ## Quick settings
 
@@ -47,13 +51,18 @@ diverge. The value sets reproduce the reference client:
 
 | Entry | Setting | Values | Default |
 | --- | --- | --- | --- |
-| Region | `region` | Local `-1`, Global `0`, Europe `1`, Oceania `2`, N. America `3`, Asia `4`, S. America `5`, Africa `6`, C. America `7` | `0` (Global) |
+| Region (HTTP source only) | `region` | Europe `1`, N. America `3`, C. America `7`, S. America `5`, Oceania `2`, Asia `4`, Africa `6` | `0` (resolved to Europe for HTTP) |
 | Interval duration | `intervalDuration` | 30, 60, 90, 120, 240 minutes | `60` |
 | Historic timestep | `historicTimestep` | 15, 30, 60 minutes | `30` (`History.defaultOffsetIncrement`) |
 | Data source | `dataSource` | `rpc`, `http` | `rpc` |
 | Colour scheme | `colorScheme` | `BLITZORTUNG`, `RAINBOW`, `TEMPERATURE` | `BLITZORTUNG` |
 | Map mode | `mapMode` | `hybrid`, `satellite`, `standard` | `hybrid` |
 | Map fade | `mapFade` | 0 - 100 percent | `55` |
+
+The region row appears only while the Blitzortung HTTP source is active, because
+the region applies only to that source, and it lists named regions only - the
+stored default `0` is not offered, it simply resolves to Europe for HTTP. The row
+appears and disappears as the source changes inside the open dialog.
 
 The cluster and show-grid toggles of the reference client are omitted: the app
 draws neither clusters nor grid lines, so they would be controls with no effect.
@@ -68,7 +77,8 @@ The interval duration and the timestep reach the display through
 `ViewController.applyIntervalSettings()`, which reconfigures `TimeModel`
 (`TimeIntervalSelection.withDuration(_:history:)`, `TimeModel.configure`) and
 refreshes the chrome. The region reaches the request through
-`ViewController.applyRegionSetting()`.
+`ViewController.applyRegionSetting()`, and a source change re-resolves the region
+and re-requests through `ViewController.applyDataSource()`.
 
 ## Strike-rate histogram
 

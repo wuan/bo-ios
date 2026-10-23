@@ -19,11 +19,12 @@
 import XCTest
 @testable import monitor
 
-/// The JSON-RPC backend serves global, local, and named-region grid data through
-/// separate methods. Sending a global or local region to the named-region method
+/// The JSON-RPC backend serves global and local grid data through separate
+/// methods. Sending a global or local region to the generic named-region method
 /// does not fail: the backend clamps the region into its named range, so a global
-/// request silently becomes a named region (Europe). These tests pin the method
-/// the provider dispatches to for each region kind.
+/// request silently becomes a named region (Europe). The app never sends a named
+/// region on this source, so these tests pin the method the provider dispatches
+/// to for each region kind and the fallback for an unexpected one.
 final class JsonRpcGridRequestTests: XCTestCase {
 
     override func setUp() {
@@ -71,16 +72,17 @@ final class JsonRpcGridRequestTests: XCTestCase {
         XCTAssertEqual(request.method, "get_global_strikes_grid")
     }
 
-    func testNamedRegionUsesTheGenericMethodWithItsRegion() {
+    func testUnexpectedRegionFallsBackToTheGlobalMethod() {
         let request = JsonRpcDataProvider.gridRequest(
             for: Parameters(region: 3,
                             rasterBaselength: 10000,
                             intervalDuration: 60,
                             intervalOffset: 0))
 
-        XCTAssertEqual(request.method, "get_strikes_grid")
+        XCTAssertEqual(request.method, "get_global_strikes_grid",
+                       "the named method is unreachable, so a named region falls back to global")
         XCTAssertEqual(request.arguments,
-                       [60, 10000, 0, 3, JsonRpcDataProvider.countThresholdArgument])
+                       [60, 10000, 0, JsonRpcDataProvider.countThresholdArgument])
     }
 
     // MARK: - Wire format

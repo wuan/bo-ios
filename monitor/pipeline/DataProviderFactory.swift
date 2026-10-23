@@ -22,6 +22,22 @@ import Foundation
 public enum DataProviderType: String, CaseIterable {
     case rpc
     case http
+
+    /// Whether the app applies the stored region to this source.
+    ///
+    /// The region names a per-region strike log on the Blitzortung HTTP source,
+    /// but the JSON-RPC source always resolves the region itself from the
+    /// visible extent, so the stored region is only meaningful for HTTP. This is
+    /// policy, not a capability: both backends can serve named regions; the app
+    /// simply never asks JSON-RPC for them.
+    public var selectsRegion: Bool {
+        switch self {
+        case .rpc:
+            return false
+        case .http:
+            return true
+        }
+    }
 }
 
 /// Built-in endpoints used when no override is configured.

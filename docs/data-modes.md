@@ -62,10 +62,24 @@ edits them.
 
 ## Region and data-area rules
 
-`LocalData` maps a region setting to request parameters and reproduces the
+The region applies only to the Blitzortung HTTP source. `ViewController` resolves
+the region from the active source before `LocalData` runs:
+
+| Source | Stored region | Region requested |
+| --- | --- | --- |
+| JSON-RPC | ignored | `global` (`0`), which `LocalData` may upgrade to local from the extent |
+| HTTP | a named region (`1`..`7`) | that named region |
+| HTTP | anything else, including the `0` default | Europe (`1`) |
+
+The JSON-RPC source resolves the region itself from the visible extent and never
+names one, so the stored region is ignored for it. The HTTP resolution is not
+written back, so an install whose stored region is the `0` default simply
+requests Europe while the setting keeps its value.
+
+`LocalData` then maps that region to request parameters and reproduces the
 Android rules:
 
-| Region setting | Behaviour |
+| Region | Behaviour |
 | --- | --- |
 | `local` (`-1`) | Uses the derived data area; without one, falls back to global |
 | `global` (`0`) | Uses the derived data area when the grid size is finer than the local threshold; otherwise stays global with no data area |
@@ -126,6 +140,7 @@ The model rules are covered by unit tests:
 | Mode transitions | `DataModeTests` |
 | Extent adapter | `ViewExtentTests` |
 | Region/data-area/grid selection | `LocalDataTests` |
+| Region selection by source | `ViewControllerSettingsTests` |
 | Grid gating | `GridGatingTests` |
 | Mode-driven refresh | `ModeRefreshSchedulerTests` |
 | Slider control | `monitorUITests.testTimeSliderRightmostActivatesRealtime` |

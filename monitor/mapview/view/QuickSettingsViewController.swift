@@ -29,6 +29,9 @@ public final class QuickSettingsViewController: UIViewController,
 
     private let settings: SettingsStore
 
+    /// Token for the data-source observation that toggles the region row.
+    private var dataSourceObserver: NSObjectProtocol?
+
     private let titleLabel = UILabel()
     private let regionLabel = UILabel()
     private let regionPicker = UIPickerView()
@@ -70,6 +73,18 @@ public final class QuickSettingsViewController: UIViewController,
 
         buildLayout()
         loadValues()
+        // A source change inside the open dialog toggles the region row without
+        // closing the sheet.
+        dataSourceObserver = settings.observe(.dataSource) { [weak self] in
+            self?.updateRegionVisibility()
+        }
+        updateRegionVisibility()
+    }
+
+    deinit {
+        if let dataSourceObserver = dataSourceObserver {
+            settings.removeObserver(dataSourceObserver)
+        }
     }
 
     private func buildLayout() {
@@ -154,15 +169,29 @@ public final class QuickSettingsViewController: UIViewController,
             stack.topAnchor.constraint(equalTo: scroller.topAnchor),
             stack.bottomAnchor.constraint(equalTo: scroller.bottomAnchor),
             stack.widthAnchor.constraint(equalTo: scroller.widthAnchor),
-
-            regionPicker.heightAnchor.constraint(equalToConstant: 110),
         ])
+
+        // The picker keeps its height while shown, but the stack must be able to
+        // collapse the row, so the height yields below the hiding constraint.
+        let pickerHeight = regionPicker.heightAnchor.constraint(equalToConstant: 110)
+        pickerHeight.priority = UILayoutPriority(999)
+        pickerHeight.isActive = true
+    }
+
+    /// Shows the region row only while the active source applies the stored
+    /// region; the JSON-RPC source derives its region from the extent.
+    private func updateRegionVisibility() {
+        let source = DataProviderType(rawValue: settings.string(for: .dataSource)) ?? .rpc
+        let showsRegion = source.selectsRegion
+        regionLabel.isHidden = !showsRegion
+        regionPicker.isHidden = !showsRegion
     }
 
     /// Reflects the stored settings in the controls.
     private func loadValues() {
-        if let region = SelectableSettings.regions.firstIndex(where: { $0.value == settings.choice(for: .region) }) {
-            regionPicker.selectRow(region, inComponent: 0, animated: false)
+        let region = SelectableSettings.httpRegion(for: settings.choice(for: .region))
+        if let row = SelectableSettings.namedRegions.firstIndex(where: { $0.value == region }) {
+            regionPicker.selectRow(row, inComponent: 0, animated: false)
         }
         intervalControl.selectedSegmentIndex =
             SelectableSettings.intervalDurations.firstIndex { $0.value == settings.choice(for: .intervalDuration) } ?? 1
@@ -226,14 +255,14 @@ public final class QuickSettingsViewController: UIViewController,
     }
 
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return SelectableSettings.regions.count
+        return SelectableSettings.namedRegions.count
     }
 
     public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return SelectableSettings.regions[row].name
+        return SelectableSettings.namedRegions[row].name
     }
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        settings.setChoice(SelectableSettings.regions[row].value, for: .region)
+        settings.setChoice(SelectableSettings.namedRegions[row].value, for: .region)
     }
 }

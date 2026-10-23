@@ -36,10 +36,9 @@ public class JsonRpcClient: NSObject {
 
     /// Sends a call whose positional argument list is built by the caller.
     ///
-    /// The grid methods take different arities — `get_strikes_grid` takes five
-    /// arguments, `get_global_strikes_grid` four, and `get_local_strikes_grid`
-    /// seven — so the provider must be able to vary the shape rather than send
-    /// a single fixed one.
+    /// The grid methods take different arities — `get_global_strikes_grid` four
+    /// arguments and `get_local_strikes_grid` seven — so the provider must be
+    /// able to vary the shape rather than send a single fixed one.
     func call(callback: @escaping (_ response: [String:AnyObject]?, _ errorInServiceCall: Error?) -> Void,
               methodName: String, arguments: [Int]) {
 

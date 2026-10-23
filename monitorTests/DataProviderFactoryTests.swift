@@ -125,4 +125,16 @@ final class DataProviderFactoryTests: XCTestCase {
         XCTAssertEqual(DataProviderType(rawValue: "http"), .http)
         XCTAssertNil(DataProviderType(rawValue: "unknown"))
     }
+
+    /// Only the Blitzortung HTTP source applies the stored region; the JSON-RPC
+    /// source always derives its region from the visible extent.
+    func testOnlyTheHttpSourceSelectsTheStoredRegion() {
+        let expected: [DataProviderType: Bool] = [.rpc: false, .http: true]
+
+        XCTAssertEqual(expected.count, DataProviderType.allCases.count,
+                       "every case must be covered")
+        for type in DataProviderType.allCases {
+            XCTAssertEqual(type.selectsRegion, expected[type], "unexpected policy for \(type.rawValue)")
+        }
+    }
 }

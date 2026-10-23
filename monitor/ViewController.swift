@@ -120,6 +120,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                   signaller: alertSignaller ?? SystemAlertSignaller(),
                                                   notifier: self.alertNotifier)
         self.regionSetting = settings.choice(for: .region)
+        self.parameters = Parameters(region: ViewController.selectedRegion(
+            source: DataProviderCoordinator.source(in: settings), storedRegion: self.regionSetting))
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(nibName: nil, bundle: nil)
     }
@@ -149,6 +151,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                   signaller: SystemAlertSignaller(),
                                                   notifier: self.alertNotifier)
         self.regionSetting = settings.choice(for: .region)
+        self.parameters = Parameters(region: ViewController.selectedRegion(
+            source: DataProviderCoordinator.source(in: settings), storedRegion: self.regionSetting))
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(coder: coder)
     }
@@ -514,11 +518,28 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     func baseParameters() -> Parameters {
         let gridSize = viewExtent.map { LocalData.gridSize(for: $0) } ?? parameters.rasterBaselength
-        return Parameters(region: regionSetting,
+        return Parameters(region: selectedRegion,
                           rasterBaselength: gridSize,
                           intervalDuration: timeModel.interval.duration,
                           intervalOffset: timeModel.interval.offset,
                           dataArea: nil)
+    }
+
+    /// The region the active source requests.
+    ///
+    /// The JSON-RPC source derives its region from the visible extent, so it is
+    /// always asked for the global region and `LocalData.updateParameters`
+    /// upgrades it to local when the extent allows. The Blitzortung HTTP source
+    /// names a region: the stored one when it names a region, otherwise Europe.
+    var selectedRegion: Int {
+        return ViewController.selectedRegion(source: DataProviderCoordinator.source(in: settings),
+                                             storedRegion: regionSetting)
+    }
+
+    /// The region a source requests for a stored region setting.
+    static func selectedRegion(source: DataProviderType, storedRegion: Int) -> Int {
+        guard source.selectsRegion else { return Parameters.globalRegion }
+        return SelectableSettings.httpRegion(for: storedRegion)
     }
 
     // MARK: - Mode controls
@@ -731,7 +752,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         let content = LegendContentBuilder.make(colorHandler: colorHandler,
                                                intervalDuration: timeModel.interval.duration,
                                                regionName: activeRegionName,
-                                               region: regionSetting,
+                                               region: parameters.region,
                                                dataArea: localData.dataArea,
                                                gridBaselineMetres: parameters.rasterBaselength)
         legendContent = content
@@ -1073,6 +1094,9 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         settingsObservers.append(settings.observe(.region) { [weak self] in
             self?.applyRegionSetting()
         })
+        settingsObservers.append(settings.observe(.dataSource) { [weak self] in
+            self?.applyDataSource()
+        })
         for key in [SettingsKey.intervalDuration, SettingsKey.historicTimestep] {
             settingsObservers.append(settings.observe(key) { [weak self] in
                 self?.applyIntervalSettings()
@@ -1080,9 +1104,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         }
     }
 
-    /// The name of the region the app is requesting.
+    /// The name of the region the last request asked for.
+    ///
+    /// Derived from the resolved request parameters rather than the stored
+    /// setting, so an automatically-local JSON-RPC request reads "Local" and an
+    /// HTTP request reads its named region.
     var activeRegionName: String {
-        return SelectableSettings.name(for: .region, value: regionSetting)
+        return SelectableSettings.name(for: .region, value: parameters.region)
             ?? SelectableSettings.regions[0].name
     }
 
@@ -1091,8 +1119,16 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         regionSetting = settings.choice(for: .region)
         // The stored data area belongs to the previous region.
         localData = LocalData()
-        refreshLegend()
         requestCurrentParameters()
+        refreshLegend()
+    }
+
+    /// Adopts a changed data source by re-requesting with the region the new
+    /// source selects, so a switch takes effect without waiting for the next
+    /// tick. The legend follows the resolved request.
+    func applyDataSource() {
+        requestCurrentParameters()
+        refreshLegend()
     }
 
     /// Adopts the stored interval duration and history step, reshaping the

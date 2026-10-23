@@ -69,12 +69,13 @@ public final class JsonRpcDataProvider: DataProvider {
 
     /// The JSON-RPC method and positional arguments a request must use.
     ///
-    /// The backend exposes a distinct grid method per region kind, and sending a
-    /// global or local region to the generic method is not equivalent: that
+    /// The backend exposes a global and a local grid method. Sending a global or
+    /// local region to the generic named-region method is not equivalent: that
     /// method clamps its region into the named range, so a global request would
-    /// be served as a named region (Europe) rather than the whole globe. A global
-    /// request therefore drops the region argument, and a local request carries
-    /// its data area instead.
+    /// be served as a named region (Europe) rather than the whole globe. This
+    /// source never names a region, so a global request drops the region
+    /// argument, a local request carries its data area instead, and any other
+    /// region falls back to the global method.
     static func gridRequest(for parameters: Parameters) -> (method: String, arguments: [Int]) {
         switch parameters.region {
         case Parameters.localRegion:
@@ -96,12 +97,10 @@ public final class JsonRpcDataProvider: DataProvider {
             return (Self.globalMethod, Self.globalArguments(parameters))
 
         default:
-            return ("get_strikes_grid",
-                    [parameters.intervalDuration,
-                     parameters.rasterBaselength,
-                     parameters.intervalOffset,
-                     parameters.region,
-                     JsonRpcDataProvider.countThresholdArgument])
+            // Any other region falls back to the global method, mirroring the
+            // local-without-a-data-area rule; the app never sends a named region
+            // on this source.
+            return (Self.globalMethod, Self.globalArguments(parameters))
         }
     }
 

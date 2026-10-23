@@ -42,6 +42,9 @@ public enum SelectableSettings {
     /// `0`; a global request is dispatched to the global grid method rather
     /// than being clamped to a named region server-side.
     public static let defaultRegion = Parameters.globalRegion
+    /// The named region the Blitzortung HTTP source requests when the stored
+    /// region does not name one - Europe, the first named region.
+    public static let defaultHttpRegion = 1
     /// The interval duration in minutes a fresh install displays.
     public static let defaultIntervalDuration = 60
     /// The history step in minutes a fresh install steps by.
@@ -64,6 +67,17 @@ public enum SelectableSettings {
         SelectableValue(value: 4, name: NSLocalizedString("region.asia", comment: "Region name")),
         SelectableValue(value: 6, name: NSLocalizedString("region.africa", comment: "Region name")),
     ]
+
+    /// The named regions the Blitzortung HTTP source can request, in the
+    /// reference order; the extent-derived sentinels are not offered here.
+    public static let namedRegions: [SelectableValue] = regions.filter { $0.value > 0 }
+
+    /// The region the Blitzortung HTTP source requests for a stored value: the
+    /// stored value when it names a region, otherwise Europe. Nothing is
+    /// written back, so the stored value is left as it is.
+    public static func httpRegion(for value: Int) -> Int {
+        return namedRegions.contains { $0.value == value } ? value : defaultHttpRegion
+    }
 
     /// The selectable interval durations in minutes.
     public static let intervalDurations: [SelectableValue] =

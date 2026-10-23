@@ -82,7 +82,8 @@ final class GridGatingTests: XCTestCase {
     }
 
     /// The threshold is no longer a parameter, but the provider's method is
-    /// positional and still expects the argument last.
+    /// positional and still expects the argument last. A named region now falls
+    /// back to the global method, so the request has the four-argument shape.
     func testGridRequestCarriesTheThresholdArgumentInItsPosition() async throws {
         let provider = JsonRpcDataProvider(serviceEndpoint: "http://example.com",
                                            session: makeStubbedSession())
@@ -98,7 +99,7 @@ final class GridGatingTests: XCTestCase {
         let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: body) as? [String: Any])
         let values = try XCTUnwrap(json["params"] as? [Any])
 
-        XCTAssertEqual(values.count, 5)
+        XCTAssertEqual(values.count, 4)
         XCTAssertEqual(values.last as? Int, JsonRpcDataProvider.countThresholdArgument)
     }
 

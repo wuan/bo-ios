@@ -68,6 +68,14 @@ final class SelectableSettingsTests: XCTestCase {
                                "S. America", "Oceania", "Asia", "Africa"])
     }
 
+    func testNamedRegionsExcludeTheExtentSentinels() {
+        XCTAssertEqual(SelectableSettings.namedRegions.map { $0.value }, [1, 3, 7, 5, 2, 4, 6])
+        XCTAssertEqual(SelectableSettings.namedRegions.map { $0.name },
+                       ["Europe", "N. America", "C. America", "S. America",
+                        "Oceania", "Asia", "Africa"])
+        XCTAssertEqual(SelectableSettings.defaultHttpRegion, 1, "Europe is the default HTTP region")
+    }
+
     // MARK: - Persistence
 
     func testChangesPersistAcrossStoreInstances() {

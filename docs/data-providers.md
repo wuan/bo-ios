@@ -93,20 +93,20 @@ data or clusters, and consumers must not request them.
 
 ### Grid methods
 
-The JSON-RPC backend serves grid data through a separate method per region kind,
-and the provider selects one from the request's region:
+The JSON-RPC backend serves grid data through two methods, and the provider
+selects one from the request's region:
 
 | Region | Method | Positional arguments |
 | --- | --- | --- |
 | Global (`0`) | `get_global_strikes_grid` | duration, grid size, offset, threshold |
 | Local (`-1`, with a data area) | `get_local_strikes_grid` | x, y, grid size, duration, offset, threshold, data-area scale |
-| Named (`1`..`7`) | `get_strikes_grid` | duration, grid size, offset, region, threshold |
 
-This mirrors the Android client and matters because `get_strikes_grid` clamps its
-region into the named range server-side: sending a global request (`0`) through
-it is served as the first named region (Europe), not the whole globe. A local
-request without a data area cannot be bounded, so it falls back to the global
-method.
+The app never asks the JSON-RPC source for a named region — it derives the
+region from the visible extent — so the generic named `get_strikes_grid` method
+is no longer used. That method clamps its region into the named range
+server-side, so sending a global request (`0`) through it was served as the first
+named region (Europe), not the whole globe. A local request without a data area
+cannot be bounded, and any other region falls back to the global method.
 
 ### Grid geometry
 

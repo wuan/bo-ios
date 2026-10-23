@@ -108,27 +108,60 @@ final class ViewControllerSettingsTests: XCTestCase {
 
     // MARK: - Region
 
-    func testEveryRegionValueProducesTheExpectedParameterAndName() {
+    func testTheRpcSourceCarriesTheGlobalRegionForEveryStoredValue() {
         for region in SelectableSettings.regions {
             XCTAssertTrue(settings.setChoice(region.value, for: .region))
 
             XCTAssertEqual(controller.regionSetting, region.value)
-            XCTAssertEqual(controller.baseParameters().region, region.value)
-            XCTAssertEqual(controller.activeRegionName, region.name)
+            XCTAssertEqual(controller.baseParameters().region, Parameters.globalRegion,
+                           "the RPC source must ignore the stored region \(region.value)")
+            XCTAssertEqual(provider.received.last?.region, Parameters.globalRegion)
         }
     }
 
-    func testChangedRegionReachesTheRequest() {
+    func testAnHttpRequestCarriesTheStoredNamedRegion() {
+        settings.set(DataProviderType.http.rawValue, for: .dataSource)
         XCTAssertTrue(settings.setChoice(3, for: .region))
 
         XCTAssertEqual(provider.received.last?.region, 3)
+        XCTAssertEqual(controller.requestCurrentParameters().region, 3)
+        XCTAssertEqual(controller.activeRegionName, "N. America")
     }
 
-    func testLocalRegionFallsBackToGlobalWithoutADataArea() {
+    func testAnHttpRequestResolvesAnUnnamedStoredRegionToEuropeWithoutWriting() {
+        settings.set(DataProviderType.http.rawValue, for: .dataSource)
+        XCTAssertEqual(settings.choice(for: .region), SelectableSettings.defaultRegion,
+                       "the region setting is left at its 0 default")
+
+        XCTAssertEqual(controller.requestCurrentParameters().region, SelectableSettings.defaultHttpRegion)
+        XCTAssertEqual(provider.received.last?.region, SelectableSettings.defaultHttpRegion)
+        XCTAssertEqual(settings.choice(for: .region), SelectableSettings.defaultRegion,
+                       "resolving the region must not write to the settings store")
+    }
+
+    func testTheStoredLocalRegionFallsBackToGlobalForRpcWithoutADataArea() {
         XCTAssertTrue(settings.setChoice(Parameters.localRegion, for: .region))
 
         XCTAssertEqual(controller.requestCurrentParameters().region, Parameters.globalRegion)
-        XCTAssertEqual(controller.activeRegionName, "Local")
+        XCTAssertEqual(controller.activeRegionName, "Global",
+                       "the legend follows the resolved request, not the stored setting")
+    }
+
+    // MARK: - Data source
+
+    func testChangingTheSourceReRequestsWithTheRegionOfTheNewSource() {
+        XCTAssertTrue(settings.setChoice(3, for: .region))
+        XCTAssertEqual(provider.received.last?.region, Parameters.globalRegion,
+                       "the RPC source ignores the stored region")
+
+        settings.set(DataProviderType.http.rawValue, for: .dataSource)
+
+        XCTAssertEqual(provider.received.last?.region, 3,
+                       "the next request must follow the newly active source")
+
+        settings.set(DataProviderType.rpc.rawValue, for: .dataSource)
+
+        XCTAssertEqual(provider.received.last?.region, Parameters.globalRegion)
     }
 
     // MARK: - Mode controls

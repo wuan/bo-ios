@@ -105,6 +105,15 @@ final class ViewControllerChromeTests: XCTestCase {
     func testAResultRefreshesEveryComponent() {
         XCTAssertNil(controller.overviewContent)
 
+        // A large extent keeps the RPC request global, so the legend has a
+        // deterministic region to show. The region change applies on the next
+        // run-loop pass, so settle the map before reading it.
+        controller.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                                                       span: MKCoordinateSpan(latitudeDelta: 80, longitudeDelta: 160)),
+                                     animated: false)
+        settleMap()
+        controller.mapViewDidChangeVisibleRegion(controller.mapView)
+
         controller.render(result: result())
 
         XCTAssertEqual(controller.legendContent?.regionName, "Global")
@@ -270,6 +279,35 @@ final class ViewControllerChromeTests: XCTestCase {
         XCTAssertEqual(parameters.intervalDuration, 60, "the default interval is unchanged")
         XCTAssertEqual(parameters.intervalOffset, 0, "realtime is still the default")
         XCTAssertEqual(JsonRpcDataProvider.countThresholdArgument, 0, "the retired threshold is still sent inactive")
+    }
+
+    // MARK: - Region (source-scoped)
+
+    func testAnAutomaticLocalRpcRequestShowsLocalInTheLegend() {
+        // A small extent yields a local data area that the RPC source upgrades to.
+        controller.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 10),
+                                                       span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)),
+                                     animated: false)
+        controller.mapViewDidChangeVisibleRegion(controller.mapView)
+
+        let parameters = controller.requestCurrentParameters()
+        controller.refreshLegend()
+
+        XCTAssertEqual(parameters.region, Parameters.localRegion)
+        XCTAssertEqual(controller.legendContent?.regionName, "Local")
+        XCTAssertNotNil(controller.legendContent?.localRegionSize,
+                        "a local region with a data area shows its size")
+    }
+
+    func testAnHttpRequestShowsItsNamedRegionInTheLegend() {
+        settings.set(DataProviderType.http.rawValue, for: .dataSource)
+        XCTAssertTrue(settings.setChoice(3, for: .region))
+
+        controller.requestCurrentParameters()
+        controller.refreshLegend()
+
+        XCTAssertEqual(controller.legendContent?.regionName, "N. America")
+        XCTAssertNil(controller.legendContent?.localRegionSize, "a named region has no local size")
     }
 
     // MARK: - Alerts (5.1, 5.2)
