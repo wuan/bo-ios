@@ -39,7 +39,7 @@ implementation, are the contract.
 | 1 - Data modes | [`ios-data-modes`](../openspec/changes/archive/2026-10-22-ios-data-modes/proposal.md) | `data-modes`, and `data-providers` (modified) |
 | 2 - Map rendering | [`ios-map-rendering`](../openspec/changes/archive/2026-10-22-ios-map-rendering/proposal.md) | `map-rendering` |
 | 3 - Map UI overlays | [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md) | `map-ui-overlays`, `location-handling` (manual path), `proximity-alerts` (aggregation), and `data-providers` and `data-modes` (modified) |
-| 4 - Location handling | [`ios-location-handling`](../openspec/changes/ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
+| 4 - Location handling | [`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
 
 Delivered foundations that later phases build on:
 

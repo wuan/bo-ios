@@ -3,7 +3,7 @@
 Where the app's current position comes from and what it is used for: the marker,
 centring, and the alarm radar's distances. This documents the `location-handling`
 capability delivered by the
-[`ios-location-handling`](../openspec/changes/ios-location-handling/proposal.md)
+[`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md)
 change, which completes the manual path the
 [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md)
 change introduced.
