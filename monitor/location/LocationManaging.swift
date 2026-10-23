@@ -41,6 +41,9 @@ public protocol LocationManaging: AnyObject {
     /// The accuracy the manager is asked for.
     var desiredAccuracy: CLLocationAccuracy { get set }
 
+    /// The last position the manager produced, or `nil` before one arrives.
+    var location: Location? { get }
+
     /// The object told about authorisation changes and positions.
     var delegate: LocationManagerDelegate? { get set }
 
@@ -86,6 +89,9 @@ public final class CoreLocationManager: NSObject, LocationManaging, CLLocationMa
         set { manager.desiredAccuracy = newValue }
     }
 
+    /// The last position the device reported.
+    public private(set) var location: Location?
+
     public weak var delegate: LocationManagerDelegate?
 
     public func requestWhenInUseAuthorization() {
@@ -118,7 +124,8 @@ public final class CoreLocationManager: NSObject, LocationManaging, CLLocationMa
 
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let coordinate = locations.last?.coordinate else { return }
-        delegate?.manager(self, didUpdate: Location(latitude: coordinate.latitude,
-                                                    longitude: coordinate.longitude))
+        let location = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        self.location = location
+        delegate?.manager(self, didUpdate: location)
     }
 }

@@ -137,6 +137,14 @@
 		AC000000000000000000020A /* ActivityOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010A /* ActivityOverlayBuilder.swift */; };
 		AC000000000000000000020B /* ActivityCountAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010B /* ActivityCountAnnotationView.swift */; };
 		AC0000000000000000000407 /* ActivityRenderPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000307 /* ActivityRenderPlanTests.swift */; };
+		E148DFB744E08BC0A8AB4135 /* BackgroundMonitoringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */; };
+		E140F823670B4F42AC824DA6 /* BackgroundMonitoringScheduling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */; };
+		E18D7AD43D72E33999DA3C77 /* BackgroundDataFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */; };
+		E1948A2289C50BDA65892F7D /* BackgroundMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */; };
+		E1677FCF5CF1467C6CBB5CD2 /* BackgroundLocationPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */; };
+		E1BF7357E4AB308BA94AA006 /* BackgroundQueryPeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */; };
+		E171D6E917E8937600A9C2B8 /* BackgroundMonitoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */; };
+		E1CFB5FE7BEFC78B39230BA6 /* BackgroundLocationPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -293,6 +301,14 @@
 		AC000000000000000000010A /* ActivityOverlayBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityOverlayBuilder.swift; path = mapview/view/ActivityOverlayBuilder.swift; sourceTree = "<group>"; };
 		AC000000000000000000010B /* ActivityCountAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityCountAnnotationView.swift; path = mapview/view/ActivityCountAnnotationView.swift; sourceTree = "<group>"; };
 		AC0000000000000000000307 /* ActivityRenderPlanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityRenderPlanTests.swift; path = ActivityRenderPlanTests.swift; sourceTree = "<group>"; };
+		E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringSettings.swift; path = background/BackgroundMonitoringSettings.swift; sourceTree = "<group>"; };
+		E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringScheduling.swift; path = background/BackgroundMonitoringScheduling.swift; sourceTree = "<group>"; };
+		E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundDataFetching.swift; path = background/BackgroundDataFetching.swift; sourceTree = "<group>"; };
+		E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitor.swift; path = background/BackgroundMonitor.swift; sourceTree = "<group>"; };
+		E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationPermission.swift; path = background/BackgroundLocationPermission.swift; sourceTree = "<group>"; };
+		E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundQueryPeriodTests.swift; path = BackgroundQueryPeriodTests.swift; sourceTree = "<group>"; };
+		E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringTests.swift; path = BackgroundMonitoringTests.swift; sourceTree = "<group>"; };
+		E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationPermissionTests.swift; path = BackgroundLocationPermissionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +408,11 @@
 				AD0000000000000000000005 /* LocationSourceFactory.swift */,
 				AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */,
 				AD000000000000000000000F /* ProximityAlertMonitor.swift */,
+				E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */,
+				E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */,
+				E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */,
+				E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */,
+				E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */,
 				AD0000000000000000000011 /* SystemAlertOutputs.swift */,
 				6BD07C951F9C17231923B741 /* SelectableSettings.swift */,
 				7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */,
@@ -478,6 +499,9 @@
 				AB0000000000000000000305 /* LocalDataTests.swift */,
 				AB0000000000000000000306 /* GridGatingTests.swift */,
 				AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */,
+				E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */,
+				E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */,
+				E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */,
 				AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */,
 				AC0000000000000000000301 /* ColorSchemeTests.swift */,
 				AC0000000000000000000302 /* ShapeAlphaTests.swift */,
@@ -717,6 +741,11 @@
 				AD0000000000000000000006 /* LocationSourceFactory.swift in Sources */,
 				AD0000000000000000000008 /* BackgroundLocationDisclosure.swift in Sources */,
 				AD0000000000000000000010 /* ProximityAlertMonitor.swift in Sources */,
+				E148DFB744E08BC0A8AB4135 /* BackgroundMonitoringSettings.swift in Sources */,
+				E140F823670B4F42AC824DA6 /* BackgroundMonitoringScheduling.swift in Sources */,
+				E18D7AD43D72E33999DA3C77 /* BackgroundDataFetching.swift in Sources */,
+				E1948A2289C50BDA65892F7D /* BackgroundMonitor.swift in Sources */,
+				E1677FCF5CF1467C6CBB5CD2 /* BackgroundLocationPermission.swift in Sources */,
 				AD0000000000000000000012 /* SystemAlertOutputs.swift in Sources */,
 				6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */,
 				BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */,
@@ -818,6 +847,9 @@
 				AB0000000000000000000405 /* LocalDataTests.swift in Sources */,
 				AB0000000000000000000406 /* GridGatingTests.swift in Sources */,
 				AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */,
+				E1BF7357E4AB308BA94AA006 /* BackgroundQueryPeriodTests.swift in Sources */,
+				E171D6E917E8937600A9C2B8 /* BackgroundMonitoringTests.swift in Sources */,
+				E1CFB5FE7BEFC78B39230BA6 /* BackgroundLocationPermissionTests.swift in Sources */,
 				AB0000000000000000000409 /* JsonRpcGridRequestTests.swift in Sources */,
 				AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */,
 				AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */,

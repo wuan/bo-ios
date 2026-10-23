@@ -34,6 +34,7 @@ public enum SettingsKey: String, CaseIterable {
     case region
     case intervalDuration
     case historicTimestep
+    case backgroundQueryPeriod
     case locationMode
     case manualLatitude
     case manualLongitude
@@ -47,6 +48,8 @@ public enum SettingsKey: String, CaseIterable {
     case signalingSuppressionTime
     case alertVibrationSignal
     case alertSoundSignal
+    case lastNotifiedStrikeTimestamp
+    case lastSignalledStrikeTimestamp
 
     /// Values used when a setting has never been changed by the user.
     public static var defaultValues: [String: Any] {
@@ -62,6 +65,8 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.region.rawValue: SelectableSettings.defaultRegion,
             SettingsKey.intervalDuration.rawValue: SelectableSettings.defaultIntervalDuration,
             SettingsKey.historicTimestep.rawValue: SelectableSettings.defaultHistoricTimestep,
+            // Background monitoring is off until the user picks a period.
+            SettingsKey.backgroundQueryPeriod.rawValue: SelectableSettings.defaultBackgroundQueryPeriod,
             SettingsKey.locationMode.rawValue: LocationMode.manual.rawValue,
             SettingsKey.manualLatitude.rawValue: 0.0,
             SettingsKey.manualLongitude.rawValue: 0.0,
@@ -81,6 +86,9 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.signalingSuppressionTime.rawValue: AlertSettingsValues.defaultSuppressionTime,
             SettingsKey.alertVibrationSignal.rawValue: AlertSettingsValues.defaultVibrationStrength,
             SettingsKey.alertSoundSignal.rawValue: "",
+            // Dedup watermarks: no strike has been notified or signalled yet.
+            SettingsKey.lastNotifiedStrikeTimestamp.rawValue: 0,
+            SettingsKey.lastSignalledStrikeTimestamp.rawValue: 0,
         ]
     }
 }

@@ -58,7 +58,11 @@ covers, which the aggregation already records.
 
 Keying on strikes rather than the clock means how often the app happens to
 evaluate the data cannot change what the user hears: the same activity evaluated
-again emits nothing.
+again emits nothing. The two watermarks - the strike last notified and the one
+last signalled - are persisted (`lastNotifiedStrikeTimestamp`,
+`lastSignalledStrikeTimestamp`) and read back when the monitor is built, so a
+background evaluation and a later foreground one share the same dedup state and
+one strike still warns once.
 
 ## Signals and the notification
 
@@ -92,6 +96,16 @@ additionally marks an active alert, so "there is activity in range" and "the use
 is being warned" stay two separate answers; the mark clears when the alert is
 cancelled while the activity is still shown.
 
+## Background
+
+The same decision runs while the app is not in the foreground. When alerts are
+on and a background query period is set, `BackgroundMonitor` fetches the current
+realtime interval on the configured cadence and evaluates this monitor on the
+result, so a qualifying strike still notifies with the screen off. The decision,
+the limits, the ports, and the aggregation are unchanged - only what drives them
+differs. Because the two monitors are separate instances, they share the
+persisted watermarks above. See [background-monitoring.md](background-monitoring.md).
+
 ## Settings
 
 | Key | Default | Effect |
@@ -102,6 +116,8 @@ cancelled while the activity is still shown.
 | `signalingSuppressionTime` | `0` | The suppression window in minutes |
 | `alertVibrationSignal` | `3` | The haptic strength, `0...30` |
 | `alertSoundSignal` | `""` | A system sound to play, or none |
+| `lastNotifiedStrikeTimestamp` | `0` | The strike last notified; a dedup watermark, not a user setting |
+| `lastSignalledStrikeTimestamp` | `0` | The strike last signalled; a dedup watermark, not a user setting |
 
 ## Verifying
 
@@ -111,6 +127,7 @@ cancelled while the activity is still shown.
 | Gating, limits, the boundary, suppression, dedup | `ProximityAlertMonitorTests` |
 | The reported state and the configured signal | `ProximityAlertMonitorTests` |
 | The decision through the controller, the radar's mark | `ViewControllerChromeTests` |
+| The decision from the background, dedup across instances | `BackgroundMonitoringTests` |
 
 What cannot be observed in a simulator - the audible signal and the felt
 vibration - needs a device and is recorded as a residual check.

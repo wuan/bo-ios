@@ -56,22 +56,29 @@ The two usage descriptions live in `monitor/Info.plist` and are localised throug
 `monitor/Resources/InfoPlist.xcstrings`:
 `NSLocationWhenInUseUsageDescription` for the map marker and the distances to
 strikes, and `NSLocationAlwaysAndWhenInUseUsageDescription` for the proximity
-alerts the background phase will add. Without them iOS ignores the request and
+alerts that run in the background. Without them iOS ignores the request and
 shows no prompt, which reads as a refusal.
 
-This change asks for **no** background authorisation: nothing runs in the
-background until monitoring exists, and asking for a permission the app does not
-use is both pointless and a review hazard. What it does deliver is the
-explanation that has to come first.
+The foreground path asks only for when-in-use authorisation. Background
+authorisation is requested separately, by the background phase: when background
+monitoring is enabled in a device-backed mode, `BackgroundLocationPermission`
+requests always authorisation through the same manager, behind the disclosure
+below. A manual location needs no permission, so monitoring still runs on a
+fresh install with a hand-set position. See
+[background-monitoring.md](background-monitoring.md).
 
 ## Background-location disclosure
 
-`BackgroundLocationDisclosure` holds the two moves the background phase will call:
+`BackgroundLocationDisclosure` holds the two moves the background phase calls:
 `isDue` reads the persisted `backgroundLocationDisclosureShown` flag, and
 `request(disclosing:requesting:)` presents the explanation and returns without
 requesting while it is due. Once the user has acknowledged it, the flag is set
 and the explanation is never shown again; only then does the request run. The
 flag defaults to `false`, so a fresh install is due the explanation.
+
+`BackgroundLocationPermission` is the caller: it asks only in a device-backed
+mode and only once the explanation has been acknowledged, and skips the request
+when always authorisation is already held.
 
 ## Own-location display
 
@@ -122,9 +129,10 @@ its state.
 | --- | --- |
 | Mode mapping, accuracy, update style | `DeviceLocationSourceTests` |
 | Positions, notifications, stopping | `DeviceLocationSourceTests` |
-| Permission states, no background request | `DeviceLocationSourceTests` |
+| Permission states; the source requests no background location | `DeviceLocationSourceTests` |
 | Factory, source per mode, not settable | `DeviceLocationSourceTests` |
 | Disclosure due, acknowledgement, gating | `BackgroundLocationDisclosureTests` |
+| Background request behind the disclosure, modes | `BackgroundLocationPermissionTests` |
 | Manual coordinates, modes, display and zoom settings | `ManualLocationSourceTests` |
 | Marker visibility and size, centring, mode swap | `ViewControllerLocationTests` |
 | Radar tap with the choice, device position reaching the chrome | `ViewControllerChromeTests` |

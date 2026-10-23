@@ -131,6 +131,19 @@ public extension SettingsStore {
     var alertSoundSignal: String {
         return string(for: .alertSoundSignal)
     }
+
+    /// The strike last covered by a notification, in seconds since the epoch.
+    ///
+    /// Persisted so a notification raised in one process is not raised again
+    /// after a relaunch, for example by a background evaluation.
+    var lastNotifiedStrikeTimestamp: Int {
+        return int(for: .lastNotifiedStrikeTimestamp)
+    }
+
+    /// The strike that last caused a signal, in seconds since the epoch.
+    var lastSignalledStrikeTimestamp: Int {
+        return int(for: .lastSignalledStrikeTimestamp)
+    }
 }
 
 /// Turns the aggregation around the current location into the alert decision:
@@ -148,9 +161,12 @@ public final class ProximityAlertMonitor {
     private let notifier: AlertNotifying
 
     /// The strike that last caused a signal, in seconds since the epoch.
-    private var lastSignalledTimestamp = 0
+    ///
+    /// Seeded from the store so a background evaluation and a later foreground
+    /// one share the same dedup state.
+    private var lastSignalledTimestamp: Int
     /// The strike last covered by a notification, in seconds since the epoch.
-    private var lastNotifiedTimestamp = 0
+    private var lastNotifiedTimestamp: Int
 
     public init(settings: SettingsStore,
                 signaller: AlertSignalling,
@@ -158,6 +174,8 @@ public final class ProximityAlertMonitor {
         self.settings = settings
         self.signaller = signaller
         self.notifier = notifier
+        self.lastSignalledTimestamp = settings.lastSignalledStrikeTimestamp
+        self.lastNotifiedTimestamp = settings.lastNotifiedStrikeTimestamp
     }
 
     /// Evaluates the aggregation, signals and notifies what qualifies, and
@@ -175,6 +193,7 @@ public final class ProximityAlertMonitor {
             signaller.signal(sound: settings.alertSoundSignal,
                              vibrationStrength: settings.alertVibrationStrength)
             lastSignalledTimestamp = latest
+            settings.set(latest, for: .lastSignalledStrikeTimestamp)
         }
 
         let notificationLimit = settings.notificationDistanceLimit
@@ -184,6 +203,7 @@ public final class ProximityAlertMonitor {
            latest > lastNotifiedTimestamp {
             notifier.notify(closest: closest)
             lastNotifiedTimestamp = latest
+            settings.set(latest, for: .lastNotifiedStrikeTimestamp)
         }
 
         guard notificationLimit > 0, closest.distance <= notificationLimit else { return .cancelled }

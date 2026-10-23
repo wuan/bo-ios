@@ -41,6 +41,7 @@ implementation, are the contract.
 | 3 - Map UI overlays | [`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md) | `map-ui-overlays`, `location-handling` (manual path), `proximity-alerts` (aggregation), and `data-providers` and `data-modes` (modified) |
 | 4 - Location handling | [`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
 | 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
+| 6 - Background monitoring | [`ios-background-monitoring`](../openspec/changes/ios-background-monitoring/proposal.md) | `background-monitoring` |
 
 Delivered foundations that later phases build on:
 
@@ -56,6 +57,9 @@ Delivered foundations that later phases build on:
   display and centring choices.
 - Proximity alerts with the enable switch, the notification and signalling
   limits, sound and vibration, suppression, and the alert state the radar marks.
+- Background monitoring with the configurable query period, a best-effort
+  `BGTaskScheduler` fetch that reuses the alert decision, a persisted dedup so one
+  strike warns once, and the background-location request behind the disclosure.
 - Age-coloured grid tiles with per-tile counts, translucency, base-map fade,
   three colour schemes with base-map variants, zoom-aware culling, and tap
   selection with a details popup.
@@ -76,19 +80,17 @@ strike qualifies is data-dependent and the rendered banner did not appear to the
 UI test's queries; and the audible signal and the felt vibration, which need a
 device.
 
+Open residual from Phase 6: the monitor's gating, scheduling, wake-up, dedup, and
+background-location request are covered by unit tests, and the task identifier and
+background modes are asserted against the app's `Info.plist`. Unobserved: a
+background wake-up actually firing with live data, the delivered notification
+banner, and the platform's worst-case scheduling latency - `BGAppRefreshTask` is
+best-effort, so the period is a requested cadence and the delay is a platform
+property. These need a device or a data-dependent simulator run.
+
 ## Remaining phases
 
 Each phase below becomes its own change when it starts.
-
-### Phase 6 - Background monitoring
-
-Sketch: [`background-monitoring.md`](parity-capabilities/background-monitoring.md)
-
-- Implement background monitoring using `BGTaskScheduler` plus background location, enabled only when background alerts are on; verified by device/simulator tests of enable/disable paths.
-- Implement periodic background fetching at the configurable query period; verified by observing background fetches and by a settings-change test.
-- Present and remove a persistent monitoring notification; verified by manual checks on state transitions.
-- Implement foreground/background lifecycle transitions; verified by manual checks entering and leaving the foreground.
-- Implement restore-after-relaunch when alerts remain enabled; verified by a relaunch/restart test (documented latency caveats).
 
 ### Phase 7 - Preferences
 

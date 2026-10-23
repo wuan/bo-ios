@@ -40,9 +40,7 @@ public final class ManualLocationSource: SettableLocationSource {
 
     /// The persisted position, or `nil` until one has been set.
     public var location: Location? {
-        guard settings.bool(for: .manualLocationSet) else { return nil }
-        return Location(latitude: settings.double(for: .manualLatitude),
-                        longitude: settings.double(for: .manualLongitude))
+        return settings.manualLocation
     }
 
     /// Sets the current location, replacing any previous position.

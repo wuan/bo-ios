@@ -116,6 +116,9 @@ final class StubLocationManager: LocationManaging {
     var desiredAccuracy: CLLocationAccuracy = 0
     weak var delegate: LocationManagerDelegate?
 
+    /// The last position reported through ``report(_:)``.
+    private(set) var location: Location?
+
     private(set) var whenInUseRequests = 0
     private(set) var alwaysRequests = 0
     private(set) var startedUpdates = 0
@@ -153,6 +156,7 @@ final class StubLocationManager: LocationManaging {
 
     /// Reports a position from the device.
     func report(_ location: Location) {
+        self.location = location
         delegate?.manager(self, didUpdate: location)
     }
 

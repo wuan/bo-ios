@@ -103,6 +103,13 @@ public extension SettingsStore {
         return LocationMode(rawValue: string(for: .locationMode)) ?? .manual
     }
 
+    /// The manually set position, or `nil` until one has been set.
+    var manualLocation: Location? {
+        guard bool(for: .manualLocationSet) else { return nil }
+        return Location(latitude: double(for: .manualLatitude),
+                        longitude: double(for: .manualLongitude))
+    }
+
     /// Whether the own-location marker is drawn while a location is known.
     var showOwnLocation: Bool {
         return bool(for: .showOwnLocation)

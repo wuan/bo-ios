@@ -625,6 +625,50 @@
         }
       }
     },
+    "background.disclosure.confirm" : {
+      "comment" : "Acknowledges the background-location explanation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "background.disclosure.message" : {
+      "comment" : "Explains why background location is used",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lets proximity alerts reach you while the app is in the background."
+          }
+        }
+      }
+    },
+    "background.disclosure.title" : {
+      "comment" : "Title of the background-location explanation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background location"
+          }
+        }
+      }
+    },
+    "settings.backgroundPeriod.off" : {
+      "comment" : "Background query period: off",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "off"
+          }
+        }
+      }
+    },
     "settings.minutes" : {
       "comment" : "Duration in minutes, e.g. 60 min",
       "localizations" : {

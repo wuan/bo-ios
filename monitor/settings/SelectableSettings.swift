@@ -46,6 +46,8 @@ public enum SelectableSettings {
     public static let defaultIntervalDuration = 60
     /// The history step in minutes a fresh install steps by.
     public static let defaultHistoricTimestep = History.defaultOffsetIncrement
+    /// The background query period a fresh install uses, in seconds; zero is off.
+    public static let defaultBackgroundQueryPeriod = 0
 
     /// The selectable data regions, from the visible extent and the globe to
     /// the named regions.
@@ -71,6 +73,20 @@ public enum SelectableSettings {
     public static let historicTimesteps: [SelectableValue] =
         [15, 30, 60].map { SelectableValue(value: $0, name: minutesName($0)) }
 
+    /// The selectable background query periods in seconds; zero is off.
+    ///
+    /// The values reproduce the reference client's background query periods, from
+    /// off through a two-hour cadence.
+    public static let backgroundQueryPeriods: [SelectableValue] = {
+        var values = [SelectableValue(value: 0,
+                                      name: NSLocalizedString("settings.backgroundPeriod.off",
+                                                              comment: "Background query period: off"))]
+        for minutes in [1, 2, 5, 10, 15, 30, 60, 120] {
+            values.append(SelectableValue(value: minutes * 60, name: minutesName(minutes)))
+        }
+        return values
+    }()
+
     /// The value set behind a setting, or `nil` when the setting is not
     /// restricted to a fixed set of values.
     public static func values(for key: SettingsKey) -> [SelectableValue]? {
@@ -81,6 +97,8 @@ public enum SelectableSettings {
             return intervalDurations
         case .historicTimestep:
             return historicTimesteps
+        case .backgroundQueryPeriod:
+            return backgroundQueryPeriods
         default:
             return nil
         }

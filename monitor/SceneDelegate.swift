@@ -23,6 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    /// Runs the alert decision while the app is not in the foreground.
+    private var backgroundMonitor: BackgroundMonitor?
+    /// The store the background-location request reads its mode and gate from.
+    private var settings: SettingsStore?
+    /// The manager the background location request goes through; the same one
+    /// the device location source uses.
+    private var backgroundLocationManager: CoreLocationManager?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -36,12 +43,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let factory = DataProviderFactory(credentialStore: credentialStore)
             let coordinator = DataProviderCoordinator(settings: settings, factory: factory)
 
+            // One device manager serves both the location source and the
+            // background-location request, so only one asks the device.
+            let locationManager = CoreLocationManager()
+            let locationFactory = LocationSourceFactory(managerFactory: { locationManager })
+
+            let notifier = LocalAlertNotifier(measurementUnit: { settings.measurementUnit })
+            let alertMonitor = ProximityAlertMonitor(settings: settings,
+                                                     signaller: SystemAlertSignaller(),
+                                                     notifier: notifier)
+            let scheduler = (UIApplication.shared.delegate as? AppDelegate)?.backgroundScheduling
+                ?? BGTaskSchedulerScheduling()
+            let fetcher = CoordinatorBackgroundFetcher(
+                source: coordinator,
+                parameters: { CoordinatorBackgroundFetcher.realtimeParameters(settings: settings) })
+            let monitor = BackgroundMonitor(
+                settings: settings,
+                scheduler: scheduler,
+                fetcher: fetcher,
+                alertMonitor: alertMonitor,
+                notifier: notifier,
+                location: {
+                    settings.locationMode.isDeviceBacked ? locationManager.location : settings.manualLocation
+                })
+
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = ViewController(dataSource: coordinator,
                                                        settings: settings,
-                                                       credentialStore: credentialStore)
+                                                       credentialStore: credentialStore,
+                                                       locationSourceFactory: locationFactory)
             self.window = window
+            self.settings = settings
+            self.backgroundMonitor = monitor
+            self.backgroundLocationManager = locationManager
             window.makeKeyAndVisible()
+
+            monitor.start()
+            requestBackgroundLocationIfNeeded()
         }
     }
 
@@ -63,16 +101,54 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+        // The foreground refresh takes over, so the scheduled background fetch
+        // is stopped.
+        backgroundMonitor?.enterForeground()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        // Schedule the next background fetch while monitoring is enabled, and
+        // request the background location it needs.
+        backgroundMonitor?.enterBackground()
+        requestBackgroundLocationIfNeeded()
     }
 
+    /// Requests background location for monitoring, behind the disclosure.
+    ///
+    /// Only a device-backed mode asks, and only once the explanation has been
+    /// acknowledged; a manual location needs nothing.
+    private func requestBackgroundLocationIfNeeded() {
+        guard let settings = settings,
+              let manager = backgroundLocationManager,
+              settings.backgroundMonitoringEnabled,
+              settings.locationMode.isDeviceBacked else {
+            return
+        }
 
+        let permission = BackgroundLocationPermission(settings: settings)
+        permission.request(for: settings.locationMode,
+                           manager: manager,
+                           disclosing: { [weak self] in self?.presentBackgroundLocationDisclosure() })
+    }
+
+    /// Presents the background-location explanation, then requests the
+    /// permission once the user has acknowledged it.
+    private func presentBackgroundLocationDisclosure() {
+        let alert = UIAlertController(
+            title: NSLocalizedString("background.disclosure.title",
+                                     comment: "Title of the background-location explanation"),
+            message: NSLocalizedString("background.disclosure.message",
+                                       comment: "Explains why background location is used"),
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: NSLocalizedString("background.disclosure.confirm",
+                                     comment: "Acknowledges the background-location explanation"),
+            style: .default) { [weak self] _ in
+                guard let self = self, let settings = self.settings else { return }
+                BackgroundLocationPermission(settings: settings).acknowledge()
+                self.requestBackgroundLocationIfNeeded()
+            })
+        window?.rootViewController?.present(alert, animated: true)
+    }
 }
 
