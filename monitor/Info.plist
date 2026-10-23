@@ -38,6 +38,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Lets proximity alerts reach you while the app is in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Shows your position on the map and measures how far away lightning is.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

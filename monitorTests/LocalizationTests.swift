@@ -46,4 +46,15 @@ final class LocalizationTests: XCTestCase {
             XCTAssertNotEqual(value, key, "\(key) did not resolve")
         }
     }
+
+    /// iOS ignores a location request whose usage description is missing, so a
+    /// device mode would silently never prompt. Both keys have to be there.
+    func testLocationUsageDescriptionsAreDeclared() {
+        for key in ["NSLocationWhenInUseUsageDescription",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription"] {
+            let value = Bundle.main.object(forInfoDictionaryKey: key) as? String
+            XCTAssertNotNil(value, "\(key) is missing from the app's Info.plist")
+            XCTAssertFalse(value?.isEmpty ?? true, "\(key) is empty")
+        }
+    }
 }

@@ -132,9 +132,50 @@ final class ManualLocationSourceTests: XCTestCase {
         XCTAssertEqual(reloaded.locationMode, .manual)
     }
 
+    func testEveryLocationModeRoundTripsAndOnlyManualIsManual() {
+        for mode in LocationMode.allCases {
+            settings.set(mode.rawValue, for: .locationMode)
+
+            let reloaded = SettingsStore(defaults: defaults)
+            XCTAssertEqual(reloaded.locationMode, mode, "\(mode.rawValue) did not round-trip")
+            XCTAssertEqual(mode.isDeviceBacked, mode != .manual, "\(mode.rawValue) has the wrong device flag")
+        }
+    }
+
     func testUnknownLocationModeFallsBackToManual() {
-        settings.set("gps", for: .locationMode)
+        settings.set("cell", for: .locationMode)
 
         XCTAssertEqual(settings.locationMode, .manual)
+    }
+
+    // MARK: - Display and centring settings
+
+    func testOwnLocationDisplayIsOnByDefault() {
+        XCTAssertTrue(settings.showOwnLocation)
+        XCTAssertEqual(settings.ownLocationDiameter, OwnLocationMarker.defaultDiameter)
+    }
+
+    func testOwnLocationSizeSettingDrivesTheDiameter() {
+        settings.set(200, for: .ownLocationSize)
+
+        let reloaded = SettingsStore(defaults: defaults)
+        XCTAssertEqual(reloaded.ownLocationDiameter, OwnLocationMarker.defaultDiameter * 2)
+    }
+
+    func testOwnLocationSizeIsClampedToTheSettableRange() {
+        settings.set(10, for: .ownLocationSize)
+        XCTAssertEqual(settings.ownLocationDiameter, OwnLocationMarker.diameter(percent: OwnLocationMarker.minimumSizePercent))
+
+        settings.set(100000, for: .ownLocationSize)
+        XCTAssertEqual(settings.ownLocationDiameter, OwnLocationMarker.diameter(percent: OwnLocationMarker.maximumSizePercent))
+    }
+
+    func testKeepZoomIsOffByDefaultAndPersists() {
+        XCTAssertFalse(settings.keepZoomOnCenter)
+
+        settings.set(true, for: .keepZoomOnCenter)
+
+        let reloaded = SettingsStore(defaults: defaults)
+        XCTAssertTrue(reloaded.keepZoomOnCenter)
     }
 }

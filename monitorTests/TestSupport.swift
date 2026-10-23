@@ -16,6 +16,7 @@ limitations under the License.
 
 */
 
+import CoreLocation
 import Foundation
 @testable import monitor
 
@@ -51,7 +52,6 @@ final class StubTransport: HttpTransport {
 
 /// Provider that records requests and returns a preset result or error.
 final class RecordingProvider: DataProvider {
-
     let type: DataProviderType
     var result: Result?
     var error: Error?
@@ -104,4 +104,61 @@ func makeStubbedSession() -> URLSession {
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [StubURLProtocol.self]
     return URLSession(configuration: configuration)
+}
+
+/// A location manager that hands out positions and records what it was asked to do.
+///
+/// Stands in for the device: no permission prompt, no device, and every request
+/// and report under the test's control.
+final class StubLocationManager: LocationManaging {
+
+    var authorizationStatus: CLAuthorizationStatus
+    var desiredAccuracy: CLLocationAccuracy = 0
+    weak var delegate: LocationManagerDelegate?
+
+    private(set) var whenInUseRequests = 0
+    private(set) var alwaysRequests = 0
+    private(set) var startedUpdates = 0
+    private(set) var stoppedUpdates = 0
+    private(set) var startedSignificantChanges = 0
+    private(set) var stoppedSignificantChanges = 0
+
+    init(authorizationStatus: CLAuthorizationStatus = .authorizedWhenInUse) {
+        self.authorizationStatus = authorizationStatus
+    }
+
+    func requestWhenInUseAuthorization() {
+        whenInUseRequests += 1
+    }
+
+    func requestAlwaysAuthorization() {
+        alwaysRequests += 1
+    }
+
+    func startUpdatingLocation() {
+        startedUpdates += 1
+    }
+
+    func stopUpdatingLocation() {
+        stoppedUpdates += 1
+    }
+
+    func startMonitoringSignificantLocationChanges() {
+        startedSignificantChanges += 1
+    }
+
+    func stopMonitoringSignificantLocationChanges() {
+        stoppedSignificantChanges += 1
+    }
+
+    /// Reports a position from the device.
+    func report(_ location: Location) {
+        delegate?.manager(self, didUpdate: location)
+    }
+
+    /// Grants the permission and tells the delegate, as the device would.
+    func grant(_ status: CLAuthorizationStatus = .authorizedWhenInUse) {
+        authorizationStatus = status
+        delegate?.managerDidChangeAuthorization(self)
+    }
 }

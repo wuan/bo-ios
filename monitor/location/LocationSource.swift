@@ -16,16 +16,27 @@ limitations under the License.
 
 */
 
+import CoreGraphics
 import Foundation
 
 /// How the current location is determined.
 ///
-/// Only the manual path ships with the map chrome; the device-backed modes
-/// (network, GPS, passive) arrive with the location phase behind the same seam
-/// and the same setting.
+/// Manual takes the position from coordinates the user sets; the device-backed
+/// modes take it from the device, in the mode's own way.
 public enum LocationMode: String, CaseIterable {
     /// The position comes from coordinates the user sets.
     case manual
+    /// The position comes from the device's network-based location.
+    case network
+    /// The position comes from the device's GPS.
+    case gps
+    /// The position comes from updates the device produces for others.
+    case passive
+
+    /// Whether the mode needs the device rather than stored coordinates.
+    public var isDeviceBacked: Bool {
+        return self != .manual
+    }
 }
 
 /// A location source whose position the user can set directly.
@@ -86,9 +97,27 @@ public extension LocationSource {
 public extension SettingsStore {
     /// The stored location mode.
     ///
-    /// A stored value that names no known mode falls back to manual, which is
-    /// the only mode this phase ships.
+    /// A stored value that names no known mode falls back to manual, which needs
+    /// no permission and is what a fresh install starts in.
     var locationMode: LocationMode {
         return LocationMode(rawValue: string(for: .locationMode)) ?? .manual
+    }
+
+    /// Whether the own-location marker is drawn while a location is known.
+    var showOwnLocation: Bool {
+        return bool(for: .showOwnLocation)
+    }
+
+    /// The own-location marker's diameter in points, from the stored percentage.
+    ///
+    /// The percentage is clamped to the settable range, so a value written from
+    /// outside the app cannot draw an invisible or absurd marker.
+    var ownLocationDiameter: CGFloat {
+        return OwnLocationMarker.diameter(percent: int(for: .ownLocationSize))
+    }
+
+    /// Whether centring on the location keeps the map's current zoom level.
+    var keepZoomOnCenter: Bool {
+        return bool(for: .keepZoomOnCenter)
     }
 }

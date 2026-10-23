@@ -421,6 +421,209 @@ class monitorUITests: XCTestCase {
         app.buttons["quick.close"].tap()
     }
 
+    // MARK: - Location modes
+
+    /// LIVE CHECK: needs a simulated device location and network access for the
+    /// radar's activity. Selects the GPS mode, captures the permission prompt,
+    /// and confirms the device position reaches both the marker and the radar.
+    ///
+    /// Set the simulated position first:
+    /// `xcrun simctl location booted set 50.5,10.5`.
+    func testDeviceModePromptsForPermissionAndShowsThePosition() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-locationMode", "gps"]
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+
+        // The explanation iOS shows is built from the app's usage description, so
+        // it is captured as it appears. A run that already answered it - or one
+        // whose permission was reset to granted - goes straight to the marker.
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alert = springboard.alerts.firstMatch
+        let sawAlert = alert.waitForExistence(timeout: 5)
+        if sawAlert {
+            attachScreenshot("location-permission-prompt")
+            let allow = alert.buttons["Allow While Using App"]
+            if allow.exists {
+                allow.tap()
+            } else {
+                alert.buttons.element(boundBy: 0).tap()
+            }
+        }
+
+        let marker = app.descendants(matching: .any)["own.location"]
+        if !marker.waitForExistence(timeout: 45) {
+            try XCTSkipIf(!sawAlert,
+                          "the location permission is decided, so neither prompt nor position appears; "
+                          + "reset it with `xcrun simctl privacy booted reset location net.wuerl.blitzortung.monitor`")
+            XCTFail("the simulated device location did not reach the marker")
+        }
+        XCTAssertTrue(waitForValue(of: marker, toContain: "50.5", timeout: 20),
+                      "the marker is not at the simulated position: '\(marker.value ?? "")'")
+        attachScreenshot("device-location-marker")
+
+        // The radar aggregates the position against the displayed data, so it has
+        // to leave its no-location state; which state it reaches depends on the
+        // activity the backend reports in range.
+        let radar = app.descendants(matching: .any)["radar.view"]
+        XCTAssertTrue(radar.waitForExistence(timeout: 15))
+        XCTAssertTrue(waitForValue(of: radar, toDifferFrom: "No location", timeout: 30),
+                      "the device position did not reach the radar: '\(radar.value ?? "")'")
+        attachScreenshot("device-location-radar")
+    }
+
+    /// A refused permission leaves the app usable: the map keeps rendering and no
+    /// marker is drawn, because a device mode has nothing to set by hand.
+    ///
+    /// The check refuses the system prompt itself; when the permission has
+    /// already been decided by an earlier test it skips, because iOS only asks
+    /// once. To exercise it on its own:
+    /// `xcrun simctl privacy booted revoke location net.wuerl.blitzortung.monitor`.
+    func testDeviceModeWithRefusedPermissionKeepsTheAppUsable() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-locationMode", "gps"]
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alert = springboard.alerts.firstMatch
+        let marker = app.descendants(matching: .any)["own.location"]
+        if alert.waitForExistence(timeout: 5) {
+            // The system label uses a typographic apostrophe, so it is matched by
+            // prefix; the refusal is the last button either way.
+            let deny = alert.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Don")).firstMatch
+            if deny.exists {
+                deny.tap()
+            } else {
+                alert.buttons.element(boundBy: alert.buttons.count - 1).tap()
+            }
+        } else {
+            try XCTSkipIf(marker.waitForExistence(timeout: 5),
+                          "the location permission is already granted; revoke it to exercise a refusal")
+        }
+
+        let status = app.staticTexts["status.text"]
+        XCTAssertTrue(status.waitForExistence(timeout: 15), "the app stopped working after a refusal")
+        XCTAssertFalse(marker.waitForExistence(timeout: 10),
+                       "a refused permission must not produce a position")
+        attachScreenshot("refused-permission-still-usable")
+    }
+
+    /// Switches own-location display off: a long press sets the position, but no
+    /// marker is drawn - before and after a relaunch with the setting in effect.
+    func testOwnLocationDisplayOffHidesTheMarker() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-showOwnLocation", "NO"]
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.35)).press(forDuration: 1.2)
+
+        let marker = app.descendants(matching: .any)["own.location"]
+        XCTAssertFalse(marker.waitForExistence(timeout: 10),
+                       "the marker must be hidden while own-location display is off")
+        attachScreenshot("own-location-hidden")
+
+        relaunch(app)
+
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+        XCTAssertFalse(marker.waitForExistence(timeout: 5),
+                       "the marker must stay hidden while own-location display is off")
+    }
+
+    /// The size setting scales the drawn marker: 100 percent is the 14 pt base,
+    /// 200 percent draws it twice as wide.
+    func testOwnLocationSizeScalesTheDrawnMarker() {
+        let base = drawnMarkerWidth(launchArguments: [])
+        let doubled = drawnMarkerWidth(launchArguments: ["-ownLocationSize", "200"])
+        attachScreenshot("own-location-size-200")
+
+        XCTAssertGreaterThan(base, 0, "no marker was drawn at the default size")
+        XCTAssertEqual(doubled, base * 2, accuracy: base * 0.2,
+                       "the marker was not drawn at twice the default size")
+    }
+
+    /// LIVE CHECK: needs the backend for the data-area overview that reports the
+    /// zoom level. Zooms the map in, then taps the radar: the mapping either
+    /// keeps that zoom or zooms out to the radar's range, as the stored choice
+    /// says. The launch zoom is left alone because it is already about the
+    /// radar's range, which would make the two choices look the same.
+    func testCentringFollowsTheKeepZoomChoice() throws {
+        try requireLiveBackend()
+
+        let afterTappingTheRadar = { (keepZoom: Bool) -> (before: Double, after: Double) in
+            let app = XCUIApplication()
+            app.launchArguments += ["-keepZoomOnCenter", keepZoom ? "YES" : "NO"]
+            app.launch()
+
+            let map = app.descendants(matching: .any)["map.view"]
+            XCTAssertTrue(map.waitForExistence(timeout: 15))
+            map.pinch(withScale: 4, velocity: 4)
+
+            // A location well away from the centre, so centring moves the map.
+            map.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.35)).press(forDuration: 1.2)
+            let marker = app.descendants(matching: .any)["own.location"]
+            XCTAssertTrue(marker.waitForExistence(timeout: 10), "no location was set to centre on")
+
+            let overview = app.descendants(matching: .any)["overview.view"]
+            XCTAssertTrue(overview.waitForExistence(timeout: 90), "no data-area overview from the backend")
+
+            let zoomBefore = self.zoom(from: overview)
+
+            app.descendants(matching: .any)["radar.view"].tap()
+
+            // Centring is what moves the marker to the middle of the map.
+            XCTAssertTrue(self.waitForMarker(marker, near: map, timeout: 20),
+                          "the map did not centre on the location")
+            // The zoom follows the centre, so let the animation finish.
+            usleep(700_000)
+            return (zoomBefore, self.zoom(from: overview))
+        }
+
+        let kept = afterTappingTheRadar(true)
+        attachScreenshot("centred-keep-zoom")
+        let zoomedOut = afterTappingTheRadar(false)
+        attachScreenshot("centred-radar-range")
+
+        XCTAssertEqual(kept.after, kept.before, accuracy: 1.0,
+                       "keep-zoom must leave the zoom alone: was \(kept.before), now \(kept.after)")
+        XCTAssertGreaterThan(zoomedOut.before - zoomedOut.after, 1.0,
+                            "without keep-zoom the map must zoom out to the radar's range: "
+                            + "was \(zoomedOut.before), now \(zoomedOut.after)")
+    }
+
+    /// The zoom level the overview reports at the end of its accessibility value,
+    /// e.g. 7.0 out of "Zoom 7.0".
+    private func zoom(from overview: XCUIElement) -> Double {
+        let value = (overview.value as? String) ?? ""
+        let parts = value.components(separatedBy: "Zoom ")
+        guard parts.count > 1, let text = parts[1].split(separator: " ").first else { return 0 }
+        return Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
+    }
+
+    /// Long-presses the map with a given set of launch-argument settings and
+    /// reports the width the drawn marker was given.
+    private func drawnMarkerWidth(launchArguments: [String]) -> CGFloat {
+        let app = XCUIApplication()
+        app.launchArguments += launchArguments
+        app.launch()
+
+        let map = app.descendants(matching: .any)["map.view"]
+        XCTAssertTrue(map.waitForExistence(timeout: 15))
+        map.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.35)).press(forDuration: 1.2)
+
+        let marker = app.descendants(matching: .any)["own.location"]
+        XCTAssertTrue(marker.waitForExistence(timeout: 10), "no own-location marker after a long press")
+        let width = marker.frame.width
+        app.terminate()
+        return width
+    }
+
     // MARK: - Helpers
 
     /// Keeps a screenshot of the current screen in the test result.

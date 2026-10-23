@@ -33,8 +33,12 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private let dataSource: DataEventSource
     private let settings: SettingsStore
     private let credentialStore: CredentialStore
-    /// Where the current location comes from; manual in this phase.
-    let locationSource: LocationSource
+    /// Where the current location comes from; the stored mode selects it.
+    private(set) var locationSource: LocationSource
+    /// Builds the source a changed mode selects.
+    private let locationSourceFactory: LocationSourceFactory
+    /// The mode the current source serves, so an unchanged mode swaps nothing.
+    private var activeLocationMode: LocationMode
     private var eventTask: Task<Void, Never>?
 
     /// The interval/mode state driving requests and the slider.
@@ -90,11 +94,15 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     init(dataSource: DataEventSource,
          settings: SettingsStore = SettingsStore(),
          credentialStore: CredentialStore = KeychainCredentialStore(),
-         locationSource: LocationSource? = nil) {
+         locationSource: LocationSource? = nil,
+         locationSourceFactory: LocationSourceFactory = LocationSourceFactory()) {
         self.dataSource = dataSource
         self.settings = settings
         self.credentialStore = credentialStore
-        self.locationSource = locationSource ?? ManualLocationSource(settings: settings)
+        self.locationSourceFactory = locationSourceFactory
+        self.activeLocationMode = settings.locationMode
+        self.locationSource = locationSource ?? locationSourceFactory.makeSource(for: settings.locationMode,
+                                                                               settings: settings)
         self.regionSetting = settings.choice(for: .region)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(nibName: nil, bundle: nil)
@@ -116,7 +124,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                   factory: DataProviderFactory())
         self.settings = settings
         self.credentialStore = KeychainCredentialStore()
-        self.locationSource = ManualLocationSource(settings: settings)
+        self.locationSourceFactory = LocationSourceFactory()
+        self.activeLocationMode = settings.locationMode
+        self.locationSource = LocationSourceFactory().makeSource(for: settings.locationMode,
+                                                                settings: settings)
         self.regionSetting = settings.choice(for: .region)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(coder: coder)
@@ -176,6 +187,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         observeRenderingSettings()
         observeSelectableSettings()
         observeLocation()
+        observeLocationDisplay()
         applyLocation()
         refreshChrome()
 
@@ -342,15 +354,16 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             return view
         }
 
-        if let marker = annotation as? OwnLocationAnnotation,
-           let content = OwnLocationMarker.make(location: Location(latitude: marker.coordinate.latitude,
-                                                                  longitude: marker.coordinate.longitude)) {
+        // The marker's drawn size comes from the display settings, so the view is
+        // built from the content the controller last computed rather than from a
+        // fresh default-sized marker.
+        if annotation is OwnLocationAnnotation, let marker = ownLocationMarker {
             let view = (mapView.dequeueReusableAnnotationView(withIdentifier: OwnLocationAnnotationView.reuseIdentifier)
                 as? OwnLocationAnnotationView)
                 ?? OwnLocationAnnotationView(annotation: annotation,
                                              reuseIdentifier: OwnLocationAnnotationView.reuseIdentifier)
             view.annotation = annotation
-            view.configure(marker: content)
+            view.configure(marker: marker)
             return view
         }
 
@@ -758,21 +771,66 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         setLocation(at: gesture.location(in: mapView))
     }
 
-    /// Redraws the own-location marker when the location changes.
+    /// Follows the location source and the stored mode that selects it.
     private func observeLocation() {
+        observeLocationSource()
+        settingsObservers.append(settings.observe(.locationMode) { [weak self] in
+            self?.applyLocationMode()
+        })
+    }
+
+    /// Registers observation of the current source.
+    private func observeLocationSource() {
         locationObserver = locationSource.observe { [weak self] in
             self?.applyLocation()
             self?.refreshRadar()
         }
     }
 
-    /// Keeps the own-location marker in step with the location source.
+    /// Stops observing the current source, so a replaced one goes quiet.
+    private func stopObservingLocation() {
+        guard let token = locationObserver else { return }
+        locationSource.removeObserver(token)
+        locationObserver = nil
+    }
+
+    /// Adopts a changed location mode by replacing the source that serves it.
     ///
-    /// One marker is drawn while a location is known and moves with it; no
-    /// marker is drawn when none is known.
+    /// The previous source is stopped and no longer observed, so exactly one
+    /// source can publish a position. A source that has not reported one yet
+    /// leaves the marker unset, as a fresh manual source does.
+    func applyLocationMode() {
+        let mode = settings.locationMode
+        guard mode != activeLocationMode else { return }
+        activeLocationMode = mode
+        stopObservingLocation()
+        (locationSource as? DeviceLocationSource)?.stop()
+        locationSource = locationSourceFactory.makeSource(for: mode, settings: settings)
+        observeLocationSource()
+        applyLocation()
+        refreshRadar()
+    }
+
+    /// Redraws the own-location marker when the location changes.
+    private func observeLocationDisplay() {
+        for key in [SettingsKey.showOwnLocation, SettingsKey.ownLocationSize] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyLocation()
+            })
+        }
+    }
+
+    /// Keeps the own-location marker in step with the location source and the
+    /// display settings.
+    ///
+    /// One marker is drawn while a location is known and own-location display is
+    /// on, at the size the setting selects, and it moves with the location; no
+    /// marker is drawn when either is missing.
     func applyLocation() {
         let shown = mapView.annotations.compactMap { $0 as? OwnLocationAnnotation }
-        ownLocationMarker = OwnLocationMarker.make(location: location)
+        ownLocationMarker = OwnLocationMarker.make(location: location,
+                                                   visible: settings.showOwnLocation,
+                                                   diameter: settings.ownLocationDiameter)
 
         guard let marker = ownLocationMarker else {
             if !shown.isEmpty {
@@ -796,13 +854,43 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     /// Centres the map on the current location.
     ///
-    /// The map is left unchanged when no location is known.
+    /// The map is left unchanged when no location is known. The keep-zoom choice
+    /// decides whether only the centre moves or the map also zooms out to show
+    /// the alarm radar's range around the location.
     func centerOnLocation(animated: Bool = true) {
         guard let location = location else { return }
-        mapView.setCenter(CLLocationCoordinate2D(latitude: location.latitude,
-                                                 longitude: location.longitude),
+        let coordinate = CLLocationCoordinate2D(latitude: location.latitude,
+                                                longitude: location.longitude)
+        guard !settings.keepZoomOnCenter else {
+            mapView.setCenter(coordinate, animated: animated)
+            return
+        }
+        mapView.setRegion(MKCoordinateRegion(
+            center: coordinate,
+            span: ViewController.span(aroundRadiusKilometres: ViewController.centerRadiusKilometres,
+                                      latitude: location.latitude)),
                           animated: animated)
     }
+
+    /// The radius centring shows around the location, in kilometres: the
+    /// outermost ring the alarm radar draws.
+    static var centerRadiusKilometres: Double {
+        return AlertGeometry.rangeSteps.last ?? 500
+    }
+
+    /// The visible span covering `kilometres` in every direction of the centre.
+    static func span(aroundRadiusKilometres kilometres: Double, latitude: Double) -> MKCoordinateSpan {
+        let latitudeDelta = 2 * kilometres / kilometresPerDegree
+        // A degree of longitude shrinks towards the poles; the span keeps the
+        // ground distance the same rather than the degree count.
+        let narrowing = max(cos(latitude * .pi / 180), 0.01)
+        return MKCoordinateSpan(latitudeDelta: latitudeDelta,
+                                longitudeDelta: latitudeDelta / narrowing)
+    }
+
+    /// The kilometres a degree of latitude covers, as MapKit and the radar
+    /// geometry both assume a spherical Earth.
+    static let kilometresPerDegree: Double = 111.32
 
     // MARK: - Rendering settings
 

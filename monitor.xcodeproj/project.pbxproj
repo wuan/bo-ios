@@ -35,6 +35,13 @@
 		1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */; };
 		F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */; };
 		25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B061553CB00AF5EABC10F6 /* LocationSource.swift */; };
+		AD0000000000000000000002 /* LocationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000001 /* LocationManaging.swift */; };
+		AD0000000000000000000004 /* DeviceLocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000003 /* DeviceLocationSource.swift */; };
+		AD0000000000000000000006 /* LocationSourceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000005 /* LocationSourceFactory.swift */; };
+		AD0000000000000000000008 /* BackgroundLocationDisclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */; };
+		AD000000000000000000000A /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000009 /* InfoPlist.xcstrings */; };
+		AD000000000000000000000C /* DeviceLocationSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD000000000000000000000B /* DeviceLocationSourceTests.swift */; };
+		AD000000000000000000000E /* BackgroundLocationDisclosureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */; };
 		EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */; };
 		D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */; };
 		6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD07C951F9C17231923B741 /* SelectableSettings.swift */; };
@@ -174,6 +181,13 @@
 		E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSourceTests.swift; path = ManualLocationSourceTests.swift; sourceTree = "<group>"; };
 		6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSource.swift; path = location/ManualLocationSource.swift; sourceTree = "<group>"; };
 		C8B061553CB00AF5EABC10F6 /* LocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSource.swift; path = location/LocationSource.swift; sourceTree = "<group>"; };
+		AD0000000000000000000001 /* LocationManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationManaging.swift; path = location/LocationManaging.swift; sourceTree = "<group>"; };
+		AD0000000000000000000003 /* DeviceLocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceLocationSource.swift; path = location/DeviceLocationSource.swift; sourceTree = "<group>"; };
+		AD0000000000000000000005 /* LocationSourceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSourceFactory.swift; path = location/LocationSourceFactory.swift; sourceTree = "<group>"; };
+		AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationDisclosure.swift; path = location/BackgroundLocationDisclosure.swift; sourceTree = "<group>"; };
+		AD0000000000000000000009 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = Resources/InfoPlist.xcstrings; sourceTree = "<group>"; };
+		AD000000000000000000000B /* DeviceLocationSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceLocationSourceTests.swift; path = DeviceLocationSourceTests.swift; sourceTree = "<group>"; };
+		AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationDisclosureTests.swift; path = BackgroundLocationDisclosureTests.swift; sourceTree = "<group>"; };
 		127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerSettingsTests.swift; path = ViewControllerSettingsTests.swift; sourceTree = "<group>"; };
 		C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettingsTests.swift; path = SelectableSettingsTests.swift; sourceTree = "<group>"; };
 		6BD07C951F9C17231923B741 /* SelectableSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettings.swift; path = settings/SelectableSettings.swift; sourceTree = "<group>"; };
@@ -365,6 +379,10 @@
 				E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */,
 				6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */,
 				C8B061553CB00AF5EABC10F6 /* LocationSource.swift */,
+				AD0000000000000000000001 /* LocationManaging.swift */,
+				AD0000000000000000000003 /* DeviceLocationSource.swift */,
+				AD0000000000000000000005 /* LocationSourceFactory.swift */,
+				AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */,
 				6BD07C951F9C17231923B741 /* SelectableSettings.swift */,
 				7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */,
 				F64CD93F37E94D2597FA4198 /* SettingsStore.swift */,
@@ -391,6 +409,7 @@
 				AA000000000000000000002F /* DataEventSource.swift */,
 				AA0000000000000000000031 /* SettingsViewController.swift */,
 				0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */,
+				AD0000000000000000000009 /* InfoPlist.xcstrings */,
 				A96639A61BD56ECF004E2537 /* data */,
 				AB0000000000000000000100 /* modes */,
 				A966399F1BD56E7F004E2537 /* mapview */,
@@ -418,6 +437,8 @@
 				C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */,
 				C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */,
 				E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */,
+				AD000000000000000000000B /* DeviceLocationSourceTests.swift */,
+				AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */,
 				127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */,
 				C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */,
 				E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */,
@@ -636,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD9F0214397F4D70A00F3FB3 /* Localizable.xcstrings in Resources */,
+				AD000000000000000000000A /* InfoPlist.xcstrings in Resources */,
 				A966396F1BD56A2B004E2537 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,6 +700,10 @@
 				0CB3EC7E65024E77DDE2E8BB /* OwnLocationMarker.swift in Sources */,
 				F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */,
 				25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */,
+				AD0000000000000000000002 /* LocationManaging.swift in Sources */,
+				AD0000000000000000000004 /* DeviceLocationSource.swift in Sources */,
+				AD0000000000000000000006 /* LocationSourceFactory.swift in Sources */,
+				AD0000000000000000000008 /* BackgroundLocationDisclosure.swift in Sources */,
 				6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */,
 				BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */,
 				2E994FC9FC3A478DB3D35CED /* SettingsStore.swift in Sources */,
@@ -747,6 +773,8 @@
 				478864EFDF7A136A10006FE8 /* AlertGeometryTests.swift in Sources */,
 				0A27CF4A7F80E42D53525FED /* ViewControllerLocationTests.swift in Sources */,
 				1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */,
+				AD000000000000000000000C /* DeviceLocationSourceTests.swift in Sources */,
+				AD000000000000000000000E /* BackgroundLocationDisclosureTests.swift in Sources */,
 				EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */,
 				D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */,
 				710995B5C54247B78A59A76E /* ViewControllerPipelineTests.swift in Sources */,

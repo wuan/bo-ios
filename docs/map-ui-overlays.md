@@ -3,7 +3,7 @@
 The chrome that frames the lightning map: the legend, the quick-settings dialog,
 the strike-rate histogram, the alarm radar, and the data-area overview. This
 documents the `map-ui-overlays` capability delivered by the
-[`ios-map-ui-overlays`](../openspec/changes/ios-map-ui-overlays/proposal.md)
+[`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md)
 change, together with the manual-location path it carries.
 
 Each component is a plain `UIView` that draws one value type and owns no
@@ -142,20 +142,22 @@ further logic.
 ## Manual location
 
 The `LocationSource` protocol exposes the current location and publishes changes;
-`ManualLocationSource` satisfies it from persisted coordinates and is the only
-implementation this phase ships. Device-backed modes arrive with the location
-phase behind the same seam.
+`ManualLocationSource` satisfies it from persisted coordinates and needs no
+location permission. The device-backed modes - network, GPS, and passive, with
+their permission and disclosure rules and the two map choices - are documented in
+[`location-handling.md`](location-handling.md), which also covers how the mode
+selects the source.
 
 | Rule | Value |
 | --- | --- |
-| Setting the location | A long press on the map, replacing any previous position |
+| Setting the location | A long press on the map, replacing any previous position; a device mode has nothing to set |
 | Persistence | `manualLocationSet`, `manualLatitude`, `manualLongitude`; a fresh install has no location |
 | Publication | `LocationSourceNotification.didChange`, posted once per change and not at all for an unchanged position |
-| Marker | `OwnLocationMarker`, 14 pt, drawn by the app rather than by MapKit's user-location dot, so no location permission is needed |
-| Centring | `ViewController.centerOnLocation()`, which keeps the zoom level and leaves the map unchanged without a location |
+| Marker | `OwnLocationMarker`, 14 pt at 100 percent, drawn by the app rather than by MapKit's user-location dot, so no location permission is needed for the manual path |
+| Centring | `ViewController.centerOnLocation()`, which honours the keep-zoom choice and leaves the map unchanged without a location |
 
-`mapView.showsUserLocation` stays off: how device and manual locations combine is
-the location phase's decision.
+`mapView.showsUserLocation` stays off: the app draws its own marker from the
+location source, so the marker is the same in every mode.
 
 ## Settings
 
@@ -167,6 +169,9 @@ the location phase's decision.
 | `locationMode` | `manual` | How the current location is determined |
 | `manualLocationSet` | `false` | Whether a manual location has been set |
 | `manualLatitude`, `manualLongitude` | `0.0` | The manual position, once set |
+| `showOwnLocation` | `true` | Whether the own-location marker is drawn |
+| `ownLocationSize` | `100` | The marker's diameter as a percentage of 14 pt |
+| `keepZoomOnCenter` | `false` | Whether centring keeps the current zoom level |
 | `measurementUnit` | `metric` | Kilometres or miles for the radar's labels (1 mile = 1.609344 km) |
 
 ## Verifying

@@ -38,6 +38,10 @@ public enum SettingsKey: String, CaseIterable {
     case manualLatitude
     case manualLongitude
     case manualLocationSet
+    case showOwnLocation
+    case ownLocationSize
+    case keepZoomOnCenter
+    case backgroundLocationDisclosureShown
 
     /// Values used when a setting has never been changed by the user.
     public static var defaultValues: [String: Any] {
@@ -58,6 +62,14 @@ public enum SettingsKey: String, CaseIterable {
             SettingsKey.manualLongitude.rawValue: 0.0,
             // A fresh install has no location until the user sets one.
             SettingsKey.manualLocationSet.rawValue: false,
+            // The marker is the only confirmation that a long press worked, so
+            // it starts on, and 100 percent is the diameter it has always had.
+            SettingsKey.showOwnLocation.rawValue: true,
+            SettingsKey.ownLocationSize.rawValue: OwnLocationMarker.defaultSizePercent,
+            // Centring zooms to the radar's range unless the user keeps the zoom.
+            SettingsKey.keepZoomOnCenter.rawValue: false,
+            // The background-location explanation has not been shown yet.
+            SettingsKey.backgroundLocationDisclosureShown.rawValue: false,
         ]
     }
 }

@@ -27,6 +27,7 @@ final class ViewControllerChromeTests: XCTestCase {
     private var suiteName: String!
     private var settings: SettingsStore!
     private var source: ManualLocationSource!
+    private var manager: StubLocationManager!
     private var provider: ChromeRecordingProvider!
     private var controller: ViewController!
 
@@ -44,12 +45,16 @@ final class ViewControllerChromeTests: XCTestCase {
         defaults = UserDefaults(suiteName: suiteName)
         settings = SettingsStore(defaults: defaults)
         source = ManualLocationSource(settings: settings)
+        manager = StubLocationManager()
         provider = ChromeRecordingProvider()
 
         controller = ViewController(dataSource: DataHandler(provider: provider),
                                     settings: settings,
                                     credentialStore: InMemoryCredentialStore(),
-                                    locationSource: source)
+                                    locationSource: source,
+                                    locationSourceFactory: LocationSourceFactory(managerFactory: { [manager] in
+                                        manager!
+                                    }))
         controller.loadViewIfNeeded()
         controller.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
         controller.view.layoutIfNeeded()
@@ -59,11 +64,17 @@ final class ViewControllerChromeTests: XCTestCase {
     override func tearDown() {
         controller = nil
         provider = nil
+        manager = nil
         source = nil
         settings = nil
         defaults.removePersistentDomain(forName: suiteName)
         defaults = nil
         super.tearDown()
+    }
+
+    /// Lets MapKit finish an animated region change before it is read back.
+    private func settleMap(_ seconds: TimeInterval = 1.0) {
+        RunLoop.current.run(until: Date().addingTimeInterval(seconds))
     }
 
     /// A realtime grid result with one strike near the grid's centre.
@@ -164,6 +175,58 @@ final class ViewControllerChromeTests: XCTestCase {
         XCTAssertEqual(controller.mapView.centerCoordinate.latitude, centreBefore.latitude, accuracy: 1e-9)
         XCTAssertEqual(controller.mapView.centerCoordinate.longitude, centreBefore.longitude, accuracy: 1e-9)
         XCTAssertEqual(controller.radarContent?.state, .noLocation)
+    }
+
+    func testRadarTapKeepsTheZoomWhenTheChoiceIsOn() {
+        controller.render(result: result())
+        source.setLocation(Location(latitude: 49, longitude: 5))
+        settings.set(true, for: .keepZoomOnCenter)
+        controller.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                                                       span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)),
+                                     animated: false)
+
+        controller.radarTapped()
+        settleMap()
+
+        XCTAssertEqual(controller.mapView.centerCoordinate.latitude, 49, accuracy: 1e-3)
+        XCTAssertEqual(controller.radarContent?.state, .active)
+        // The zoom is kept: MapKit refits the span to the new latitude, but the
+        // radar's range would show around nine degrees of longitude.
+        XCTAssertLessThan(controller.mapView.region.span.longitudeDelta, 2,
+                          "the radar's range must not be applied")
+    }
+
+    func testRadarTapZoomsToTheRadarRangeWhenTheChoiceIsOff() {
+        controller.render(result: result())
+        source.setLocation(Location(latitude: 49, longitude: 5))
+        settings.set(false, for: .keepZoomOnCenter)
+        controller.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                                                       span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)),
+                                     animated: false)
+        settleMap()
+        let rectBefore = controller.mapView.visibleMapRect
+
+        controller.radarTapped()
+        settleMap()
+
+        XCTAssertEqual(controller.mapView.centerCoordinate.latitude, 49, accuracy: 1e-3)
+        XCTAssertGreaterThan(controller.mapView.visibleMapRect.size.height, rectBefore.size.height * 5,
+                             "the map must show the radar's range around the location")
+        XCTAssertGreaterThan(controller.mapView.region.span.longitudeDelta, 8,
+                             "500 km either side is about 9 degrees")
+    }
+
+    /// A device position has to reach the marker and the radar without any
+    /// wiring beyond the location source.
+    func testADevicePositionReachesTheMarkerAndTheRadar() {
+        controller.render(result: result())
+        XCTAssertEqual(controller.radarContent?.state, .noLocation)
+
+        settings.set(LocationMode.gps.rawValue, for: .locationMode)
+        manager.report(Location(latitude: 50.5, longitude: 10.5))
+
+        XCTAssertEqual(controller.ownLocationMarker?.location, Location(latitude: 50.5, longitude: 10.5))
+        XCTAssertEqual(controller.radarContent?.state, .active)
     }
 
     func testHistogramTapZoomsOutToTheDataArea() {

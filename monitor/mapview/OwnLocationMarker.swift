@@ -25,8 +25,17 @@ import Foundation
 /// view hierarchy; the annotation view materialises it on the map.
 public struct OwnLocationMarker: Equatable {
 
-    /// The diameter the marker is drawn at, in points.
+    /// The diameter the marker is drawn at when the size is at 100 percent.
     public static let defaultDiameter: CGFloat = 14
+
+    /// The percentage the size setting starts at.
+    public static let defaultSizePercent = 100
+
+    /// The smallest size the marker is drawn at, in percent.
+    public static let minimumSizePercent = 50
+
+    /// The largest size the marker is drawn at, in percent.
+    public static let maximumSizePercent = 400
 
     /// The position the marker sits at.
     public let location: Location
@@ -38,10 +47,22 @@ public struct OwnLocationMarker: Equatable {
         self.diameter = diameter
     }
 
-    /// The marker for a location, or `nil` when no location is known.
+    /// The diameter a size percentage draws.
+    ///
+    /// A percentage outside the settable range is clamped, so a stale or
+    /// externally written value cannot draw an invisible or absurd marker.
+    /// 100 percent reproduces ``defaultDiameter``.
+    public static func diameter(percent: Int) -> CGFloat {
+        let clamped = min(max(percent, minimumSizePercent), maximumSizePercent)
+        return defaultDiameter * CGFloat(clamped) / 100
+    }
+
+    /// The marker for a location, or `nil` when there is nothing to draw -
+    /// because no location is known, or because own-location display is off.
     public static func make(location: Location?,
+                            visible: Bool = true,
                             diameter: CGFloat = OwnLocationMarker.defaultDiameter) -> OwnLocationMarker? {
-        guard let location = location else { return nil }
+        guard visible, let location = location else { return nil }
         return OwnLocationMarker(location: location, diameter: diameter)
     }
 }

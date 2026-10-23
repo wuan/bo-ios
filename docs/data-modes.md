@@ -98,7 +98,7 @@ and a global fallback raises the grid size to at least that threshold.
 Earlier versions carried a count threshold as a request parameter, but the app
 never exposed a control for it and always sent the inactive value, so the
 `data-modes` requirement for it was removed by the
-[`ios-map-ui-overlays`](../openspec/changes/ios-map-ui-overlays/proposal.md)
+[`ios-map-ui-overlays`](../openspec/changes/archive/2026-10-23-ios-map-ui-overlays/proposal.md)
 change. The provider's grid method is positional and still expects that
 argument, so requests keep carrying a constant in its place; nothing else about
 the request or the results changes.
