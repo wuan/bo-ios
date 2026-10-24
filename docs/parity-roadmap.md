@@ -42,6 +42,7 @@ implementation, are the contract.
 | 4 - Location handling | [`ios-location-handling`](../openspec/changes/archive/2026-10-23-ios-location-handling/proposal.md) | `location-handling` (modified: device modes, permissions, display and centring choices) |
 | 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
 | 6 - Background monitoring | [`ios-background-monitoring`](../openspec/changes/archive/2026-10-23-ios-background-monitoring/proposal.md) | `background-monitoring` |
+| 7 - Preferences | [`ios-preferences`](../openspec/changes/archive/2026-10-24-ios-preferences/proposal.md) | `preferences`, and `data-modes` (modified: animation step duration and cycle pause) |
 
 Delivered foundations that later phases build on:
 
@@ -64,6 +65,11 @@ Delivered foundations that later phases build on:
   three colour schemes with base-map variants, zoom-aware culling, and tap
   selection with a details popup.
 - Localization scaffolding and the documentation pattern under `docs/`.
+- A categorised settings screen whose contents come from one declarative model, with
+  every user-facing setting reachable, the settings reference checked against the code,
+  and export (credentials opt-in only), validated import, and reset.
+- Animation step duration and cycle pause pacing playback, a keep-awake switch, and a
+  bounded diagnostics log behind the diagnostics setting.
 
 Open residual from Phase 2 (still open): the point-strike marker check against the
 HTTP source and the live sweep across history/animation and both grid extremes were
@@ -90,19 +96,18 @@ cannot, because `BGTaskScheduler` reports itself unavailable there, so no
 `BGAppRefreshTask` can be submitted or fired - and the platform's worst-case
 scheduling latency, which is best-effort by design. Both need a device.
 
+Open residual from Phase 7: the settings screen's categories, one change per category,
+the export's credentials opt-in, and reset were exercised in the simulator by a UI test,
+and the store, the settings model, the export/import logic, the screen's import callback,
+and the settings reference are covered by unit tests. Unobserved: the share sheet an
+export hands its file to and the document picker an import reads from, which need a person
+to choose a destination or a file; and the Phase 2 point-strike marker check, which the
+live HTTP source left unobserved again (it reported no strikes). The Phase 5 and Phase 6
+device-only residuals stand.
+
 ## Remaining phases
 
 Each phase below becomes its own change when it starts.
-
-### Phase 7 - Preferences
-
-Sketch: [`preferences.md`](parity-capabilities/preferences.md)
-
-- Implement the settings screen with map, animation, data source, location, alarm, generic, and backup categories; verified by a UI test listing all categories and their settings.
-- Wire every setting to the settings store with documented defaults; verified by tests that changed values survive relaunch and unset values use defaults.
-- Implement measurement-unit selection affecting displayed distances; verified by unit tests on formatting.
-- Implement preferences export, import, and reset, excluding secrets by default and rejecting invalid input; verified by round-trip and invalid-input tests.
-- Document the settings reference and verify documented defaults match the code.
 
 ### Phase 8 - App information
 

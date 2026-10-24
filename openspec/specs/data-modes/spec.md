@@ -29,7 +29,10 @@ The app SHALL allow the user to select a point in time within the last 24 hours 
 - **THEN** the selection is limited to 24 hours before the present
 
 ### Requirement: Animation playback
-The app SHALL support an animation mode that advances through historical intervals automatically and can be stopped, holding the interval reached when it stops.
+The app SHALL support an animation mode that advances through historical intervals
+automatically at a configurable step duration, pause for a configurable cycle pause when
+the playback cycles back to the beginning, and can be stopped, holding the interval
+reached when it stops.
 
 #### Scenario: Start animation from history
 - **WHEN** the user starts animation
@@ -38,6 +41,18 @@ The app SHALL support an animation mode that advances through historical interva
 #### Scenario: Stop animation
 - **WHEN** the user stops animation
 - **THEN** the display holds the current interval and the user can resume manual time selection
+
+#### Scenario: Configured step duration
+- **WHEN** the user has set a step duration
+- **THEN** animation advances one interval per step duration
+
+#### Scenario: Configured cycle pause
+- **WHEN** the playback reaches the present and cycles back to the beginning
+- **THEN** it pauses for the configured cycle pause before advancing again
+
+#### Scenario: No cycle pause
+- **WHEN** the cycle pause is set to its off value
+- **THEN** the playback restarts at the beginning without pausing
 
 ### Requirement: Time slider control
 The app SHALL provide a time-slider control spanning the last 24 hours whose rightmost position activates realtime mode.
