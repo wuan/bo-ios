@@ -30,6 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// The manager the background location request goes through; the same one
     /// the device location source uses.
     private var backgroundLocationManager: CoreLocationManager?
+    /// Keeps the display awake while the setting says so.
+    private var screenAwake: ScreenAwakeController?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -79,6 +81,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.backgroundLocationManager = locationManager
             window.makeKeyAndVisible()
 
+            let screenAwake = ScreenAwakeController(settings: settings)
+            screenAwake.start()
+            self.screenAwake = screenAwake
+
+            AppLog.shared.record("scene connected")
             monitor.start()
             requestBackgroundLocationIfNeeded()
         }
@@ -104,12 +111,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // The foreground refresh takes over, so the scheduled background fetch
         // is stopped.
+        AppLog.shared.record("scene entered foreground")
         backgroundMonitor?.enterForeground()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Schedule the next background fetch while monitoring is enabled, and
         // request the background location it needs.
+        AppLog.shared.record("scene entered background")
         backgroundMonitor?.enterBackground()
         requestBackgroundLocationIfNeeded()
     }

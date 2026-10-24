@@ -87,6 +87,18 @@ public enum SelectableSettings {
     public static let historicTimesteps: [SelectableValue] =
         [15, 30, 60].map { SelectableValue(value: $0, name: minutesName($0)) }
 
+    /// The selectable animation step durations in seconds.
+    ///
+    /// One second is the fixed rate the app played at before the setting
+    /// existed, so the default reproduces it.
+    public static let animationStepDurations: [SelectableValue] =
+        [1, 2, 5, 10].map { SelectableValue(value: $0, name: secondsName($0)) }
+
+    /// The selectable pauses before an animation cycles back to the beginning,
+    /// in seconds; zero is no pause.
+    public static let animationCyclePauses: [SelectableValue] =
+        [0, 1, 2, 5].map { SelectableValue(value: $0, name: secondsName($0)) }
+
     /// The selectable background query periods in seconds; zero is off.
     ///
     /// The values reproduce the reference client's background query periods, from
@@ -113,6 +125,10 @@ public enum SelectableSettings {
             return historicTimesteps
         case .backgroundQueryPeriod:
             return backgroundQueryPeriods
+        case .animationStepDuration:
+            return animationStepDurations
+        case .animationCyclePause:
+            return animationCyclePauses
         default:
             return nil
         }
@@ -134,5 +150,12 @@ public enum SelectableSettings {
         return String(format: NSLocalizedString("settings.minutes",
                                                 comment: "Duration in minutes, e.g. 60 min"),
                       minutes)
+    }
+
+    /// The name for a duration in seconds, e.g. `2 s`.
+    private static func secondsName(_ seconds: Int) -> String {
+        return String(format: NSLocalizedString("settings.seconds",
+                                                comment: "Duration in seconds, e.g. 2 s"),
+                      seconds)
     }
 }

@@ -108,6 +108,15 @@
 		AA000000000000000000002E /* DataSourceAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002D /* DataSourceAuthTests.swift */; };
 		AA0000000000000000000030 /* DataEventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002F /* DataEventSource.swift */; };
 		AA0000000000000000000032 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000031 /* SettingsViewController.swift */; };
+		AA0000000000000000000042 /* PreferencesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000041 /* PreferencesModel.swift */; };
+		AA0000000000000000000044 /* PreferencesBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000043 /* PreferencesBackup.swift */; };
+		AA0000000000000000000046 /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000045 /* AppLog.swift */; };
+		AA0000000000000000000048 /* ScreenAwakeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000047 /* ScreenAwakeController.swift */; };
+		AA000000000000000000004A /* PreferencesModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000049 /* PreferencesModelTests.swift */; };
+		AA000000000000000000004C /* AppLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004B /* AppLogTests.swift */; };
+		AA000000000000000000004E /* ScreenAwakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004D /* ScreenAwakeTests.swift */; };
+		AA0000000000000000000050 /* PreferencesBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004F /* PreferencesBackupTests.swift */; };
+		AA0000000000000000000052 /* SettingsReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000051 /* SettingsReferenceTests.swift */; };
 		AB0000000000000000000201 /* DataMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000101 /* DataMode.swift */; };
 		AB0000000000000000000202 /* TimeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000102 /* TimeModel.swift */; };
 		AB0000000000000000000203 /* ViewExtent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000103 /* ViewExtent.swift */; };
@@ -273,6 +282,15 @@
 		AA000000000000000000002D /* DataSourceAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSourceAuthTests.swift; path = DataSourceAuthTests.swift; sourceTree = "<group>"; };
 		AA000000000000000000002F /* DataEventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataEventSource.swift; path = pipeline/DataEventSource.swift; sourceTree = "<group>"; };
 		AA0000000000000000000031 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = settings/SettingsViewController.swift; sourceTree = "<group>"; };
+		AA0000000000000000000041 /* PreferencesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesModel.swift; path = settings/PreferencesModel.swift; sourceTree = "<group>"; };
+		AA0000000000000000000043 /* PreferencesBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesBackup.swift; path = settings/PreferencesBackup.swift; sourceTree = "<group>"; };
+		AA0000000000000000000045 /* AppLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppLog.swift; path = settings/AppLog.swift; sourceTree = "<group>"; };
+		AA0000000000000000000047 /* ScreenAwakeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAwakeController.swift; path = settings/ScreenAwakeController.swift; sourceTree = "<group>"; };
+		AA0000000000000000000049 /* PreferencesModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesModelTests.swift; path = PreferencesModelTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004B /* AppLogTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppLogTests.swift; path = AppLogTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004D /* ScreenAwakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAwakeTests.swift; path = ScreenAwakeTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004F /* PreferencesBackupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesBackupTests.swift; path = PreferencesBackupTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000051 /* SettingsReferenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsReferenceTests.swift; path = SettingsReferenceTests.swift; sourceTree = "<group>"; };
 		AB0000000000000000000101 /* DataMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataMode.swift; path = modes/DataMode.swift; sourceTree = "<group>"; };
 		AB0000000000000000000102 /* TimeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeModel.swift; path = modes/TimeModel.swift; sourceTree = "<group>"; };
 		AB0000000000000000000103 /* ViewExtent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewExtent.swift; path = modes/ViewExtent.swift; sourceTree = "<group>"; };
@@ -441,6 +459,10 @@
 				AA0000000000000000000029 /* StrikeLogParser.swift */,
 				AA000000000000000000002F /* DataEventSource.swift */,
 				AA0000000000000000000031 /* SettingsViewController.swift */,
+				AA0000000000000000000041 /* PreferencesModel.swift */,
+				AA0000000000000000000043 /* PreferencesBackup.swift */,
+				AA0000000000000000000045 /* AppLog.swift */,
+				AA0000000000000000000047 /* ScreenAwakeController.swift */,
 				0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */,
 				AD0000000000000000000009 /* InfoPlist.xcstrings */,
 				A96639A61BD56ECF004E2537 /* data */,
@@ -460,6 +482,11 @@
 			isa = PBXGroup;
 			children = (
 				0660A70AD99C29CD574EC45A /* SettingsViewControllerTests.swift */,
+				AA0000000000000000000049 /* PreferencesModelTests.swift */,
+				AA000000000000000000004B /* AppLogTests.swift */,
+				AA000000000000000000004D /* ScreenAwakeTests.swift */,
+				AA000000000000000000004F /* PreferencesBackupTests.swift */,
+				AA0000000000000000000051 /* SettingsReferenceTests.swift */,
 				7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */,
 				98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */,
 				B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */,
@@ -775,6 +802,10 @@
 				AA000000000000000000002A /* StrikeLogParser.swift in Sources */,
 				AA0000000000000000000030 /* DataEventSource.swift in Sources */,
 				AA0000000000000000000032 /* SettingsViewController.swift in Sources */,
+				AA0000000000000000000042 /* PreferencesModel.swift in Sources */,
+				AA0000000000000000000044 /* PreferencesBackup.swift in Sources */,
+				AA0000000000000000000046 /* AppLog.swift in Sources */,
+				AA0000000000000000000048 /* ScreenAwakeController.swift in Sources */,
 				AB0000000000000000000201 /* DataMode.swift in Sources */,
 				AB0000000000000000000202 /* TimeModel.swift in Sources */,
 				AB0000000000000000000203 /* ViewExtent.swift in Sources */,
@@ -809,6 +840,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				616FC1A77F456B567384F73B /* SettingsViewControllerTests.swift in Sources */,
+				AA000000000000000000004A /* PreferencesModelTests.swift in Sources */,
+				AA000000000000000000004C /* AppLogTests.swift in Sources */,
+				AA000000000000000000004E /* ScreenAwakeTests.swift in Sources */,
+				AA0000000000000000000050 /* PreferencesBackupTests.swift in Sources */,
+				AA0000000000000000000052 /* SettingsReferenceTests.swift in Sources */,
 				362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */,
 				38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */,
 				6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */,

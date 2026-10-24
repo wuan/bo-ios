@@ -44,16 +44,23 @@ final class SelectableSettingsTests: XCTestCase {
         XCTAssertEqual(store.choice(for: .region), Parameters.globalRegion, "region should default to global")
         XCTAssertEqual(store.choice(for: .intervalDuration), 60)
         XCTAssertEqual(store.choice(for: .historicTimestep), History.defaultOffsetIncrement)
+        XCTAssertEqual(store.choice(for: .animationStepDuration), 1,
+                       "the default step reproduces the fixed one-second playback")
+        XCTAssertEqual(store.choice(for: .animationCyclePause), 0,
+                       "the default playback cycles without pausing")
     }
 
     func testValueSetsMatchTheReference() {
         XCTAssertEqual(SelectableSettings.regions.map { $0.value }, [-1, 0, 1, 3, 7, 5, 2, 4, 6])
         XCTAssertEqual(SelectableSettings.intervalDurations.map { $0.value }, [30, 60, 90, 120, 240])
         XCTAssertEqual(SelectableSettings.historicTimesteps.map { $0.value }, [15, 30, 60])
+        XCTAssertEqual(SelectableSettings.animationStepDurations.map { $0.value }, [1, 2, 5, 10])
+        XCTAssertEqual(SelectableSettings.animationCyclePauses.map { $0.value }, [0, 1, 2, 5])
     }
 
     func testEverySelectableValueHasAName() {
-        for key in [SettingsKey.region, .intervalDuration, .historicTimestep] {
+        for key in [SettingsKey.region, .intervalDuration, .historicTimestep,
+                    .animationStepDuration, .animationCyclePause, .backgroundQueryPeriod] {
             let values = SelectableSettings.values(for: key) ?? []
             XCTAssertFalse(values.isEmpty)
             for value in values {
@@ -99,10 +106,14 @@ final class SelectableSettingsTests: XCTestCase {
         XCTAssertFalse(store.setChoice(2, for: .intervalDuration), "2 is not an interval duration")
         XCTAssertFalse(store.setChoice(45, for: .historicTimestep), "45 is not a timestep")
         XCTAssertFalse(store.setChoice(99, for: .region), "99 is not a region")
+        XCTAssertFalse(store.setChoice(3, for: .animationStepDuration), "3 is not an animation step duration")
+        XCTAssertFalse(store.setChoice(10, for: .animationCyclePause), "10 is not a cycle pause")
 
         XCTAssertEqual(store.choice(for: .intervalDuration), 60)
         XCTAssertEqual(store.choice(for: .historicTimestep), History.defaultOffsetIncrement)
         XCTAssertEqual(store.choice(for: .region), Parameters.globalRegion)
+        XCTAssertEqual(store.choice(for: .animationStepDuration), 1)
+        XCTAssertEqual(store.choice(for: .animationCyclePause), 0)
     }
 
     func testRejectedValueDoesNotNotifyObservers() {

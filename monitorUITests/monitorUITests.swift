@@ -34,17 +34,13 @@ class monitorUITests: XCTestCase {
     func testDataSourceSelectionPersistsAcrossReopening() {
         let app = XCUIApplication()
 
-        let open = app.buttons["settings.open"]
-        XCTAssertTrue(open.waitForExistence(timeout: 15))
-        open.tap()
+        openSettings(app)
 
         selectSource(app, named: "HTTP")
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
 
-        let reopen = app.buttons["settings.open"]
-        XCTAssertTrue(reopen.waitForExistence(timeout: 10))
-        reopen.tap()
+        openSettings(app)
 
         let reopened = app.segmentedControls["settings.source"]
         XCTAssertTrue(reopened.waitForExistence(timeout: 10))
@@ -171,7 +167,7 @@ class monitorUITests: XCTestCase {
         replaceText(in: app.secureTextFields["settings.password"], with: "test")
 
         // Dismiss the keyboard so the buttons below are reachable.
-        app.otherElements["settings.root"].tap()
+        app.staticTexts["settings.title"].tap()
 
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
@@ -202,7 +198,7 @@ class monitorUITests: XCTestCase {
         replaceText(in: app.textFields["settings.endpoint"], with: "http://127.0.0.1:8099")
         replaceText(in: app.textFields["settings.username"], with: "test")
         replaceText(in: app.secureTextFields["settings.password"], with: "test")
-        app.otherElements["settings.root"].tap()
+        app.staticTexts["settings.title"].tap()
         app.buttons["settings.save"].tap()
 
         selectSource(app, named: "JSON-RPC")
@@ -251,6 +247,101 @@ class monitorUITests: XCTestCase {
         XCTAssertTrue(waitForMarkerValue(of: marker, toDifferFrom: firstValue),
                       "the marker did not move to the second position: was \(firstValue ?? "nil"), now \(marker.value ?? "nil")")
         attachScreenshot("own-location-marker")
+    }
+
+    // MARK: - Settings screen
+
+    /// Opens the settings screen, confirms every category is listed with a
+    /// setting in it, and changes one setting per category.
+    func testSettingsScreenListsEveryCategoryAndChangesASettingInEach() {
+        let app = XCUIApplication()
+        app.launch()
+        openSettings(app)
+
+        // Every category is listed. The screen is scrolled from top to bottom
+        // while the headers are collected, because a long screen has some of
+        // them off the top. Only upward swipes are used: a downward drag at the
+        // top would dismiss the sheet.
+        let headers = ["Map", "Animation", "Data source", "Location", "Alarm", "Generic", "Backup"]
+        var seen = Set<String>()
+        for _ in 0..<12 {
+            for text in app.staticTexts.allElementsBoundByIndex {
+                seen.insert(text.label.lowercased())
+            }
+            app.swipeUp()
+        }
+        for header in headers {
+            XCTAssertTrue(seen.contains(header.lowercased()), "the \(header) category is missing")
+        }
+        attachScreenshot("settings-screen")
+
+        // Alerts go off first: the location set below would otherwise ask for
+        // notification authorisation. The switch is flipped to whatever it is
+        // not, so a previous run's state cannot decide the outcome.
+        let alerts = scrollBackTo("settings.alertEnabled", in: app)
+        let alertsBefore = alerts.value as? String
+        alerts.tap()
+        XCTAssertNotEqual(alerts.value as? String, alertsBefore, "the alerts switch did not toggle")
+        if alerts.value as? String == "1" {
+            alerts.tap()
+        }
+        XCTAssertEqual(alerts.value as? String, "0", "the alerts switch did not turn off")
+
+        // Map
+        let ownLocation = scrollBackTo("settings.showOwnLocation", in: app)
+        let ownLocationBefore = ownLocation.value as? String
+        ownLocation.tap()
+        XCTAssertNotEqual(ownLocation.value as? String, ownLocationBefore,
+                          "the own-location switch did not toggle")
+
+        // Animation
+        let animation = scrollTo("settings.animationStepDuration", in: app)
+        animation.buttons.element(boundBy: 1).tap()
+        XCTAssertTrue(animation.buttons.element(boundBy: 1).isSelected,
+                      "the animation step duration did not change")
+
+        // Data source
+        let source = scrollTo("settings.source", in: app)
+        source.buttons["HTTP"].tap()
+        XCTAssertTrue(source.buttons["HTTP"].isSelected, "the data source did not change")
+        source.buttons["JSON-RPC"].tap()
+        XCTAssertTrue(source.buttons["JSON-RPC"].isSelected, "the data source did not change back")
+
+        // Location
+        let latitude = scrollTo("settings.manualLatitude", in: app)
+        replaceText(in: latitude, with: "48.5")
+        XCTAssertEqual(latitude.value as? String, "48.5")
+        let longitude = scrollTo("settings.manualLongitude", in: app)
+        replaceText(in: longitude, with: "9.25")
+        XCTAssertEqual(longitude.value as? String, "9.25")
+        app.staticTexts["settings.title"].tap()
+
+        // Generic
+        let screenAwake = scrollTo("settings.keepScreenAwake", in: app)
+        let screenAwakeBefore = screenAwake.value as? String
+        screenAwake.tap()
+        XCTAssertNotEqual(screenAwake.value as? String, screenAwakeBefore,
+                          "the keep-awake switch did not toggle")
+
+        // Backup: the actions are offered, and export offers the credentials
+        // opt-in while reset is confirmed. Import is covered by the unit test
+        // that drives the screen's document-picker callback.
+        for action in ["export", "importSettings", "reset"] {
+            XCTAssertTrue(scrollTo("settings.action.\(action)", in: app).exists,
+                          "the \(action) action is missing")
+        }
+
+        scrollTo("settings.action.export", in: app).tap()
+        XCTAssertTrue(app.alerts.buttons["Export including credentials"].waitForExistence(timeout: 10),
+                      "the export did not offer the credentials opt-in")
+        XCTAssertTrue(app.alerts.buttons["Export without credentials"].exists,
+                      "the export must offer leaving the credentials behind")
+        app.alerts.buttons["Cancel"].tap()
+
+        scrollTo("settings.action.reset", in: app).tap()
+        let confirm = app.alerts.buttons["Reset"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5), "the reset confirmation is missing")
+        confirm.tap()
     }
 
     // MARK: - Chrome
@@ -829,7 +920,7 @@ class monitorUITests: XCTestCase {
         replaceText(in: app.textFields["settings.endpoint"], with: "")
         replaceText(in: app.textFields["settings.username"], with: credentials_.username)
         replaceText(in: app.secureTextFields["settings.password"], with: credentials_.password)
-        app.otherElements["settings.root"].tap()
+        app.staticTexts["settings.title"].tap()
 
         app.buttons["settings.save"].tap()
         app.buttons["settings.close"].tap()
@@ -904,12 +995,52 @@ class monitorUITests: XCTestCase {
         open.tap()
 
         let source = app.segmentedControls["settings.source"]
+        scrollTo("settings.source", in: app)
         XCTAssertTrue(source.waitForExistence(timeout: 10))
+    }
+
+    /// Scrolls the settings screen until the element can be used.
+    @discardableResult
+    private func scrollTo(_ identifier: String, in app: XCUIApplication) -> XCUIElement {
+        let element = app.descendants(matching: .any)[identifier].firstMatch
+        var remaining = 10
+        while !isTappable(element) && remaining > 0 {
+            app.swipeUp()
+            remaining -= 1
+        }
+        XCTAssertTrue(element.exists, "\(identifier) is not on the settings screen")
+        return element
+    }
+
+    /// Scrolls the settings screen back up until the element can be used.
+    @discardableResult
+    private func scrollBackTo(_ identifier: String, in app: XCUIApplication) -> XCUIElement {
+        let element = app.descendants(matching: .any)[identifier].firstMatch
+        var remaining = 10
+        while !isTappable(element) && remaining > 0 {
+            app.swipeDown()
+            remaining -= 1
+        }
+        XCTAssertTrue(element.exists, "\(identifier) is not on the settings screen")
+        return element
+    }
+
+    /// Whether an element can be tapped.
+    ///
+    /// The frame is checked first: a cell the table has not laid out yet has no
+    /// activation point, and asking whether it is hittable records a failure
+    /// instead of answering.
+    private func isTappable(_ element: XCUIElement) -> Bool {
+        guard element.exists else { return false }
+        let frame = element.frame
+        guard frame.width > 0, frame.height > 0 else { return false }
+        return element.isHittable
     }
 
     /// Selects the data source by the name its segment shows, rather than by an
     /// index that has to be kept in step with the order of the segments.
     private func selectSource(_ app: XCUIApplication, named name: String) {
+        scrollTo("settings.source", in: app)
         let source = app.segmentedControls["settings.source"]
         XCTAssertTrue(source.waitForExistence(timeout: 10))
         source.buttons[name].tap()
@@ -917,6 +1048,13 @@ class monitorUITests: XCTestCase {
 
     /// Replaces a field's contents rather than appending to whatever it holds.
     private func replaceText(in element: XCUIElement, with value: String) {
+        let app = XCUIApplication()
+        var remaining = 8
+        while !isTappable(element) && remaining > 0 {
+            app.swipeUp()
+            remaining -= 1
+        }
+
         element.tap()
 
         let clear = element.buttons["Clear text"]

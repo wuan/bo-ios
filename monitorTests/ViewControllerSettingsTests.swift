@@ -183,4 +183,30 @@ final class ViewControllerSettingsTests: XCTestCase {
 
         XCTAssertEqual(controller.rangeStartLabel.text, "-20 h")
     }
+
+    // MARK: - Animation pacing
+
+    func testTheStoredAnimationSettingsPaceTheScheduler() {
+        XCTAssertEqual(controller.scheduler.animationPeriod, 1,
+                       "the default step is the fixed one-second playback")
+        XCTAssertEqual(controller.scheduler.animationCyclePause, 0)
+
+        XCTAssertTrue(settings.setChoice(5, for: .animationStepDuration))
+        XCTAssertTrue(settings.setChoice(2, for: .animationCyclePause))
+
+        XCTAssertEqual(controller.scheduler.animationPeriod, 5,
+                       "a changed step duration reaches the scheduler")
+        XCTAssertEqual(controller.scheduler.animationCyclePause, 2,
+                       "a changed cycle pause reaches the scheduler")
+    }
+
+    /// The step that starts a run - from the present to the oldest interval - is
+    /// reported as a cycle, so the controller can tell it from the first step.
+    func testTheAnimationStepReportsTheCycleBackToTheBeginning() {
+        var model = TimeModel()
+        model.startAnimation()
+
+        XCTAssertTrue(model.advanceAnimation(), "a step from the present cycles back to the beginning")
+        XCTAssertFalse(model.advanceAnimation(), "a step inside the cycle is not a wrap")
+    }
 }

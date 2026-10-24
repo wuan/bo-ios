@@ -105,8 +105,14 @@ public struct TimeModel {
     }
 
     /// Advances one animation step.
-    public mutating func advanceAnimation() {
+    ///
+    /// - Returns: whether the step cycled back to the beginning, which happens
+    ///   when the playback was at the present and jumped to the oldest interval.
+    @discardableResult
+    public mutating func advanceAnimation() -> Bool {
+        let wrapped = interval.offset == 0
         interval = interval.animationStep(history: history)
+        return wrapped
     }
 
     /// The moment the selected interval starts, derived from the reference time:

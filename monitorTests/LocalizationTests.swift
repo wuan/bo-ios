@@ -47,6 +47,19 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
+    /// Every label the settings screen shows resolves from the catalog, so no
+    /// literal key is left in the interface.
+    func testTheSettingsScreenLabelsResolve() {
+        for category in PreferencesModel.categories {
+            XCTAssertFalse(category.title.hasPrefix("settings."),
+                           "\(category.id) shows the unresolved key '\(category.title)'")
+            for item in category.items {
+                XCTAssertFalse(item.title.hasPrefix("settings."),
+                               "a row shows the unresolved key '\(item.title)'")
+            }
+        }
+    }
+
     /// iOS ignores a location request whose usage description is missing, so a
     /// device mode would silently never prompt. Both keys have to be there.
     func testLocationUsageDescriptionsAreDeclared() {

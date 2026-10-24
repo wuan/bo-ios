@@ -39,7 +39,10 @@ final class SettingsStoreTests: XCTestCase {
     func testUnsetKeysReturnRegisteredDefaults() {
         let store = SettingsStore(defaults: defaults)
         XCTAssertEqual(store.string(for: .mapMode), "hybrid")
-        XCTAssertEqual(store.int(for: .mapScale), 75)
+        XCTAssertEqual(store.int(for: .animationStepDuration), 1)
+        XCTAssertEqual(store.int(for: .animationCyclePause), 0)
+        XCTAssertEqual(store.bool(for: .keepScreenAwake), false)
+        XCTAssertEqual(store.bool(for: .diagnosticsEnabled), false)
         XCTAssertEqual(store.bool(for: .alertEnabled), true)
         XCTAssertEqual(store.string(for: .measurementUnit), "metric")
     }
@@ -48,6 +51,27 @@ final class SettingsStoreTests: XCTestCase {
         let values = SettingsKey.defaultValues
         for key in SettingsKey.allCases {
             XCTAssertNotNil(values[key.rawValue], "Missing default for \(key.rawValue)")
+        }
+    }
+
+    /// The user-facing settings and the app's own bookkeeping are disjoint, and
+    /// the bookkeeping is exactly the four keys the app keeps for itself.
+    func testUserFacingAndInternalSettingsAreDisjoint() {
+        let userFacing = Set(SettingsKey.userFacing)
+        let internalKeys = SettingsKey.internalKeys
+
+        XCTAssertTrue(userFacing.isDisjoint(with: internalKeys),
+                      "a setting cannot be both user-facing and internal")
+        XCTAssertEqual(userFacing.union(internalKeys), Set(SettingsKey.allCases),
+                       "every setting is either user-facing or internal")
+        XCTAssertEqual(internalKeys, [.manualLocationSet, .backgroundLocationDisclosureShown,
+                                      .lastNotifiedStrikeTimestamp, .lastSignalledStrikeTimestamp])
+
+        for key in SettingsKey.userFacing {
+            XCTAssertTrue(key.isUserFacing, "\(key.rawValue) should be user-facing")
+        }
+        for key in SettingsKey.internalKeys {
+            XCTAssertFalse(key.isUserFacing, "\(key.rawValue) should be internal")
         }
     }
 
@@ -62,12 +86,12 @@ final class SettingsStoreTests: XCTestCase {
     func testResetRestoresDefaults() {
         let store = SettingsStore(defaults: defaults)
         store.set("satellite", for: .mapMode)
-        store.set(10, for: .mapScale)
+        store.set(10, for: .mapFade)
 
         store.reset()
 
         XCTAssertEqual(store.string(for: .mapMode), "hybrid")
-        XCTAssertEqual(store.int(for: .mapScale), 75)
+        XCTAssertEqual(store.int(for: .mapFade), 55)
     }
 
     func testProviderSettingsDefaults() {
@@ -131,7 +155,7 @@ final class SettingsStoreTests: XCTestCase {
         notChanged.isInverted = true
         let token = store.observe(.mapMode) { notChanged.fulfill() }
 
-        store.set(10, for: .mapScale)
+        store.set(10, for: .mapFade)
 
         wait(for: [notChanged], timeout: 0.2)
         store.removeObserver(token)

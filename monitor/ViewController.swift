@@ -46,7 +46,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// Region and data-area selection for the visible extent.
     var localData = LocalData()
     /// Decides when a refresh is due for the active mode.
-    let scheduler = ModeRefreshScheduler()
+    let scheduler: ModeRefreshScheduler
+
+    /// Whether the running animation has taken a step since it started.
+    ///
+    /// The first step of a run jumps from the present to the oldest interval;
+    /// only a step that completes a cycle pauses before repeating.
+    private var animationHasAdvanced = false
 
     /// Region used for requests, from the persisted region setting.
     var regionSetting: Int
@@ -100,6 +106,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     private let alertMonitor: ProximityAlertMonitor
     /// Where an alert's notification goes.
     let alertNotifier: AlertNotifying
+    /// The diagnostic log the app records through.
+    let appLog: AppLog
     /// Whether the notification authorisation has been asked for.
     private var hasRequestedNotificationAuthorization = false
     /// The alert state the monitor last reported.
@@ -111,10 +119,12 @@ public class ViewController: UIViewController, MKMapViewDelegate {
          locationSource: LocationSource? = nil,
          locationSourceFactory: LocationSourceFactory = LocationSourceFactory(),
          alertSignaller: AlertSignalling? = nil,
-         alertNotifier: AlertNotifying? = nil) {
+         alertNotifier: AlertNotifying? = nil,
+         appLog: AppLog = .shared) {
         self.dataSource = dataSource
         self.settings = settings
         self.credentialStore = credentialStore
+        self.appLog = appLog
         self.locationSourceFactory = locationSourceFactory
         self.activeLocationMode = settings.locationMode
         self.locationSource = locationSource ?? locationSourceFactory.makeSource(for: settings.locationMode,
@@ -126,6 +136,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         self.regionSetting = settings.choice(for: .region)
         self.parameters = Parameters(region: ViewController.selectedRegion(
             source: DataProviderCoordinator.source(in: settings), storedRegion: self.regionSetting))
+        self.scheduler = ViewController.scheduler(for: settings)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(nibName: nil, bundle: nil)
     }
@@ -146,6 +157,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
                                                   factory: DataProviderFactory())
         self.settings = settings
         self.credentialStore = KeychainCredentialStore()
+        self.appLog = .shared
         self.locationSourceFactory = LocationSourceFactory()
         self.activeLocationMode = settings.locationMode
         self.locationSource = LocationSourceFactory().makeSource(for: settings.locationMode,
@@ -157,6 +169,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         self.regionSetting = settings.choice(for: .region)
         self.parameters = Parameters(region: ViewController.selectedRegion(
             source: DataProviderCoordinator.source(in: settings), storedRegion: self.regionSetting))
+        self.scheduler = ViewController.scheduler(for: settings)
         self.timeModel = ViewController.timeModel(for: settings)
         super.init(coder: coder)
     }
@@ -165,6 +178,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     static func timeModel(for settings: SettingsStore) -> TimeModel {
         return TimeModel(interval: TimeIntervalSelection(duration: settings.choice(for: .intervalDuration)),
                          history: History(timeIncrement: settings.choice(for: .historicTimestep)))
+    }
+
+    /// The scheduler the stored animation settings pace.
+    static func scheduler(for settings: SettingsStore) -> ModeRefreshScheduler {
+        return ModeRefreshScheduler(
+            animationPeriod: TimeInterval(settings.choice(for: .animationStepDuration)),
+            animationCyclePause: TimeInterval(settings.choice(for: .animationCyclePause)))
     }
 
     deinit {
@@ -224,6 +244,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         syncModeControls()
         observeRenderingSettings()
         observeSelectableSettings()
+        observeAnimationSettings()
         observeLocation()
         observeLocationDisplay()
         observeAlertSettings()
@@ -428,12 +449,19 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             // Ignore a response for a selection the user has already moved past,
             // so an out-of-order reply cannot overwrite the current interval.
             guard result.parameters.intervalOffset == timeModel.interval.offset else { return }
+            recordDiagnostic("data received for interval \(result.parameters.intervalDuration) min, offset \(result.parameters.intervalOffset)")
             render(result: result)
         case .failed(let error):
+            recordDiagnostic("request failed: \(error)")
             NSLog("error in service call: \(error)")
         case .requestStarted:
             break
         }
+    }
+
+    /// Records a diagnostic message, kept only while diagnostics are enabled.
+    func recordDiagnostic(_ message: String) {
+        appLog.record(message)
     }
 
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -539,7 +567,11 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         case .refresh:
             requestCurrentParameters()
         case .advanceAndRefresh:
-            timeModel.advanceAnimation()
+            let wrapped = timeModel.advanceAnimation()
+            // A step that cycles back to the beginning waits for the cycle
+            // pause; the step that starts a run does not count as one.
+            scheduler.animationStepCompleted(wrapped: wrapped && animationHasAdvanced, now: now)
+            animationHasAdvanced = true
             syncModeControls()
             requestCurrentParameters()
         }
@@ -603,6 +635,8 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         } else {
             timeModel.startAnimation()
         }
+        // A fresh run starts its own cycle, so its first step never pauses.
+        animationHasAdvanced = false
         syncModeControls()
         requestCurrentParameters()
     }
@@ -944,6 +978,14 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         settingsObservers.append(settings.observe(.locationMode) { [weak self] in
             self?.applyLocationMode()
         })
+        // Editing the manual coordinates takes effect at once: the manual source
+        // reads the stored position, so the marker and radar redraw from it.
+        for key in [SettingsKey.manualLatitude, SettingsKey.manualLongitude] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyLocation()
+                self?.applyAlerts()
+            })
+        }
     }
 
     /// Registers observation of the current source.
@@ -1181,6 +1223,22 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         scheduler.selectionChanged(now: Date())
         refreshChrome()
         requestCurrentParameters()
+    }
+
+    /// Adopts a changed animation step duration or cycle pause, so the playback
+    /// pace follows the settings without a relaunch.
+    func applyAnimationSettings() {
+        scheduler.configure(animationStepDuration: TimeInterval(settings.choice(for: .animationStepDuration)),
+                            animationCyclePause: TimeInterval(settings.choice(for: .animationCyclePause)))
+    }
+
+    /// Follows the animation settings that pace the scheduler.
+    private func observeAnimationSettings() {
+        for key in [SettingsKey.animationStepDuration, SettingsKey.animationCyclePause] {
+            settingsObservers.append(settings.observe(key) { [weak self] in
+                self?.applyAnimationSettings()
+            })
+        }
     }
 
     /// Applies the stored map mode and redraws the displayed activity.
