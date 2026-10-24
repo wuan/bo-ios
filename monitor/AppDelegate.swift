@@ -23,8 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    /// The scheduler shared with the scene's background monitor.
+    ///
+    /// Registered here, before the app finishes launching, because the system
+    /// requires the task identifier to be registered that early; the scene
+    /// installs the handler later, when it builds the monitor.
+    let backgroundScheduling = BGTaskSchedulerScheduling()
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        backgroundScheduling.registerTask()
         return true
     }
 

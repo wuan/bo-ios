@@ -18,26 +18,117 @@ limitations under the License.
 
 import Foundation
 
-public class Parameters: TimeIntervalWithOffset {
-    let region: Int
-    let rasterBaselength: Int
-    let intervalDuration: Int
-    let intervalOffset: Int
-    let countThreshold: Int
+/// The parameters of a single data request.
+///
+/// This is a value type so it can be compared and used as a cache key; two
+/// parameter sets built from equal values are equal.
+public struct Parameters: Equatable, Hashable, TimeIntervalWithOffset {
 
-    init(region: Int = 1, rasterBaselength: Int = 10000, intervalDuration: Int = 60, intervalOffset: Int = 0, countThreshold: Int = 0) {
+    /// Region value selecting a data area derived from the visible extent.
+    public static let localRegion = -1
+    /// Region value selecting global data with no data area.
+    public static let globalRegion = 0
+
+    public let region: Int
+    public let rasterBaselength: Int
+    public let intervalDuration: Int
+    public let intervalOffset: Int
+    /// The quantized area a local request is limited to, if any.
+    public let dataArea: DataArea?
+
+    public init(region: Int = 1,
+                rasterBaselength: Int = 10000,
+                intervalDuration: Int = 60,
+                intervalOffset: Int = 0,
+                dataArea: DataArea? = nil) {
         self.region = region
         self.rasterBaselength = rasterBaselength
         self.intervalDuration = intervalDuration
         self.intervalOffset = intervalOffset
-        self.countThreshold = countThreshold
+        self.dataArea = dataArea
     }
 
-    func isRealtime() -> Bool {
+    /// The interval selection these parameters describe.
+    public var timeInterval: TimeIntervalSelection {
+        return TimeIntervalSelection(duration: intervalDuration, offset: intervalOffset)
+    }
+
+    /// Whether the request covers global data.
+    public var isGlobal: Bool {
+        return region == Parameters.globalRegion
+    }
+
+    /// Whether the request is limited to a local data area.
+    public var isLocal: Bool {
+        return region == Parameters.localRegion
+    }
+
+    public func isRealtime() -> Bool {
         return intervalOffset == 0
     }
 
-    func isRaster() -> Bool {
+    public func isRaster() -> Bool {
         return rasterBaselength != 0
+    }
+
+    // MARK: - Copy helpers
+
+    public func withRegion(_ region: Int) -> Parameters {
+        return Parameters(region: region,
+                          rasterBaselength: rasterBaselength,
+                          intervalDuration: intervalDuration,
+                          intervalOffset: intervalOffset,
+                          dataArea: dataArea)
+    }
+
+    public func withRasterBaselength(_ rasterBaselength: Int) -> Parameters {
+        return Parameters(region: region,
+                          rasterBaselength: rasterBaselength,
+                          intervalDuration: intervalDuration,
+                          intervalOffset: intervalOffset,
+                          dataArea: dataArea)
+    }
+
+    public func withDataArea(_ dataArea: DataArea?) -> Parameters {
+        return Parameters(region: region,
+                          rasterBaselength: rasterBaselength,
+                          intervalDuration: intervalDuration,
+                          intervalOffset: intervalOffset,
+                          dataArea: dataArea)
+    }
+
+    public func withInterval(_ interval: TimeIntervalSelection) -> Parameters {
+        return Parameters(region: region,
+                          rasterBaselength: rasterBaselength,
+                          intervalDuration: interval.duration,
+                          intervalOffset: interval.offset,
+                          dataArea: dataArea)
+    }
+
+    public func withIntervalDuration(_ intervalDuration: Int) -> Parameters {
+        return Parameters(region: region,
+                          rasterBaselength: rasterBaselength,
+                          intervalDuration: intervalDuration,
+                          intervalOffset: intervalOffset,
+                          dataArea: dataArea)
+    }
+
+    /// Advances the interval one animation step, looping across the history.
+    public func animationStep(history: History) -> Parameters {
+        return withInterval(timeInterval.animationStep(history: history))
+    }
+
+    /// Returns the interval to realtime.
+    public func goRealtime() -> Parameters {
+        return withInterval(timeInterval.goRealtime())
+    }
+
+    // MARK: - Source capability
+
+    /// Disables the grid-only request fields when the active source cannot serve
+    /// grid data, so a non-grid source never receives a grid size.
+    public func gatingGrid(on capabilities: DataProviderCapabilities) -> Parameters {
+        guard !capabilities.supportsGrid else { return self }
+        return withRasterBaselength(0)
     }
 }

@@ -7,11 +7,74 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		616FC1A77F456B567384F73B /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660A70AD99C29CD574EC45A /* SettingsViewControllerTests.swift */; };
+		362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */; };
+		38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */; };
+		46022E2C40C65D2AA35E0B58 /* EnlargedRadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */; };
+		3738B493EA3D216FD1990413 /* QuickSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */; };
+		1BEC1118E1366AC07E17C620 /* AlarmRadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AA440642471C4B804868CD /* AlarmRadarView.swift */; };
+		83E2ED5859415BE3E3EB76C7 /* DataAreaOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */; };
+		CA9B1A8FC70EC99D227D2ADD /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2464465CDA6C1B1B344AE65B /* HistogramView.swift */; };
+		7C521AC3BB71962C09D97E23 /* LegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E96E92646C9FFC730161E3F /* LegendView.swift */; };
+		6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */; };
+		DF924C6F2B02285BA454BF40 /* RadarContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */; };
+		72395AD4DB9AB1D044409894 /* HistogramContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */; };
+		8B2513003CB4C3EA8CDF3256 /* LegendContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */; };
+		60A44AB0E25089847AD5FBB9 /* DataAreaOverviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717274A140593F63830636A /* DataAreaOverviewContent.swift */; };
+		8F68ECA80B703B4A59EF4F87 /* RadarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C562DAF90A68E787B3D1312 /* RadarContent.swift */; };
+		8B501C72316F876238D24E54 /* HistogramContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3E5977D61747100F99166B /* HistogramContent.swift */; };
+		38D39B4A439D43003A5F10E7 /* LegendContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57201717B38E3052E735D8FA /* LegendContent.swift */; };
+		74EB35688AFCEAA6C42F5991 /* MeasurementUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C372817662142910258B21 /* MeasurementUnit.swift */; };
+		B60A86E798AFF439C7CAAA96 /* AlertAggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DF41688491A0435300653A /* AlertAggregationTests.swift */; };
+		478864EFDF7A136A10006FE8 /* AlertGeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */; };
+		CFE5323280E3C53E7353D411 /* AlertAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */; };
+		C6614BDDC2CC7F1B05A4D72C /* AlertGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94964987590390C50203FC26 /* AlertGeometry.swift */; };
+		0A27CF4A7F80E42D53525FED /* ViewControllerLocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */; };
+		A0CFC7A3FB64550C91ECBF66 /* OwnLocationAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */; };
+		0CB3EC7E65024E77DDE2E8BB /* OwnLocationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */; };
+		1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */; };
+		F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */; };
+		25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B061553CB00AF5EABC10F6 /* LocationSource.swift */; };
+		AD0000000000000000000010 /* ProximityAlertMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD000000000000000000000F /* ProximityAlertMonitor.swift */; };
+		AD0000000000000000000012 /* SystemAlertOutputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000011 /* SystemAlertOutputs.swift */; };
+		AD0000000000000000000014 /* ProximityAlertMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000013 /* ProximityAlertMonitorTests.swift */; };
+		AD0000000000000000000002 /* LocationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000001 /* LocationManaging.swift */; };
+		AD0000000000000000000004 /* DeviceLocationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000003 /* DeviceLocationSource.swift */; };
+		AD0000000000000000000006 /* LocationSourceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000005 /* LocationSourceFactory.swift */; };
+		AD0000000000000000000008 /* BackgroundLocationDisclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */; };
+		AD000000000000000000000A /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000009 /* InfoPlist.xcstrings */; };
+		AD000000000000000000000C /* DeviceLocationSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD000000000000000000000B /* DeviceLocationSourceTests.swift */; };
+		AD000000000000000000000E /* BackgroundLocationDisclosureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */; };
+		EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */; };
+		D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */; };
+		6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD07C951F9C17231923B741 /* SelectableSettings.swift */; };
+		710995B5C54247B78A59A76E /* ViewControllerPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */; };
+		BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */; };
+		2E994FC9FC3A478DB3D35CED /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CD93F37E94D2597FA4198 /* SettingsStore.swift */; };
+		F35D644608AE464DBFE46D4F /* GridParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E1A867741448B0B9A335CF /* GridParameters.swift */; };
+		DC7B490382464C93A8841BD2 /* DataArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAA3CA8D434FFBA50F9421 /* DataArea.swift */; };
+		B6B9D67A86014CC8A04DB448 /* TimeIntervalSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6004316632498BB786DD0B /* TimeIntervalSelection.swift */; };
+		2E32714593DB40D0A6A6EF36 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA994DAF244EE88A250027 /* History.swift */; };
+		D70DDBCE77904FA4B10623B3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B1A960ADAF40689DD71E1E /* Location.swift */; };
+		E34743130874462988F1D833 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF109976FB48BBA1369744 /* Event.swift */; };
+		CBDE5F36EC424C169BBE6538 /* StrikeDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314B9D33D346454185E78043 /* StrikeDataParser.swift */; };
+		498DA56C50A549DEB283B3B8 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D3B5526C1C4D7B8CB8C20A /* DataProvider.swift */; };
+		FA006C2DB65F47DABCBD93BE /* DataEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ED348E727E4DACB2644A6A /* DataEvent.swift */; };
+		465F6992AA5F4E698E73C999 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287965D1B029431083B4823B /* DataHandler.swift */; };
+		DA9D5F6890EC44A79B00E106 /* JsonRpcDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E7EFF37EC74BA0A023AE44 /* JsonRpcDataProvider.swift */; };
+		DD9F0214397F4D70A00F3FB3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */; };
+		2A86B70D3A9B4510A8D58B57 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D9A7A5BDEF43038B207852 /* Fixtures.swift */; };
+		96D790DB863448659F9081A9 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35568265E954B7FA4CC7037 /* SettingsStoreTests.swift */; };
+		6BD4FC372F6040C6B3D8CD32 /* GridParametersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C644A7154F1144D88AA74E3C /* GridParametersTests.swift */; };
+		54DB2B04C57B4A3DAB27F500 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1C9957B6424C318E69B2D8 /* DataModelTests.swift */; };
+		6AED28BAA194402C911BE225 /* StrikeDataParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19FDE9ABC39B4FFB9B6E8A3F /* StrikeDataParserTests.swift */; };
+		ECB1A62EB2434E878FBA325B /* DataHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61894A6E0AD74B92B6B802EE /* DataHandlerTests.swift */; };
+		D0C869FFFFE54E2C9793143A /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B685FE758684E5C823B9DCD /* LocalizationTests.swift */; };
+		AD0000000000000000000020 /* AppearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000021 /* AppearanceTests.swift */; };
 		2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */; };
 		2DC17241DB430A40F428E673 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17518C7EE68ABC67F2FA4 /* SceneDelegate.swift */; };
 		2DC1728B521563D807A04201 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC1775191DDC425442A9A11 /* Result.swift */; };
 		2DC173DCB86E36482FC42DD2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */; };
-		2DC1791DC8BD07003ECEECD5 /* DefaultClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC176AF0A43F935704DBB25 /* DefaultClient.swift */; };
 		2DC17D4BF6E29CE039A56304 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC17AA298FA585119F4AD0B /* Parameters.swift */; };
 		2DC17EC4C9DD8FB26B02A98C /* TimeIntervalWithOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC172B5449BB42C9DE850FB /* TimeIntervalWithOffset.swift */; };
 		A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639671BD56A2B004E2537 /* AppDelegate.swift */; };
@@ -20,11 +83,78 @@
 		A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A966397C1BD56A2C004E2537 /* monitorTests.swift */; };
 		A96639881BD56A2C004E2537 /* monitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639871BD56A2C004E2537 /* monitorUITests.swift */; };
 		A96639961BD56B6D004E2537 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96639951BD56B6D004E2537 /* MapKit.framework */; };
-		A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */; };
-		A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */; };
 		A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A71BD56EE8004E2537 /* RasterElement.swift */; };
 		A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A81BD56EE8004E2537 /* RasterParameters.swift */; };
 		A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96639A91BD56EE8004E2537 /* Strike.swift */; };
+		AA0000000000000000000002 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* UserAgent.swift */; };
+		AA0000000000000000000004 /* CredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000003 /* CredentialStore.swift */; };
+		AA0000000000000000000014 /* UserAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000013 /* UserAgentTests.swift */; };
+		AA0000000000000000000016 /* CredentialStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000015 /* CredentialStoreTests.swift */; };
+		AA0000000000000000000018 /* ParametersValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000017 /* ParametersValueTests.swift */; };
+		AA000000000000000000000A /* HttpTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000009 /* HttpTransport.swift */; };
+		AA000000000000000000000C /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000B /* DataCache.swift */; };
+		AA000000000000000000000E /* FreshnessValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000D /* FreshnessValidator.swift */; };
+		AA0000000000000000000010 /* DataProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000000F /* DataProviderFactory.swift */; };
+		AA0000000000000000000012 /* BlitzortungHttpDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000011 /* BlitzortungHttpDataProvider.swift */; };
+		AA0000000000000000000026 /* DataProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000025 /* DataProviderCoordinator.swift */; };
+		AA000000000000000000002A /* StrikeLogParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000029 /* StrikeLogParser.swift */; };
+		AA000000000000000000001A /* DataProviderFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000019 /* DataProviderFactoryTests.swift */; };
+		AA000000000000000000001C /* DataProviderCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* DataProviderCoordinatorTests.swift */; };
+		AA000000000000000000001E /* BlitzortungHttpDataProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* BlitzortungHttpDataProviderTests.swift */; };
+		AA0000000000000000000020 /* StrikeLogParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001F /* StrikeLogParserTests.swift */; };
+		AA0000000000000000000022 /* DataCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000021 /* DataCacheTests.swift */; };
+		AA0000000000000000000024 /* FreshnessValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000023 /* FreshnessValidatorTests.swift */; };
+		AA000000000000000000002C /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002B /* TestSupport.swift */; };
+		AA000000000000000000002E /* DataSourceAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002D /* DataSourceAuthTests.swift */; };
+		AA0000000000000000000030 /* DataEventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000002F /* DataEventSource.swift */; };
+		AA0000000000000000000032 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000031 /* SettingsViewController.swift */; };
+		AA0000000000000000000042 /* PreferencesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000041 /* PreferencesModel.swift */; };
+		AA0000000000000000000044 /* PreferencesBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000043 /* PreferencesBackup.swift */; };
+		AA0000000000000000000046 /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000045 /* AppLog.swift */; };
+		AA0000000000000000000048 /* ScreenAwakeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000047 /* ScreenAwakeController.swift */; };
+		AA000000000000000000004A /* PreferencesModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000049 /* PreferencesModelTests.swift */; };
+		AA000000000000000000004C /* AppLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004B /* AppLogTests.swift */; };
+		AA000000000000000000004E /* ScreenAwakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004D /* ScreenAwakeTests.swift */; };
+		AA0000000000000000000050 /* PreferencesBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000004F /* PreferencesBackupTests.swift */; };
+		AA0000000000000000000052 /* SettingsReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000051 /* SettingsReferenceTests.swift */; };
+		AB0000000000000000000201 /* DataMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000101 /* DataMode.swift */; };
+		AB0000000000000000000202 /* TimeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000102 /* TimeModel.swift */; };
+		AB0000000000000000000203 /* ViewExtent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000103 /* ViewExtent.swift */; };
+		AB0000000000000000000204 /* ViewExtent+MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000104 /* ViewExtent+MapKit.swift */; };
+		AB0000000000000000000205 /* LocalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000105 /* LocalData.swift */; };
+		AB0000000000000000000206 /* ModeRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000106 /* ModeRefreshScheduler.swift */; };
+		AB0000000000000000000401 /* TimeIntervalSteppingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000301 /* TimeIntervalSteppingTests.swift */; };
+		AB0000000000000000000402 /* TimeSliderMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000302 /* TimeSliderMappingTests.swift */; };
+		AB0000000000000000000403 /* DataModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000303 /* DataModeTests.swift */; };
+		AB0000000000000000000404 /* ViewExtentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000304 /* ViewExtentTests.swift */; };
+		AB0000000000000000000405 /* LocalDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000305 /* LocalDataTests.swift */; };
+		AB0000000000000000000406 /* GridGatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000306 /* GridGatingTests.swift */; };
+		AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */; };
+		AB0000000000000000000409 /* JsonRpcGridRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */; };
+		AC0000000000000000000201 /* ColorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000101 /* ColorHandler.swift */; };
+		AC0000000000000000000202 /* ShapeAlpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000102 /* ShapeAlpha.swift */; };
+		AC0000000000000000000203 /* TileGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000103 /* TileGeometry.swift */; };
+		AC0000000000000000000204 /* MapActivityShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000104 /* MapActivityShapes.swift */; };
+		AC0000000000000000000207 /* ActivitySelectionAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */; };
+		AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000301 /* ColorSchemeTests.swift */; };
+		AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000302 /* ShapeAlphaTests.swift */; };
+		AC0000000000000000000403 /* TileGeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000303 /* TileGeometryTests.swift */; };
+		AC0000000000000000000404 /* MapActivityShapesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000304 /* MapActivityShapesTests.swift */; };
+		AC0000000000000000000405 /* MapActivitySelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000305 /* MapActivitySelectionTests.swift */; };
+		AC0000000000000000000406 /* MapRenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000306 /* MapRenderingTests.swift */; };
+		AC0000000000000000000208 /* MapActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000108 /* MapActivity.swift */; };
+		AC0000000000000000000209 /* ActivityRenderPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000109 /* ActivityRenderPlan.swift */; };
+		AC000000000000000000020A /* ActivityOverlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010A /* ActivityOverlayBuilder.swift */; };
+		AC000000000000000000020B /* ActivityCountAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC000000000000000000010B /* ActivityCountAnnotationView.swift */; };
+		AC0000000000000000000407 /* ActivityRenderPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000307 /* ActivityRenderPlanTests.swift */; };
+		E148DFB744E08BC0A8AB4135 /* BackgroundMonitoringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */; };
+		E140F823670B4F42AC824DA6 /* BackgroundMonitoringScheduling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */; };
+		E18D7AD43D72E33999DA3C77 /* BackgroundDataFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */; };
+		E1948A2289C50BDA65892F7D /* BackgroundMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */; };
+		E1677FCF5CF1467C6CBB5CD2 /* BackgroundLocationPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */; };
+		E1BF7357E4AB308BA94AA006 /* BackgroundQueryPeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */; };
+		E171D6E917E8937600A9C2B8 /* BackgroundMonitoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */; };
+		E1CFB5FE7BEFC78B39230BA6 /* BackgroundLocationPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,9 +175,72 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0660A70AD99C29CD574EC45A /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewControllerTests.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
+		7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerChromeTests.swift; path = ViewControllerChromeTests.swift; sourceTree = "<group>"; };
+		98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramParsingTests.swift; path = HistogramParsingTests.swift; sourceTree = "<group>"; };
+		1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnlargedRadarViewController.swift; path = mapview/view/EnlargedRadarViewController.swift; sourceTree = "<group>"; };
+		BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuickSettingsViewController.swift; path = mapview/view/QuickSettingsViewController.swift; sourceTree = "<group>"; };
+		59AA440642471C4B804868CD /* AlarmRadarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmRadarView.swift; path = mapview/view/AlarmRadarView.swift; sourceTree = "<group>"; };
+		17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewView.swift; path = mapview/view/DataAreaOverviewView.swift; sourceTree = "<group>"; };
+		2464465CDA6C1B1B344AE65B /* HistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramView.swift; path = mapview/view/HistogramView.swift; sourceTree = "<group>"; };
+		7E96E92646C9FFC730161E3F /* LegendView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendView.swift; path = mapview/view/LegendView.swift; sourceTree = "<group>"; };
+		B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewContentTests.swift; path = DataAreaOverviewContentTests.swift; sourceTree = "<group>"; };
+		6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadarContentTests.swift; path = RadarContentTests.swift; sourceTree = "<group>"; };
+		3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramContentTests.swift; path = HistogramContentTests.swift; sourceTree = "<group>"; };
+		E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendContentTests.swift; path = LegendContentTests.swift; sourceTree = "<group>"; };
+		B717274A140593F63830636A /* DataAreaOverviewContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewContent.swift; path = chrome/DataAreaOverviewContent.swift; sourceTree = "<group>"; };
+		5C562DAF90A68E787B3D1312 /* RadarContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadarContent.swift; path = chrome/RadarContent.swift; sourceTree = "<group>"; };
+		BF3E5977D61747100F99166B /* HistogramContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramContent.swift; path = chrome/HistogramContent.swift; sourceTree = "<group>"; };
+		57201717B38E3052E735D8FA /* LegendContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegendContent.swift; path = chrome/LegendContent.swift; sourceTree = "<group>"; };
+		38C372817662142910258B21 /* MeasurementUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MeasurementUnit.swift; path = settings/MeasurementUnit.swift; sourceTree = "<group>"; };
+		F3DF41688491A0435300653A /* AlertAggregationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAggregationTests.swift; path = AlertAggregationTests.swift; sourceTree = "<group>"; };
+		C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertGeometryTests.swift; path = AlertGeometryTests.swift; sourceTree = "<group>"; };
+		20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertAggregation.swift; path = alerts/AlertAggregation.swift; sourceTree = "<group>"; };
+		94964987590390C50203FC26 /* AlertGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertGeometry.swift; path = alerts/AlertGeometry.swift; sourceTree = "<group>"; };
+		C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerLocationTests.swift; path = ViewControllerLocationTests.swift; sourceTree = "<group>"; };
+		D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OwnLocationAnnotationView.swift; path = mapview/view/OwnLocationAnnotationView.swift; sourceTree = "<group>"; };
+		E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OwnLocationMarker.swift; path = mapview/OwnLocationMarker.swift; sourceTree = "<group>"; };
+		E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSourceTests.swift; path = ManualLocationSourceTests.swift; sourceTree = "<group>"; };
+		6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManualLocationSource.swift; path = location/ManualLocationSource.swift; sourceTree = "<group>"; };
+		C8B061553CB00AF5EABC10F6 /* LocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSource.swift; path = location/LocationSource.swift; sourceTree = "<group>"; };
+		AD000000000000000000000F /* ProximityAlertMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProximityAlertMonitor.swift; path = alerts/ProximityAlertMonitor.swift; sourceTree = "<group>"; };
+		AD0000000000000000000011 /* SystemAlertOutputs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemAlertOutputs.swift; path = alerts/SystemAlertOutputs.swift; sourceTree = "<group>"; };
+		AD0000000000000000000013 /* ProximityAlertMonitorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProximityAlertMonitorTests.swift; path = ProximityAlertMonitorTests.swift; sourceTree = "<group>"; };
+		AD0000000000000000000001 /* LocationManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationManaging.swift; path = location/LocationManaging.swift; sourceTree = "<group>"; };
+		AD0000000000000000000003 /* DeviceLocationSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceLocationSource.swift; path = location/DeviceLocationSource.swift; sourceTree = "<group>"; };
+		AD0000000000000000000005 /* LocationSourceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSourceFactory.swift; path = location/LocationSourceFactory.swift; sourceTree = "<group>"; };
+		AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationDisclosure.swift; path = location/BackgroundLocationDisclosure.swift; sourceTree = "<group>"; };
+		AD0000000000000000000009 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = Resources/InfoPlist.xcstrings; sourceTree = "<group>"; };
+		AD000000000000000000000B /* DeviceLocationSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceLocationSourceTests.swift; path = DeviceLocationSourceTests.swift; sourceTree = "<group>"; };
+		AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationDisclosureTests.swift; path = BackgroundLocationDisclosureTests.swift; sourceTree = "<group>"; };
+		127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerSettingsTests.swift; path = ViewControllerSettingsTests.swift; sourceTree = "<group>"; };
+		C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettingsTests.swift; path = SelectableSettingsTests.swift; sourceTree = "<group>"; };
+		6BD07C951F9C17231923B741 /* SelectableSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSettings.swift; path = settings/SelectableSettings.swift; sourceTree = "<group>"; };
+		E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerPipelineTests.swift; path = ViewControllerPipelineTests.swift; sourceTree = "<group>"; };
+		7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsKey.swift; path = settings/SettingsKey.swift; sourceTree = "<group>"; };
+		F64CD93F37E94D2597FA4198 /* SettingsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = settings/SettingsStore.swift; sourceTree = "<group>"; };
+		98E1A867741448B0B9A335CF /* GridParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridParameters.swift; path = data/GridParameters.swift; sourceTree = "<group>"; };
+		22AAA3CA8D434FFBA50F9421 /* DataArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataArea.swift; path = data/DataArea.swift; sourceTree = "<group>"; };
+		5B6004316632498BB786DD0B /* TimeIntervalSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeIntervalSelection.swift; path = data/TimeIntervalSelection.swift; sourceTree = "<group>"; };
+		A8DA994DAF244EE88A250027 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = History.swift; path = data/History.swift; sourceTree = "<group>"; };
+		A4B1A960ADAF40689DD71E1E /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = data/Location.swift; sourceTree = "<group>"; };
+		3AFF109976FB48BBA1369744 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Event.swift; path = data/Event.swift; sourceTree = "<group>"; };
+		314B9D33D346454185E78043 /* StrikeDataParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeDataParser.swift; path = data/StrikeDataParser.swift; sourceTree = "<group>"; };
+		D3D3B5526C1C4D7B8CB8C20A /* DataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataProvider.swift; path = pipeline/DataProvider.swift; sourceTree = "<group>"; };
+		E3ED348E727E4DACB2644A6A /* DataEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataEvent.swift; path = pipeline/DataEvent.swift; sourceTree = "<group>"; };
+		287965D1B029431083B4823B /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataHandler.swift; path = pipeline/DataHandler.swift; sourceTree = "<group>"; };
+		17E7EFF37EC74BA0A023AE44 /* JsonRpcDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JsonRpcDataProvider.swift; path = pipeline/JsonRpcDataProvider.swift; sourceTree = "<group>"; };
+		0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = "<group>"; };
+		82D9A7A5BDEF43038B207852 /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Fixtures.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		B35568265E954B7FA4CC7037 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsStoreTests.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		C644A7154F1144D88AA74E3C /* GridParametersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridParametersTests.swift; path = GridParametersTests.swift; sourceTree = "<group>"; };
+		CA1C9957B6424C318E69B2D8 /* DataModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelTests.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
+		19FDE9ABC39B4FFB9B6E8A3F /* StrikeDataParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeDataParserTests.swift; path = StrikeDataParserTests.swift; sourceTree = "<group>"; };
+		61894A6E0AD74B92B6B802EE /* DataHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataHandlerTests.swift; path = DataHandlerTests.swift; sourceTree = "<group>"; };
+		6B685FE758684E5C823B9DCD /* LocalizationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalizationTests.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
+		AD0000000000000000000021 /* AppearanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppearanceTests.swift; path = AppearanceTests.swift; sourceTree = "<group>"; };
 		2DC172B5449BB42C9DE850FB /* TimeIntervalWithOffset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIntervalWithOffset.swift; sourceTree = "<group>"; };
 		2DC17518C7EE68ABC67F2FA4 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2DC176AF0A43F935704DBB25 /* DefaultClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultClient.swift; sourceTree = "<group>"; };
 		2DC1775191DDC425442A9A11 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		2DC17A7AED4FA63E19A432E6 /* JsonRpcClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRpcClient.swift; sourceTree = "<group>"; };
 		2DC17AA298FA585119F4AD0B /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
@@ -64,11 +257,78 @@
 		A96639871BD56A2C004E2537 /* monitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = monitorUITests.swift; sourceTree = "<group>"; };
 		A96639891BD56A2C004E2537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96639951BD56B6D004E2537 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlay.swift; path = mapview/overlay/StrikeOverlay.swift; sourceTree = "<group>"; };
-		A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeOverlayRenderer.swift; path = mapview/view/StrikeOverlayRenderer.swift; sourceTree = "<group>"; };
 		A96639A71BD56EE8004E2537 /* RasterElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterElement.swift; path = data/RasterElement.swift; sourceTree = "<group>"; };
 		A96639A81BD56EE8004E2537 /* RasterParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RasterParameters.swift; path = data/RasterParameters.swift; sourceTree = "<group>"; };
 		A96639A91BD56EE8004E2537 /* Strike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Strike.swift; path = data/Strike.swift; sourceTree = "<group>"; };
+		AA0000000000000000000001 /* UserAgent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserAgent.swift; path = client/UserAgent.swift; sourceTree = "<group>"; };
+		AA0000000000000000000003 /* CredentialStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialStore.swift; path = client/CredentialStore.swift; sourceTree = "<group>"; };
+		AA0000000000000000000013 /* UserAgentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserAgentTests.swift; path = UserAgentTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000015 /* CredentialStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CredentialStoreTests.swift; path = CredentialStoreTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000017 /* ParametersValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParametersValueTests.swift; path = ParametersValueTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000009 /* HttpTransport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HttpTransport.swift; path = client/HttpTransport.swift; sourceTree = "<group>"; };
+		AA000000000000000000000B /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataCache.swift; path = pipeline/DataCache.swift; sourceTree = "<group>"; };
+		AA000000000000000000000D /* FreshnessValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FreshnessValidator.swift; path = pipeline/FreshnessValidator.swift; sourceTree = "<group>"; };
+		AA000000000000000000000F /* DataProviderFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataProviderFactory.swift; path = pipeline/DataProviderFactory.swift; sourceTree = "<group>"; };
+		AA0000000000000000000011 /* BlitzortungHttpDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlitzortungHttpDataProvider.swift; path = pipeline/BlitzortungHttpDataProvider.swift; sourceTree = "<group>"; };
+		AA0000000000000000000025 /* DataProviderCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataProviderCoordinator.swift; path = pipeline/DataProviderCoordinator.swift; sourceTree = "<group>"; };
+		AA0000000000000000000029 /* StrikeLogParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeLogParser.swift; path = data/StrikeLogParser.swift; sourceTree = "<group>"; };
+		AA0000000000000000000019 /* DataProviderFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataProviderFactoryTests.swift; path = DataProviderFactoryTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000001B /* DataProviderCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataProviderCoordinatorTests.swift; path = DataProviderCoordinatorTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000001D /* BlitzortungHttpDataProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlitzortungHttpDataProviderTests.swift; path = BlitzortungHttpDataProviderTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000001F /* StrikeLogParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StrikeLogParserTests.swift; path = StrikeLogParserTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000021 /* DataCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataCacheTests.swift; path = DataCacheTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000023 /* FreshnessValidatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FreshnessValidatorTests.swift; path = FreshnessValidatorTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002B /* TestSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestSupport.swift; path = TestSupport.swift; sourceTree = "<group>"; };
+		AA000000000000000000002D /* DataSourceAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSourceAuthTests.swift; path = DataSourceAuthTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000002F /* DataEventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataEventSource.swift; path = pipeline/DataEventSource.swift; sourceTree = "<group>"; };
+		AA0000000000000000000031 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = settings/SettingsViewController.swift; sourceTree = "<group>"; };
+		AA0000000000000000000041 /* PreferencesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesModel.swift; path = settings/PreferencesModel.swift; sourceTree = "<group>"; };
+		AA0000000000000000000043 /* PreferencesBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesBackup.swift; path = settings/PreferencesBackup.swift; sourceTree = "<group>"; };
+		AA0000000000000000000045 /* AppLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppLog.swift; path = settings/AppLog.swift; sourceTree = "<group>"; };
+		AA0000000000000000000047 /* ScreenAwakeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAwakeController.swift; path = settings/ScreenAwakeController.swift; sourceTree = "<group>"; };
+		AA0000000000000000000049 /* PreferencesModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesModelTests.swift; path = PreferencesModelTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004B /* AppLogTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppLogTests.swift; path = AppLogTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004D /* ScreenAwakeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAwakeTests.swift; path = ScreenAwakeTests.swift; sourceTree = "<group>"; };
+		AA000000000000000000004F /* PreferencesBackupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferencesBackupTests.swift; path = PreferencesBackupTests.swift; sourceTree = "<group>"; };
+		AA0000000000000000000051 /* SettingsReferenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsReferenceTests.swift; path = SettingsReferenceTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000101 /* DataMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataMode.swift; path = modes/DataMode.swift; sourceTree = "<group>"; };
+		AB0000000000000000000102 /* TimeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeModel.swift; path = modes/TimeModel.swift; sourceTree = "<group>"; };
+		AB0000000000000000000103 /* ViewExtent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewExtent.swift; path = modes/ViewExtent.swift; sourceTree = "<group>"; };
+		AB0000000000000000000104 /* ViewExtent+MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ViewExtent+MapKit.swift"; path = "modes/ViewExtent+MapKit.swift"; sourceTree = "<group>"; };
+		AB0000000000000000000105 /* LocalData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalData.swift; path = modes/LocalData.swift; sourceTree = "<group>"; };
+		AB0000000000000000000106 /* ModeRefreshScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModeRefreshScheduler.swift; path = modes/ModeRefreshScheduler.swift; sourceTree = "<group>"; };
+		AB0000000000000000000301 /* TimeIntervalSteppingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeIntervalSteppingTests.swift; path = TimeIntervalSteppingTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000302 /* TimeSliderMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSliderMappingTests.swift; path = TimeSliderMappingTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000303 /* DataModeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModeTests.swift; path = DataModeTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000304 /* ViewExtentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewExtentTests.swift; path = ViewExtentTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000305 /* LocalDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalDataTests.swift; path = LocalDataTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000306 /* GridGatingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridGatingTests.swift; path = GridGatingTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModeRefreshSchedulerTests.swift; path = ModeRefreshSchedulerTests.swift; sourceTree = "<group>"; };
+		AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JsonRpcGridRequestTests.swift; path = JsonRpcGridRequestTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000101 /* ColorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorHandler.swift; path = mapview/color/ColorHandler.swift; sourceTree = "<group>"; };
+		AC0000000000000000000102 /* ShapeAlpha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlpha.swift; path = mapview/ShapeAlpha.swift; sourceTree = "<group>"; };
+		AC0000000000000000000103 /* TileGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileGeometry.swift; path = mapview/TileGeometry.swift; sourceTree = "<group>"; };
+		AC0000000000000000000104 /* MapActivityShapes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivityShapes.swift; path = mapview/MapActivityShapes.swift; sourceTree = "<group>"; };
+		AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivitySelectionAnnotationView.swift; path = mapview/view/ActivitySelectionAnnotationView.swift; sourceTree = "<group>"; };
+		AC0000000000000000000301 /* ColorSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorSchemeTests.swift; path = ColorSchemeTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000302 /* ShapeAlphaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShapeAlphaTests.swift; path = ShapeAlphaTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000303 /* TileGeometryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileGeometryTests.swift; path = TileGeometryTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000304 /* MapActivityShapesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivityShapesTests.swift; path = MapActivityShapesTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000305 /* MapActivitySelectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivitySelectionTests.swift; path = MapActivitySelectionTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000306 /* MapRenderingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapRenderingTests.swift; path = MapRenderingTests.swift; sourceTree = "<group>"; };
+		AC0000000000000000000108 /* MapActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapActivity.swift; path = mapview/MapActivity.swift; sourceTree = "<group>"; };
+		AC0000000000000000000109 /* ActivityRenderPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityRenderPlan.swift; path = mapview/ActivityRenderPlan.swift; sourceTree = "<group>"; };
+		AC000000000000000000010A /* ActivityOverlayBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityOverlayBuilder.swift; path = mapview/view/ActivityOverlayBuilder.swift; sourceTree = "<group>"; };
+		AC000000000000000000010B /* ActivityCountAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityCountAnnotationView.swift; path = mapview/view/ActivityCountAnnotationView.swift; sourceTree = "<group>"; };
+		AC0000000000000000000307 /* ActivityRenderPlanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityRenderPlanTests.swift; path = ActivityRenderPlanTests.swift; sourceTree = "<group>"; };
+		E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringSettings.swift; path = background/BackgroundMonitoringSettings.swift; sourceTree = "<group>"; };
+		E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringScheduling.swift; path = background/BackgroundMonitoringScheduling.swift; sourceTree = "<group>"; };
+		E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundDataFetching.swift; path = background/BackgroundDataFetching.swift; sourceTree = "<group>"; };
+		E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitor.swift; path = background/BackgroundMonitor.swift; sourceTree = "<group>"; };
+		E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationPermission.swift; path = background/BackgroundLocationPermission.swift; sourceTree = "<group>"; };
+		E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundQueryPeriodTests.swift; path = BackgroundQueryPeriodTests.swift; sourceTree = "<group>"; };
+		E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringTests.swift; path = BackgroundMonitoringTests.swift; sourceTree = "<group>"; };
+		E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationPermissionTests.swift; path = BackgroundLocationPermissionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +360,6 @@
 		2DC17288A05A817E687A3EBF /* client */ = {
 			isa = PBXGroup;
 			children = (
-				2DC176AF0A43F935704DBB25 /* DefaultClient.swift */,
 				2DC1791F5641CAF0174637F8 /* jsonrpc */,
 			);
 			path = client;
@@ -118,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				2DC17D6B91949DAAD7A92690 /* ColorScheme.swift */,
+				AC0000000000000000000101 /* ColorHandler.swift */,
 			);
 			name = color;
 			sourceTree = "<group>";
@@ -146,7 +406,67 @@
 		A96639661BD56A2B004E2537 /* monitor */ = {
 			isa = PBXGroup;
 			children = (
+				1864B7A6C3CB55CB970EDF25 /* EnlargedRadarViewController.swift */,
+				BEB08F1A8D7EBCE59ED7B985 /* QuickSettingsViewController.swift */,
+				59AA440642471C4B804868CD /* AlarmRadarView.swift */,
+				17ACC86B2C601E9F3825A957 /* DataAreaOverviewView.swift */,
+				2464465CDA6C1B1B344AE65B /* HistogramView.swift */,
+				7E96E92646C9FFC730161E3F /* LegendView.swift */,
+				B717274A140593F63830636A /* DataAreaOverviewContent.swift */,
+				5C562DAF90A68E787B3D1312 /* RadarContent.swift */,
+				BF3E5977D61747100F99166B /* HistogramContent.swift */,
+				57201717B38E3052E735D8FA /* LegendContent.swift */,
+				38C372817662142910258B21 /* MeasurementUnit.swift */,
+				20B2DB4834A16CF8E7E01854 /* AlertAggregation.swift */,
+				94964987590390C50203FC26 /* AlertGeometry.swift */,
+				D5BDCFBBBF3472B80EA2AD7D /* OwnLocationAnnotationView.swift */,
+				E2C2FE6C16D367F965735A4B /* OwnLocationMarker.swift */,
+				6FF5EB032F4956B73D147D0F /* ManualLocationSource.swift */,
+				C8B061553CB00AF5EABC10F6 /* LocationSource.swift */,
+				AD0000000000000000000001 /* LocationManaging.swift */,
+				AD0000000000000000000003 /* DeviceLocationSource.swift */,
+				AD0000000000000000000005 /* LocationSourceFactory.swift */,
+				AD0000000000000000000007 /* BackgroundLocationDisclosure.swift */,
+				AD000000000000000000000F /* ProximityAlertMonitor.swift */,
+				E1402ECFAB0C7269374A9B55 /* BackgroundMonitoringSettings.swift */,
+				E1936BBC6E4C98902265C584 /* BackgroundMonitoringScheduling.swift */,
+				E14BB504E65DCE2960F144C4 /* BackgroundDataFetching.swift */,
+				E13A89D2A1A6F79813DEF439 /* BackgroundMonitor.swift */,
+				E1C71CB8D40DFD61EF60426F /* BackgroundLocationPermission.swift */,
+				AD0000000000000000000011 /* SystemAlertOutputs.swift */,
+				6BD07C951F9C17231923B741 /* SelectableSettings.swift */,
+				7BD5CAAA85B047DEA14E7077 /* SettingsKey.swift */,
+				F64CD93F37E94D2597FA4198 /* SettingsStore.swift */,
+				98E1A867741448B0B9A335CF /* GridParameters.swift */,
+				22AAA3CA8D434FFBA50F9421 /* DataArea.swift */,
+				5B6004316632498BB786DD0B /* TimeIntervalSelection.swift */,
+				A8DA994DAF244EE88A250027 /* History.swift */,
+				A4B1A960ADAF40689DD71E1E /* Location.swift */,
+				3AFF109976FB48BBA1369744 /* Event.swift */,
+				314B9D33D346454185E78043 /* StrikeDataParser.swift */,
+				D3D3B5526C1C4D7B8CB8C20A /* DataProvider.swift */,
+				E3ED348E727E4DACB2644A6A /* DataEvent.swift */,
+				287965D1B029431083B4823B /* DataHandler.swift */,
+				17E7EFF37EC74BA0A023AE44 /* JsonRpcDataProvider.swift */,
+				AA0000000000000000000001 /* UserAgent.swift */,
+				AA0000000000000000000003 /* CredentialStore.swift */,
+				AA0000000000000000000009 /* HttpTransport.swift */,
+				AA000000000000000000000B /* DataCache.swift */,
+				AA000000000000000000000D /* FreshnessValidator.swift */,
+				AA000000000000000000000F /* DataProviderFactory.swift */,
+				AA0000000000000000000011 /* BlitzortungHttpDataProvider.swift */,
+				AA0000000000000000000025 /* DataProviderCoordinator.swift */,
+				AA0000000000000000000029 /* StrikeLogParser.swift */,
+				AA000000000000000000002F /* DataEventSource.swift */,
+				AA0000000000000000000031 /* SettingsViewController.swift */,
+				AA0000000000000000000041 /* PreferencesModel.swift */,
+				AA0000000000000000000043 /* PreferencesBackup.swift */,
+				AA0000000000000000000045 /* AppLog.swift */,
+				AA0000000000000000000047 /* ScreenAwakeController.swift */,
+				0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */,
+				AD0000000000000000000009 /* InfoPlist.xcstrings */,
 				A96639A61BD56ECF004E2537 /* data */,
+				AB0000000000000000000100 /* modes */,
 				A966399F1BD56E7F004E2537 /* mapview */,
 				A96639671BD56A2B004E2537 /* AppDelegate.swift */,
 				A96639691BD56A2B004E2537 /* ViewController.swift */,
@@ -161,6 +481,65 @@
 		A966397B1BD56A2C004E2537 /* monitorTests */ = {
 			isa = PBXGroup;
 			children = (
+				0660A70AD99C29CD574EC45A /* SettingsViewControllerTests.swift */,
+				AA0000000000000000000049 /* PreferencesModelTests.swift */,
+				AA000000000000000000004B /* AppLogTests.swift */,
+				AA000000000000000000004D /* ScreenAwakeTests.swift */,
+				AA000000000000000000004F /* PreferencesBackupTests.swift */,
+				AA0000000000000000000051 /* SettingsReferenceTests.swift */,
+				7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */,
+				98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */,
+				B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */,
+				6329C91B87B9B1C981DCB7D4 /* RadarContentTests.swift */,
+				3F4F8055B79DDC5F87652034 /* HistogramContentTests.swift */,
+				E480C5AB6CA3CA5453C3E1A4 /* LegendContentTests.swift */,
+				F3DF41688491A0435300653A /* AlertAggregationTests.swift */,
+				C610D8FFFBC41407A18A86FC /* AlertGeometryTests.swift */,
+				C18056C116272C3435D20259 /* ViewControllerLocationTests.swift */,
+				E4BB20CA5B3B5A745729F395 /* ManualLocationSourceTests.swift */,
+				AD000000000000000000000B /* DeviceLocationSourceTests.swift */,
+				AD000000000000000000000D /* BackgroundLocationDisclosureTests.swift */,
+				AD0000000000000000000013 /* ProximityAlertMonitorTests.swift */,
+				127731C5469182A7578AD567 /* ViewControllerSettingsTests.swift */,
+				C4A276C83A78D09225DF156E /* SelectableSettingsTests.swift */,
+				E3B33F7E56CF435280F4D99B /* ViewControllerPipelineTests.swift */,
+				82D9A7A5BDEF43038B207852 /* Fixtures.swift */,
+				B35568265E954B7FA4CC7037 /* SettingsStoreTests.swift */,
+				C644A7154F1144D88AA74E3C /* GridParametersTests.swift */,
+				CA1C9957B6424C318E69B2D8 /* DataModelTests.swift */,
+				19FDE9ABC39B4FFB9B6E8A3F /* StrikeDataParserTests.swift */,
+				61894A6E0AD74B92B6B802EE /* DataHandlerTests.swift */,
+				6B685FE758684E5C823B9DCD /* LocalizationTests.swift */,
+				AD0000000000000000000021 /* AppearanceTests.swift */,
+				AA0000000000000000000013 /* UserAgentTests.swift */,
+				AA0000000000000000000015 /* CredentialStoreTests.swift */,
+				AA0000000000000000000017 /* ParametersValueTests.swift */,
+				AA0000000000000000000019 /* DataProviderFactoryTests.swift */,
+				AA000000000000000000001B /* DataProviderCoordinatorTests.swift */,
+				AA000000000000000000001D /* BlitzortungHttpDataProviderTests.swift */,
+				AA000000000000000000001F /* StrikeLogParserTests.swift */,
+				AA0000000000000000000021 /* DataCacheTests.swift */,
+				AA0000000000000000000023 /* FreshnessValidatorTests.swift */,
+				AA000000000000000000002B /* TestSupport.swift */,
+				AA000000000000000000002D /* DataSourceAuthTests.swift */,
+				AB0000000000000000000301 /* TimeIntervalSteppingTests.swift */,
+				AB0000000000000000000302 /* TimeSliderMappingTests.swift */,
+				AB0000000000000000000303 /* DataModeTests.swift */,
+				AB0000000000000000000304 /* ViewExtentTests.swift */,
+				AB0000000000000000000305 /* LocalDataTests.swift */,
+				AB0000000000000000000306 /* GridGatingTests.swift */,
+				AB0000000000000000000308 /* ModeRefreshSchedulerTests.swift */,
+				E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */,
+				E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */,
+				E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */,
+				AB0000000000000000000309 /* JsonRpcGridRequestTests.swift */,
+				AC0000000000000000000301 /* ColorSchemeTests.swift */,
+				AC0000000000000000000302 /* ShapeAlphaTests.swift */,
+				AC0000000000000000000303 /* TileGeometryTests.swift */,
+				AC0000000000000000000304 /* MapActivityShapesTests.swift */,
+				AC0000000000000000000305 /* MapActivitySelectionTests.swift */,
+				AC0000000000000000000306 /* MapRenderingTests.swift */,
+				AC0000000000000000000307 /* ActivityRenderPlanTests.swift */,
 				A966397C1BD56A2C004E2537 /* monitorTests.swift */,
 				A966397E1BD56A2C004E2537 /* Info.plist */,
 			);
@@ -182,6 +561,11 @@
 				A96639A11BD56E97004E2537 /* overlay */,
 				A96639A01BD56E8D004E2537 /* view */,
 				2DC17E515D78B3496817F744 /* color */,
+				AC0000000000000000000102 /* ShapeAlpha.swift */,
+				AC0000000000000000000103 /* TileGeometry.swift */,
+				AC0000000000000000000104 /* MapActivityShapes.swift */,
+				AC0000000000000000000108 /* MapActivity.swift */,
+				AC0000000000000000000109 /* ActivityRenderPlan.swift */,
 			);
 			name = mapview;
 			sourceTree = "<group>";
@@ -189,7 +573,9 @@
 		A96639A01BD56E8D004E2537 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A41BD56EB9004E2537 /* StrikeOverlayRenderer.swift */,
+				AC0000000000000000000107 /* ActivitySelectionAnnotationView.swift */,
+				AC000000000000000000010A /* ActivityOverlayBuilder.swift */,
+				AC000000000000000000010B /* ActivityCountAnnotationView.swift */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -197,7 +583,6 @@
 		A96639A11BD56E97004E2537 /* overlay */ = {
 			isa = PBXGroup;
 			children = (
-				A96639A21BD56EAA004E2537 /* StrikeOverlay.swift */,
 			);
 			name = overlay;
 			sourceTree = "<group>";
@@ -213,6 +598,19 @@
 				2DC1775191DDC425442A9A11 /* Result.swift */,
 			);
 			name = data;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000100 /* modes */ = {
+			isa = PBXGroup;
+			children = (
+				AB0000000000000000000101 /* DataMode.swift */,
+				AB0000000000000000000102 /* TimeModel.swift */,
+				AB0000000000000000000103 /* ViewExtent.swift */,
+				AB0000000000000000000104 /* ViewExtent+MapKit.swift */,
+				AB0000000000000000000105 /* LocalData.swift */,
+				AB0000000000000000000106 /* ModeRefreshScheduler.swift */,
+			);
+			name = modes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,6 +722,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD9F0214397F4D70A00F3FB3 /* Localizable.xcstrings in Resources */,
+				AD000000000000000000000A /* InfoPlist.xcstrings in Resources */,
 				A966396F1BD56A2B004E2537 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,10 +749,80 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96639A31BD56EAA004E2537 /* StrikeOverlay.swift in Sources */,
+				46022E2C40C65D2AA35E0B58 /* EnlargedRadarViewController.swift in Sources */,
+				3738B493EA3D216FD1990413 /* QuickSettingsViewController.swift in Sources */,
+				1BEC1118E1366AC07E17C620 /* AlarmRadarView.swift in Sources */,
+				83E2ED5859415BE3E3EB76C7 /* DataAreaOverviewView.swift in Sources */,
+				CA9B1A8FC70EC99D227D2ADD /* HistogramView.swift in Sources */,
+				7C521AC3BB71962C09D97E23 /* LegendView.swift in Sources */,
+				60A44AB0E25089847AD5FBB9 /* DataAreaOverviewContent.swift in Sources */,
+				8F68ECA80B703B4A59EF4F87 /* RadarContent.swift in Sources */,
+				8B501C72316F876238D24E54 /* HistogramContent.swift in Sources */,
+				38D39B4A439D43003A5F10E7 /* LegendContent.swift in Sources */,
+				74EB35688AFCEAA6C42F5991 /* MeasurementUnit.swift in Sources */,
+				CFE5323280E3C53E7353D411 /* AlertAggregation.swift in Sources */,
+				C6614BDDC2CC7F1B05A4D72C /* AlertGeometry.swift in Sources */,
+				A0CFC7A3FB64550C91ECBF66 /* OwnLocationAnnotationView.swift in Sources */,
+				0CB3EC7E65024E77DDE2E8BB /* OwnLocationMarker.swift in Sources */,
+				F343F0F88015A0BA26E3660D /* ManualLocationSource.swift in Sources */,
+				25B7024FF4ED71E173948311 /* LocationSource.swift in Sources */,
+				AD0000000000000000000002 /* LocationManaging.swift in Sources */,
+				AD0000000000000000000004 /* DeviceLocationSource.swift in Sources */,
+				AD0000000000000000000006 /* LocationSourceFactory.swift in Sources */,
+				AD0000000000000000000008 /* BackgroundLocationDisclosure.swift in Sources */,
+				AD0000000000000000000010 /* ProximityAlertMonitor.swift in Sources */,
+				E148DFB744E08BC0A8AB4135 /* BackgroundMonitoringSettings.swift in Sources */,
+				E140F823670B4F42AC824DA6 /* BackgroundMonitoringScheduling.swift in Sources */,
+				E18D7AD43D72E33999DA3C77 /* BackgroundDataFetching.swift in Sources */,
+				E1948A2289C50BDA65892F7D /* BackgroundMonitor.swift in Sources */,
+				E1677FCF5CF1467C6CBB5CD2 /* BackgroundLocationPermission.swift in Sources */,
+				AD0000000000000000000012 /* SystemAlertOutputs.swift in Sources */,
+				6884819A64ACE21BA9C4A1B2 /* SelectableSettings.swift in Sources */,
+				BCB7EA45531A49BDA55AB79C /* SettingsKey.swift in Sources */,
+				2E994FC9FC3A478DB3D35CED /* SettingsStore.swift in Sources */,
+				F35D644608AE464DBFE46D4F /* GridParameters.swift in Sources */,
+				DC7B490382464C93A8841BD2 /* DataArea.swift in Sources */,
+				B6B9D67A86014CC8A04DB448 /* TimeIntervalSelection.swift in Sources */,
+				2E32714593DB40D0A6A6EF36 /* History.swift in Sources */,
+				D70DDBCE77904FA4B10623B3 /* Location.swift in Sources */,
+				E34743130874462988F1D833 /* Event.swift in Sources */,
+				CBDE5F36EC424C169BBE6538 /* StrikeDataParser.swift in Sources */,
+				498DA56C50A549DEB283B3B8 /* DataProvider.swift in Sources */,
+				FA006C2DB65F47DABCBD93BE /* DataEvent.swift in Sources */,
+				465F6992AA5F4E698E73C999 /* DataHandler.swift in Sources */,
+				DA9D5F6890EC44A79B00E106 /* JsonRpcDataProvider.swift in Sources */,
+				AA0000000000000000000002 /* UserAgent.swift in Sources */,
+				AA0000000000000000000004 /* CredentialStore.swift in Sources */,
+				AA000000000000000000000A /* HttpTransport.swift in Sources */,
+				AA000000000000000000000C /* DataCache.swift in Sources */,
+				AA000000000000000000000E /* FreshnessValidator.swift in Sources */,
+				AA0000000000000000000010 /* DataProviderFactory.swift in Sources */,
+				AA0000000000000000000012 /* BlitzortungHttpDataProvider.swift in Sources */,
+				AA0000000000000000000026 /* DataProviderCoordinator.swift in Sources */,
+				AA000000000000000000002A /* StrikeLogParser.swift in Sources */,
+				AA0000000000000000000030 /* DataEventSource.swift in Sources */,
+				AA0000000000000000000032 /* SettingsViewController.swift in Sources */,
+				AA0000000000000000000042 /* PreferencesModel.swift in Sources */,
+				AA0000000000000000000044 /* PreferencesBackup.swift in Sources */,
+				AA0000000000000000000046 /* AppLog.swift in Sources */,
+				AA0000000000000000000048 /* ScreenAwakeController.swift in Sources */,
+				AB0000000000000000000201 /* DataMode.swift in Sources */,
+				AB0000000000000000000202 /* TimeModel.swift in Sources */,
+				AB0000000000000000000203 /* ViewExtent.swift in Sources */,
+				AB0000000000000000000204 /* ViewExtent+MapKit.swift in Sources */,
+				AB0000000000000000000205 /* LocalData.swift in Sources */,
+				AB0000000000000000000206 /* ModeRefreshScheduler.swift in Sources */,
+				AC0000000000000000000201 /* ColorHandler.swift in Sources */,
+				AC0000000000000000000202 /* ShapeAlpha.swift in Sources */,
+				AC0000000000000000000203 /* TileGeometry.swift in Sources */,
+				AC0000000000000000000204 /* MapActivityShapes.swift in Sources */,
+				AC0000000000000000000207 /* ActivitySelectionAnnotationView.swift in Sources */,
+				AC0000000000000000000208 /* MapActivity.swift in Sources */,
+				AC0000000000000000000209 /* ActivityRenderPlan.swift in Sources */,
+				AC000000000000000000020A /* ActivityOverlayBuilder.swift in Sources */,
+				AC000000000000000000020B /* ActivityCountAnnotationView.swift in Sources */,
 				A96639AB1BD56EE8004E2537 /* RasterParameters.swift in Sources */,
 				A966396A1BD56A2B004E2537 /* ViewController.swift in Sources */,
-				A96639A51BD56EB9004E2537 /* StrikeOverlayRenderer.swift in Sources */,
 				A96639681BD56A2B004E2537 /* AppDelegate.swift in Sources */,
 				A96639AA1BD56EE8004E2537 /* RasterElement.swift in Sources */,
 				A96639AC1BD56EE8004E2537 /* Strike.swift in Sources */,
@@ -360,7 +830,6 @@
 				2DC17D4BF6E29CE039A56304 /* Parameters.swift in Sources */,
 				2DC17EC4C9DD8FB26B02A98C /* TimeIntervalWithOffset.swift in Sources */,
 				2DC1728B521563D807A04201 /* Result.swift in Sources */,
-				2DC1791DC8BD07003ECEECD5 /* DefaultClient.swift in Sources */,
 				2DC170DCBC3EFC328BF28846 /* JsonRpcClient.swift in Sources */,
 				2DC17241DB430A40F428E673 /* SceneDelegate.swift in Sources */,
 			);
@@ -370,6 +839,65 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616FC1A77F456B567384F73B /* SettingsViewControllerTests.swift in Sources */,
+				AA000000000000000000004A /* PreferencesModelTests.swift in Sources */,
+				AA000000000000000000004C /* AppLogTests.swift in Sources */,
+				AA000000000000000000004E /* ScreenAwakeTests.swift in Sources */,
+				AA0000000000000000000050 /* PreferencesBackupTests.swift in Sources */,
+				AA0000000000000000000052 /* SettingsReferenceTests.swift in Sources */,
+				362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */,
+				38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */,
+				6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */,
+				DF924C6F2B02285BA454BF40 /* RadarContentTests.swift in Sources */,
+				72395AD4DB9AB1D044409894 /* HistogramContentTests.swift in Sources */,
+				8B2513003CB4C3EA8CDF3256 /* LegendContentTests.swift in Sources */,
+				B60A86E798AFF439C7CAAA96 /* AlertAggregationTests.swift in Sources */,
+				478864EFDF7A136A10006FE8 /* AlertGeometryTests.swift in Sources */,
+				0A27CF4A7F80E42D53525FED /* ViewControllerLocationTests.swift in Sources */,
+				1E439ECFE1207475FDA29B22 /* ManualLocationSourceTests.swift in Sources */,
+				AD000000000000000000000C /* DeviceLocationSourceTests.swift in Sources */,
+				AD000000000000000000000E /* BackgroundLocationDisclosureTests.swift in Sources */,
+				AD0000000000000000000014 /* ProximityAlertMonitorTests.swift in Sources */,
+				EAFC4F05A2E213A10106A1C3 /* ViewControllerSettingsTests.swift in Sources */,
+				D77A314E1357AFD878BD5CFC /* SelectableSettingsTests.swift in Sources */,
+				710995B5C54247B78A59A76E /* ViewControllerPipelineTests.swift in Sources */,
+				2A86B70D3A9B4510A8D58B57 /* Fixtures.swift in Sources */,
+				96D790DB863448659F9081A9 /* SettingsStoreTests.swift in Sources */,
+				6BD4FC372F6040C6B3D8CD32 /* GridParametersTests.swift in Sources */,
+				54DB2B04C57B4A3DAB27F500 /* DataModelTests.swift in Sources */,
+				6AED28BAA194402C911BE225 /* StrikeDataParserTests.swift in Sources */,
+				ECB1A62EB2434E878FBA325B /* DataHandlerTests.swift in Sources */,
+				AA0000000000000000000014 /* UserAgentTests.swift in Sources */,
+				AA0000000000000000000016 /* CredentialStoreTests.swift in Sources */,
+				AA0000000000000000000018 /* ParametersValueTests.swift in Sources */,
+				AA000000000000000000001A /* DataProviderFactoryTests.swift in Sources */,
+				AA000000000000000000001C /* DataProviderCoordinatorTests.swift in Sources */,
+				AA000000000000000000001E /* BlitzortungHttpDataProviderTests.swift in Sources */,
+				AA0000000000000000000020 /* StrikeLogParserTests.swift in Sources */,
+				AA0000000000000000000022 /* DataCacheTests.swift in Sources */,
+				AA0000000000000000000024 /* FreshnessValidatorTests.swift in Sources */,
+				AA000000000000000000002C /* TestSupport.swift in Sources */,
+				AA000000000000000000002E /* DataSourceAuthTests.swift in Sources */,
+				D0C869FFFFE54E2C9793143A /* LocalizationTests.swift in Sources */,
+				AD0000000000000000000020 /* AppearanceTests.swift in Sources */,
+				AB0000000000000000000401 /* TimeIntervalSteppingTests.swift in Sources */,
+				AB0000000000000000000402 /* TimeSliderMappingTests.swift in Sources */,
+				AB0000000000000000000403 /* DataModeTests.swift in Sources */,
+				AB0000000000000000000404 /* ViewExtentTests.swift in Sources */,
+				AB0000000000000000000405 /* LocalDataTests.swift in Sources */,
+				AB0000000000000000000406 /* GridGatingTests.swift in Sources */,
+				AB0000000000000000000408 /* ModeRefreshSchedulerTests.swift in Sources */,
+				E1BF7357E4AB308BA94AA006 /* BackgroundQueryPeriodTests.swift in Sources */,
+				E171D6E917E8937600A9C2B8 /* BackgroundMonitoringTests.swift in Sources */,
+				E1CFB5FE7BEFC78B39230BA6 /* BackgroundLocationPermissionTests.swift in Sources */,
+				AB0000000000000000000409 /* JsonRpcGridRequestTests.swift in Sources */,
+				AC0000000000000000000401 /* ColorSchemeTests.swift in Sources */,
+				AC0000000000000000000402 /* ShapeAlphaTests.swift in Sources */,
+				AC0000000000000000000403 /* TileGeometryTests.swift in Sources */,
+				AC0000000000000000000404 /* MapActivityShapesTests.swift in Sources */,
+				AC0000000000000000000405 /* MapActivitySelectionTests.swift in Sources */,
+				AC0000000000000000000406 /* MapRenderingTests.swift in Sources */,
+				AC0000000000000000000407 /* ActivityRenderPlanTests.swift in Sources */,
 				A966397D1BD56A2C004E2537 /* monitorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,11 +973,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -495,10 +1024,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -510,7 +1040,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8LY4949ZEK;
 				INFOPLIST_FILE = monitor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -524,7 +1054,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8LY4949ZEK;
 				INFOPLIST_FILE = monitor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.wuerl.blitzortung.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";

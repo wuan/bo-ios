@@ -20,5 +20,9 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>BOTestDataUsername</key>
+	<string>$(BO_DATA_USERNAME)</string>
+	<key>BOTestDataPassword</key>
+	<string>$(BO_DATA_PASSWORD)</string>
 </dict>
 </plist>

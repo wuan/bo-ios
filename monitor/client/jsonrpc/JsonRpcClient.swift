@@ -8,16 +8,44 @@
 
 import Foundation
 
+/// Errors raised before a JSON-RPC request can be sent.
+public enum JsonRpcClientError: Error {
+    /// The configured service endpoint is not a usable URL.
+    case invalidEndpoint(String)
+}
+
 public class JsonRpcClient: NSObject {
 
-    let serviceEndpoint: NSURL!
+    let serviceEndpoint: URL?
+    private let userAgent: UserAgent
+    private let session: URLSession
 
-    init(withServiceEndpoint serviceEndpoint: String) {
-        self.serviceEndpoint = NSURL(string: serviceEndpoint)
+    init(withServiceEndpoint serviceEndpoint: String,
+         userAgent: UserAgent = UserAgent(),
+         session: URLSession = .shared) {
+        self.serviceEndpoint = URL(string: serviceEndpoint)
+        self.userAgent = userAgent
+        self.session = session
     }
 
+    /// Sends a call with a fixed positional argument list.
     func call(callback: @escaping (_ response: [String:AnyObject]?, _ errorInServiceCall: Error?) -> Void,
               methodName: String, withArguments arguments: Int...) {
+        call(callback: callback, methodName: methodName, arguments: arguments)
+    }
+
+    /// Sends a call whose positional argument list is built by the caller.
+    ///
+    /// The grid methods take different arities — `get_global_strikes_grid` four
+    /// arguments and `get_local_strikes_grid` seven — so the provider must be
+    /// able to vary the shape rather than send a single fixed one.
+    func call(callback: @escaping (_ response: [String:AnyObject]?, _ errorInServiceCall: Error?) -> Void,
+              methodName: String, arguments: [Int]) {
+
+        guard let serviceEndpoint = serviceEndpoint else {
+            callback(nil, JsonRpcClientError.invalidEndpoint(methodName))
+            return
+        }
 
         var callArguments: [String:AnyObject] = ["id": 1 as AnyObject, "method": methodName as AnyObject]
 
@@ -33,16 +61,16 @@ public class JsonRpcClient: NSObject {
             return
         }
 
-        let request = NSMutableURLRequest(url: self.serviceEndpoint as URL);
+        var request = URLRequest(url: serviceEndpoint);
         request.setValue("text/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("bo-ios", forHTTPHeaderField: "User-Agent")
+        userAgent.apply(to: &request)
         request.setValue("\(postData.length)", forHTTPHeaderField: "Content-Length")
         request.httpMethod = "POST"
         request.httpBody = postData as Data
         //NSLog(@"%@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
 
-        NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue(), completionHandler: {
-            (response: URLResponse?, data: Data?, connectionError: Error?) -> Void in
+        let task = session.dataTask(with: request) {
+            (data: Data?, response: URLResponse?, connectionError: Error?) -> Void in
 
             if let data = data {
 
@@ -63,6 +91,7 @@ public class JsonRpcClient: NSObject {
             } else if (connectionError != nil) {
                 NSLog("Error = \(String(describing: connectionError))");
             }
-        })
+        }
+        task.resume()
     }
 }

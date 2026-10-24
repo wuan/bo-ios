@@ -1,0 +1,161 @@
+/*
+
+Copyright 2015-2016 Andreas Würl
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+*/
+
+import Foundation
+
+/// A value a selectable setting accepts, together with the name shown for it.
+public struct SelectableValue: Equatable {
+    public let value: Int
+    public let name: String
+
+    public init(value: Int, name: String) {
+        self.value = value
+        self.name = name
+    }
+}
+
+/// The fixed value sets behind the region, interval duration, and historic
+/// timestep settings.
+///
+/// The values and their order reproduce the reference client's lists, and the
+/// defaults are the ones a fresh install uses.
+public enum SelectableSettings {
+
+    /// The region a fresh install requests, the whole globe.
+    ///
+    /// This matches the Android client, whose `region` preference defaults to
+    /// `0`; a global request is dispatched to the global grid method rather
+    /// than being clamped to a named region server-side.
+    public static let defaultRegion = Parameters.globalRegion
+    /// The named region the Blitzortung HTTP source requests when the stored
+    /// region does not name one - Europe, the first named region.
+    public static let defaultHttpRegion = 1
+    /// The interval duration in minutes a fresh install displays.
+    public static let defaultIntervalDuration = 60
+    /// The history step in minutes a fresh install steps by.
+    public static let defaultHistoricTimestep = History.defaultOffsetIncrement
+    /// The background query period a fresh install uses, in seconds; zero is off.
+    public static let defaultBackgroundQueryPeriod = 0
+
+    /// The selectable data regions, from the visible extent and the globe to
+    /// the named regions.
+    public static let regions: [SelectableValue] = [
+        SelectableValue(value: Parameters.localRegion,
+                        name: NSLocalizedString("region.local", comment: "Region name: the visible extent")),
+        SelectableValue(value: Parameters.globalRegion,
+                        name: NSLocalizedString("region.global", comment: "Region name: the whole globe")),
+        SelectableValue(value: 1, name: NSLocalizedString("region.europe", comment: "Region name")),
+        SelectableValue(value: 3, name: NSLocalizedString("region.northAmerica", comment: "Region name")),
+        SelectableValue(value: 7, name: NSLocalizedString("region.centralAmerica", comment: "Region name")),
+        SelectableValue(value: 5, name: NSLocalizedString("region.southAmerica", comment: "Region name")),
+        SelectableValue(value: 2, name: NSLocalizedString("region.oceania", comment: "Region name")),
+        SelectableValue(value: 4, name: NSLocalizedString("region.asia", comment: "Region name")),
+        SelectableValue(value: 6, name: NSLocalizedString("region.africa", comment: "Region name")),
+    ]
+
+    /// The named regions the Blitzortung HTTP source can request, in the
+    /// reference order; the extent-derived sentinels are not offered here.
+    public static let namedRegions: [SelectableValue] = regions.filter { $0.value > 0 }
+
+    /// The region the Blitzortung HTTP source requests for a stored value: the
+    /// stored value when it names a region, otherwise Europe. Nothing is
+    /// written back, so the stored value is left as it is.
+    public static func httpRegion(for value: Int) -> Int {
+        return namedRegions.contains { $0.value == value } ? value : defaultHttpRegion
+    }
+
+    /// The selectable interval durations in minutes.
+    public static let intervalDurations: [SelectableValue] =
+        [30, 60, 90, 120, 240].map { SelectableValue(value: $0, name: minutesName($0)) }
+
+    /// The selectable historic timesteps in minutes.
+    public static let historicTimesteps: [SelectableValue] =
+        [15, 30, 60].map { SelectableValue(value: $0, name: minutesName($0)) }
+
+    /// The selectable animation step durations in seconds.
+    ///
+    /// One second is the fixed rate the app played at before the setting
+    /// existed, so the default reproduces it.
+    public static let animationStepDurations: [SelectableValue] =
+        [1, 2, 5, 10].map { SelectableValue(value: $0, name: secondsName($0)) }
+
+    /// The selectable pauses before an animation cycles back to the beginning,
+    /// in seconds; zero is no pause.
+    public static let animationCyclePauses: [SelectableValue] =
+        [0, 1, 2, 5].map { SelectableValue(value: $0, name: secondsName($0)) }
+
+    /// The selectable background query periods in seconds; zero is off.
+    ///
+    /// The values reproduce the reference client's background query periods, from
+    /// off through a two-hour cadence.
+    public static let backgroundQueryPeriods: [SelectableValue] = {
+        var values = [SelectableValue(value: 0,
+                                      name: NSLocalizedString("settings.backgroundPeriod.off",
+                                                              comment: "Background query period: off"))]
+        for minutes in [1, 2, 5, 10, 15, 30, 60, 120] {
+            values.append(SelectableValue(value: minutes * 60, name: minutesName(minutes)))
+        }
+        return values
+    }()
+
+    /// The value set behind a setting, or `nil` when the setting is not
+    /// restricted to a fixed set of values.
+    public static func values(for key: SettingsKey) -> [SelectableValue]? {
+        switch key {
+        case .region:
+            return regions
+        case .intervalDuration:
+            return intervalDurations
+        case .historicTimestep:
+            return historicTimesteps
+        case .backgroundQueryPeriod:
+            return backgroundQueryPeriods
+        case .animationStepDuration:
+            return animationStepDurations
+        case .animationCyclePause:
+            return animationCyclePauses
+        default:
+            return nil
+        }
+    }
+
+    /// Whether a setting accepts `value`.
+    public static func allows(_ value: Int, for key: SettingsKey) -> Bool {
+        guard let values = values(for: key) else { return true }
+        return values.contains { $0.value == value }
+    }
+
+    /// The name shown for one value of a setting, if the value is known.
+    public static func name(for key: SettingsKey, value: Int) -> String? {
+        return values(for: key)?.first { $0.value == value }?.name
+    }
+
+    /// The name for a duration in minutes, e.g. `60 min`.
+    private static func minutesName(_ minutes: Int) -> String {
+        return String(format: NSLocalizedString("settings.minutes",
+                                                comment: "Duration in minutes, e.g. 60 min"),
+                      minutes)
+    }
+
+    /// The name for a duration in seconds, e.g. `2 s`.
+    private static func secondsName(_ seconds: Int) -> String {
+        return String(format: NSLocalizedString("settings.seconds",
+                                                comment: "Duration in seconds, e.g. 2 s"),
+                      seconds)
+    }
+}

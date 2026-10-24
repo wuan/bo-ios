@@ -1,1 +1,4 @@
+.envrc
 /.idea
+.DS_Store
+xcuserdata/
