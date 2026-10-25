@@ -155,6 +155,22 @@
 		E1BF7357E4AB308BA94AA006 /* BackgroundQueryPeriodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */; };
 		E171D6E917E8937600A9C2B8 /* BackgroundMonitoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */; };
 		E1CFB5FE7BEFC78B39230BA6 /* BackgroundLocationPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */; };
+		AF0000000000000000000201 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000101 /* AppMenu.swift */; };
+		AF0000000000000000000202 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000102 /* AppVersion.swift */; };
+		AF0000000000000000000203 /* AvailableVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000103 /* AvailableVersion.swift */; };
+		AF0000000000000000000204 /* ChangeLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000104 /* ChangeLog.swift */; };
+		AF0000000000000000000205 /* ApplicationLogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000105 /* ApplicationLogContent.swift */; };
+		AF0000000000000000000206 /* InformationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000106 /* InformationContent.swift */; };
+		AF0000000000000000000207 /* ApplicationLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000107 /* ApplicationLogViewController.swift */; };
+		AF0000000000000000000208 /* ChangeLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000108 /* ChangeLogViewController.swift */; };
+		AF0000000000000000000209 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000109 /* InformationViewController.swift */; };
+		AF0000000000000000000210 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000110 /* CHANGELOG.md */; };
+		AF0000000000000000000401 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000501 /* AppVersionTests.swift */; };
+		AF0000000000000000000402 /* ChangeLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000502 /* ChangeLogTests.swift */; };
+		AF0000000000000000000403 /* ApplicationLogContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000503 /* ApplicationLogContentTests.swift */; };
+		AF0000000000000000000404 /* AvailableVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000504 /* AvailableVersionTests.swift */; };
+		AF0000000000000000000405 /* InformationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000505 /* InformationContentTests.swift */; };
+		AF0000000000000000000406 /* AppInformationScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000506 /* AppInformationScreenTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -329,6 +345,22 @@
 		E16825A152A12CC94842A6E7 /* BackgroundQueryPeriodTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundQueryPeriodTests.swift; path = BackgroundQueryPeriodTests.swift; sourceTree = "<group>"; };
 		E1340B7363F6B4733117B509 /* BackgroundMonitoringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundMonitoringTests.swift; path = BackgroundMonitoringTests.swift; sourceTree = "<group>"; };
 		E190743995F11975F666BFE1 /* BackgroundLocationPermissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundLocationPermissionTests.swift; path = BackgroundLocationPermissionTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000101 /* AppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppMenu.swift; path = appinfo/AppMenu.swift; sourceTree = "<group>"; };
+		AF0000000000000000000102 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppVersion.swift; path = appinfo/AppVersion.swift; sourceTree = "<group>"; };
+		AF0000000000000000000103 /* AvailableVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvailableVersion.swift; path = appinfo/AvailableVersion.swift; sourceTree = "<group>"; };
+		AF0000000000000000000104 /* ChangeLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeLog.swift; path = appinfo/ChangeLog.swift; sourceTree = "<group>"; };
+		AF0000000000000000000105 /* ApplicationLogContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApplicationLogContent.swift; path = appinfo/ApplicationLogContent.swift; sourceTree = "<group>"; };
+		AF0000000000000000000106 /* InformationContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InformationContent.swift; path = appinfo/InformationContent.swift; sourceTree = "<group>"; };
+		AF0000000000000000000107 /* ApplicationLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApplicationLogViewController.swift; path = appinfo/ApplicationLogViewController.swift; sourceTree = "<group>"; };
+		AF0000000000000000000108 /* ChangeLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeLogViewController.swift; path = appinfo/ChangeLogViewController.swift; sourceTree = "<group>"; };
+		AF0000000000000000000109 /* InformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InformationViewController.swift; path = appinfo/InformationViewController.swift; sourceTree = "<group>"; };
+		AF0000000000000000000110 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = Resources/CHANGELOG.md; sourceTree = "<group>"; };
+		AF0000000000000000000501 /* AppVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppVersionTests.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000502 /* ChangeLogTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeLogTests.swift; path = ChangeLogTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000503 /* ApplicationLogContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApplicationLogContentTests.swift; path = ApplicationLogContentTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000504 /* AvailableVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvailableVersionTests.swift; path = AvailableVersionTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000505 /* InformationContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InformationContentTests.swift; path = InformationContentTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000506 /* AppInformationScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppInformationScreenTests.swift; path = AppInformationScreenTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,8 +495,18 @@
 				AA0000000000000000000043 /* PreferencesBackup.swift */,
 				AA0000000000000000000045 /* AppLog.swift */,
 				AA0000000000000000000047 /* ScreenAwakeController.swift */,
+				AF0000000000000000000101 /* AppMenu.swift */,
+				AF0000000000000000000102 /* AppVersion.swift */,
+				AF0000000000000000000103 /* AvailableVersion.swift */,
+				AF0000000000000000000104 /* ChangeLog.swift */,
+				AF0000000000000000000105 /* ApplicationLogContent.swift */,
+				AF0000000000000000000106 /* InformationContent.swift */,
+				AF0000000000000000000107 /* ApplicationLogViewController.swift */,
+				AF0000000000000000000108 /* ChangeLogViewController.swift */,
+				AF0000000000000000000109 /* InformationViewController.swift */,
 				0095D11BE4E04117B93C6F57 /* Localizable.xcstrings */,
 				AD0000000000000000000009 /* InfoPlist.xcstrings */,
+				AF0000000000000000000110 /* CHANGELOG.md */,
 				A96639A61BD56ECF004E2537 /* data */,
 				AB0000000000000000000100 /* modes */,
 				A966399F1BD56E7F004E2537 /* mapview */,
@@ -487,6 +529,12 @@
 				AA000000000000000000004D /* ScreenAwakeTests.swift */,
 				AA000000000000000000004F /* PreferencesBackupTests.swift */,
 				AA0000000000000000000051 /* SettingsReferenceTests.swift */,
+				AF0000000000000000000501 /* AppVersionTests.swift */,
+				AF0000000000000000000502 /* ChangeLogTests.swift */,
+				AF0000000000000000000503 /* ApplicationLogContentTests.swift */,
+				AF0000000000000000000504 /* AvailableVersionTests.swift */,
+				AF0000000000000000000505 /* InformationContentTests.swift */,
+				AF0000000000000000000506 /* AppInformationScreenTests.swift */,
 				7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */,
 				98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */,
 				B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */,
@@ -724,6 +772,7 @@
 			files = (
 				DD9F0214397F4D70A00F3FB3 /* Localizable.xcstrings in Resources */,
 				AD000000000000000000000A /* InfoPlist.xcstrings in Resources */,
+				AF0000000000000000000210 /* CHANGELOG.md in Resources */,
 				A966396F1BD56A2B004E2537 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,6 +855,15 @@
 				AA0000000000000000000044 /* PreferencesBackup.swift in Sources */,
 				AA0000000000000000000046 /* AppLog.swift in Sources */,
 				AA0000000000000000000048 /* ScreenAwakeController.swift in Sources */,
+				AF0000000000000000000201 /* AppMenu.swift in Sources */,
+				AF0000000000000000000202 /* AppVersion.swift in Sources */,
+				AF0000000000000000000203 /* AvailableVersion.swift in Sources */,
+				AF0000000000000000000204 /* ChangeLog.swift in Sources */,
+				AF0000000000000000000205 /* ApplicationLogContent.swift in Sources */,
+				AF0000000000000000000206 /* InformationContent.swift in Sources */,
+				AF0000000000000000000207 /* ApplicationLogViewController.swift in Sources */,
+				AF0000000000000000000208 /* ChangeLogViewController.swift in Sources */,
+				AF0000000000000000000209 /* InformationViewController.swift in Sources */,
 				AB0000000000000000000201 /* DataMode.swift in Sources */,
 				AB0000000000000000000202 /* TimeModel.swift in Sources */,
 				AB0000000000000000000203 /* ViewExtent.swift in Sources */,
@@ -845,6 +903,12 @@
 				AA000000000000000000004E /* ScreenAwakeTests.swift in Sources */,
 				AA0000000000000000000050 /* PreferencesBackupTests.swift in Sources */,
 				AA0000000000000000000052 /* SettingsReferenceTests.swift in Sources */,
+				AF0000000000000000000401 /* AppVersionTests.swift in Sources */,
+				AF0000000000000000000402 /* ChangeLogTests.swift in Sources */,
+				AF0000000000000000000403 /* ApplicationLogContentTests.swift in Sources */,
+				AF0000000000000000000404 /* AvailableVersionTests.swift in Sources */,
+				AF0000000000000000000405 /* InformationContentTests.swift in Sources */,
+				AF0000000000000000000406 /* AppInformationScreenTests.swift in Sources */,
 				362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */,
 				38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */,
 				6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */,

@@ -41,9 +41,31 @@ final class LocalizationTests: XCTestCase {
     func testBaseCatalogResolvesSettingsKeys() {
         for key in ["settings.title", "settings.source", "settings.endpoint",
                     "settings.username", "settings.password", "settings.save",
-                    "settings.close", "settings.open"] {
+                    "settings.close"] {
             let value = NSLocalizedString(key, bundle: .main, comment: "")
             XCTAssertNotEqual(value, key, "\(key) did not resolve")
+        }
+    }
+
+    /// Every string the application menu and the information surfaces show
+    /// resolves from the catalog, so no literal key is left in the interface.
+    func testBaseCatalogResolvesAppInformationKeys() {
+        var keys = ["menu.open", "menu.cancel", "realtime.goto",
+                    "appinfo.close", "appinfo.name", "appinfo.copyright",
+                    "appinfo.update.available", "appinfo.update.uptodate",
+                    "appinfo.log.title", "appinfo.log.empty", "appinfo.log.send",
+                    "appinfo.changelog.title", "appinfo.changelog.empty"]
+        // A menu entry's identifier is also the key its title resolves from.
+        keys += AppMenuEntry.allCases.map { $0.accessibilityIdentifier }
+
+        for key in keys {
+            let value = NSLocalizedString(key, bundle: .main, comment: "")
+            XCTAssertNotEqual(value, key, "\(key) did not resolve")
+        }
+
+        for entry in AppMenuEntry.allCases {
+            XCTAssertFalse(entry.title.hasPrefix("menu."),
+                           "\(entry.rawValue) shows its unresolved key")
         }
     }
 

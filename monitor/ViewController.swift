@@ -81,9 +81,10 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// The material-backed bar that floats the mode controls over the map.
     var modeBar: UIVisualEffectView!
     var statusText: UILabel!
-    var settingsButton: UIButton!
+    var menuButton: UIButton!
     var timeSlider: UISlider!
     var animationButton: UIButton!
+    var realtimeButton: UIButton!
     var modeLabel: UILabel!
     var rangeStartLabel: UILabel!
     var rangeEndLabel: UILabel!
@@ -213,13 +214,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         statusText.accessibilityIdentifier = "status.text"
         statusBar.contentView.addSubview(statusText)
 
-        settingsButton = UIButton(type: .system)
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.accessibilityIdentifier = "settings.open"
-        settingsButton.setTitle(NSLocalizedString("settings.open", comment: "Button opening the data source settings"),
-                                for: .normal)
-        settingsButton.addTarget(self, action: #selector(showSettings), for: .touchUpInside)
-        statusBar.contentView.addSubview(settingsButton)
+        menuButton = UIButton(type: .system)
+        menuButton.translatesAutoresizingMaskIntoConstraints = false
+        menuButton.accessibilityIdentifier = "menu.open"
+        menuButton.setTitle(NSLocalizedString("menu.open", comment: "Button opening the application menu"),
+                            for: .normal)
+        menuButton.addTarget(self, action: #selector(showMenu), for: .touchUpInside)
+        statusBar.contentView.addSubview(menuButton)
 
         mapView = MKMapView()
         mapView.mapType = ViewController.mapType(for: settings.string(for: .mapMode))
@@ -274,14 +275,26 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         animationButton.accessibilityIdentifier = "animation.toggle"
         animationButton.addTarget(self, action: #selector(animationToggled), for: .touchUpInside)
 
+        // Jumping back to the present is offered only while history is selected;
+        // the button shares the mode row and is hidden in the other modes.
+        realtimeButton = UIButton(type: .system)
+        realtimeButton.translatesAutoresizingMaskIntoConstraints = false
+        realtimeButton.accessibilityIdentifier = "realtime.goto"
+        realtimeButton.setTitle(NSLocalizedString("realtime.goto",
+                                                  comment: "Control returning from history to realtime"),
+                                for: .normal)
+        realtimeButton.addTarget(self, action: #selector(realtimeTapped), for: .touchUpInside)
+
         // The mode name and the animation control share one line, so the button
         // does not take a row of its own; the label absorbs the free space and
         // the button sits at the trailing edge.
         modeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         animationButton.setContentHuggingPriority(.required, for: .horizontal)
         animationButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        realtimeButton.setContentHuggingPriority(.required, for: .horizontal)
+        realtimeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let modeRow = UIStackView(arrangedSubviews: [modeLabel, animationButton])
+        let modeRow = UIStackView(arrangedSubviews: [modeLabel, realtimeButton, animationButton])
         modeRow.axis = .horizontal
         modeRow.spacing = 8
         modeRow.alignment = .firstBaseline
@@ -388,9 +401,9 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             statusText.leftAnchor.constraint(equalTo: statusBar.contentView.leftAnchor, constant: 16),
             statusText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 
-            settingsButton.rightAnchor.constraint(equalTo: statusBar.contentView.rightAnchor, constant: -8),
-            settingsButton.centerYAnchor.constraint(equalTo: statusText.centerYAnchor),
-            statusText.rightAnchor.constraint(lessThanOrEqualTo: settingsButton.leftAnchor, constant: -8),
+            menuButton.rightAnchor.constraint(equalTo: statusBar.contentView.rightAnchor, constant: -8),
+            menuButton.centerYAnchor.constraint(equalTo: statusText.centerYAnchor),
+            statusText.rightAnchor.constraint(lessThanOrEqualTo: menuButton.leftAnchor, constant: -8),
 
             mapView.leftAnchor.constraint(equalTo: view.leftAnchor),
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -425,10 +438,65 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         ])
     }
 
-    /// Presents the minimal data source configuration screen.
+    /// Presents the application menu: settings, alarms, the application log, the
+    /// change log, and information.
+    @objc func showMenu() {
+        let controller = AppMenuViewController { [weak self] entry in
+            self?.open(entry)
+        }
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    /// Opens the surface a menu entry names.
+    func open(_ entry: AppMenuEntry) {
+        switch entry {
+        case .settings:
+            showSettings()
+        case .alarms:
+            showAlarms()
+        case .log:
+            showApplicationLog()
+        case .changelog:
+            showChangeLog()
+        case .information:
+            showInformation()
+        }
+    }
+
+    /// Presents the categoric settings screen.
     @objc func showSettings() {
         let controller = SettingsViewController(settings: settings, credentialStore: credentialStore)
         controller.modalPresentationStyle = .formSheet
+        present(controller, animated: true)
+    }
+
+    /// Presents the enlarged alarm radar.
+    @objc func showAlarms() {
+        let controller = EnlargedRadarViewController()
+        controller.configure(content: radarContent)
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    /// Presents the application log and its send-for-support action.
+    @objc func showApplicationLog() {
+        let controller = ApplicationLogViewController(appLog: appLog)
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    /// Presents the change log parsed from the bundled file.
+    @objc func showChangeLog() {
+        let controller = ChangeLogViewController()
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+    }
+
+    /// Presents the app information and runs the update check.
+    @objc func showInformation() {
+        let controller = InformationViewController(version: AppVersion.read())
+        controller.modalPresentationStyle = .pageSheet
         present(controller, animated: true)
     }
 
@@ -620,11 +688,13 @@ public class ViewController: UIViewController, MKMapViewDelegate {
 
     // MARK: - Mode controls
 
-    @objc private func sliderChanged(_ sender: UISlider) {
+    @objc func sliderChanged(_ sender: UISlider) {
         let position = Int(sender.value.rounded())
         timeModel.setPosition(position)
         sender.setValue(Float(position), animated: false)
-        updateModeIndicator()
+        // A slider move can leave or enter history, so the mode-appropriate
+        // controls follow it, not only the indicator.
+        syncModeControls()
         scheduler.selectionChanged(now: Date())
         requestCurrentParameters()
     }
@@ -641,9 +711,18 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         requestCurrentParameters()
     }
 
+    /// Returns from history to realtime, showing the most recent interval.
+    @objc private func realtimeTapped() {
+        timeModel.setPosition(timeModel.maxPosition)
+        animationHasAdvanced = false
+        syncModeControls()
+        scheduler.selectionChanged(now: Date())
+        requestCurrentParameters()
+    }
+
     /// Reflects the time model in the slider, the range labels, the animation
-    /// button, and the mode indicator.
-    private func syncModeControls() {
+    /// button, the realtime control, and the mode indicator.
+    func syncModeControls() {
         let maxPosition = max(1, timeModel.maxPosition)
         timeSlider.maximumValue = Float(maxPosition)
         timeSlider.value = Float(timeModel.position)
@@ -652,6 +731,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
             lowerLimitMinutes: timeModel.history.lowerLimit(of: timeModel.interval))
         updateModeIndicator()
         updateAnimationButton()
+        updateRealtimeButton()
     }
 
     private func updateModeIndicator() {
@@ -671,6 +751,12 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         let titleKey = timeModel.mode == .animation ? "animation.stop" : "animation.start"
         animationButton.setTitle(NSLocalizedString(titleKey, comment: "Start or stop animation playback"),
                                  for: .normal)
+    }
+
+    /// Offers the jump back to realtime only while history is selected; in
+    /// realtime there is nothing to return to, and animation is stopped first.
+    private func updateRealtimeButton() {
+        realtimeButton.isHidden = timeModel.mode != .history
     }
 
     private func updateStatus(now: Date) {
@@ -938,10 +1024,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     /// Opens the enlarged radar without changing the small one's state.
     @objc func radarLongPressed(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-        let controller = EnlargedRadarViewController()
-        controller.configure(content: radarContent)
-        controller.modalPresentationStyle = .pageSheet
-        present(controller, animated: true)
+        showAlarms()
     }
 
     // MARK: - Location

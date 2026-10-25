@@ -258,6 +258,11 @@ class monitorUITests: XCTestCase {
         app.launch()
         openSettings(app)
 
+        // The header names the screen, not one of its categories.
+        let header = app.staticTexts["settings.title"]
+        XCTAssertTrue(header.waitForExistence(timeout: 10))
+        XCTAssertEqual(header.label, "Settings", "the header must name the screen, not a category")
+
         // Every category is listed. The screen is scrolled from top to bottom
         // while the headers are collected, because a long screen has some of
         // them off the top. Only upward swipes are used: a downward drag at the
@@ -342,6 +347,121 @@ class monitorUITests: XCTestCase {
         let confirm = app.alerts.buttons["Reset"]
         XCTAssertTrue(confirm.waitForExistence(timeout: 5), "the reset confirmation is missing")
         confirm.tap()
+    }
+
+    // MARK: - Application menu
+
+    /// Opens the menu and reaches every entry, closing each surface again so the
+    /// next entry is opened from the map.
+    func testTheMenuOpensEveryEntry() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Settings
+        openMenu(app)
+        app.buttons["menu.settings"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["settings.root"].waitForExistence(timeout: 10),
+                      "the settings screen did not open")
+        app.buttons["settings.close"].tap()
+
+        // Alarms: the enlarged radar
+        openMenu(app)
+        app.buttons["menu.alarms"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["radar.enlarged"].waitForExistence(timeout: 10),
+                      "the enlarged radar did not open")
+        app.buttons["radar.close"].tap()
+
+        // Application log
+        openMenu(app)
+        app.buttons["menu.log"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["appinfo.log.root"].waitForExistence(timeout: 10),
+                      "the application log did not open")
+        XCTAssertTrue(app.buttons["appinfo.log.send"].exists, "the send-for-support action is missing")
+        app.buttons["appinfo.log.close"].tap()
+
+        // Change log
+        openMenu(app)
+        app.buttons["menu.changelog"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["appinfo.changelog.root"].waitForExistence(timeout: 10),
+                      "the change log did not open")
+        let latest = app.staticTexts["appinfo.changelog.latest"]
+        XCTAssertTrue(latest.waitForExistence(timeout: 10))
+        XCTAssertFalse(latest.label.isEmpty, "the change log names no version")
+        app.buttons["appinfo.changelog.close"].tap()
+
+        // Information
+        openMenu(app)
+        app.buttons["menu.information"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["appinfo.root"].waitForExistence(timeout: 10),
+                      "the information screen did not open")
+        let version = app.staticTexts["appinfo.version"]
+        XCTAssertTrue(version.waitForExistence(timeout: 10))
+        XCTAssertFalse(version.label.isEmpty, "the information screen names no version")
+        app.buttons["appinfo.close"].tap()
+    }
+
+    /// The jump to realtime is offered in history and returns the app to
+    /// realtime, where it disappears again.
+    func testTheRealtimeControlAppearsInHistoryAndReturnsToRealtime() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let slider = app.sliders["time.slider"]
+        XCTAssertTrue(slider.waitForExistence(timeout: 15))
+        let indicator = app.staticTexts["mode.indicator"]
+        XCTAssertTrue(indicator.waitForExistence(timeout: 10))
+
+        XCTAssertFalse(app.buttons["realtime.goto"].exists,
+                       "realtime must not offer the jump to realtime")
+
+        slider.adjust(toNormalizedSliderPosition: 0.5)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+
+        let goto = app.buttons["realtime.goto"]
+        XCTAssertTrue(goto.waitForExistence(timeout: 5), "history must offer the jump to realtime")
+        goto.tap()
+
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Realtime"), "mode was '\(indicator.label)'")
+        XCTAssertFalse(goto.exists, "the jump control must go once realtime is reached")
+    }
+
+    /// The animation control starts playback in realtime and history and stops
+    /// it while it plays.
+    func testTheAnimationControlMatchesTheMode() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let slider = app.sliders["time.slider"]
+        XCTAssertTrue(slider.waitForExistence(timeout: 15))
+        let indicator = app.staticTexts["mode.indicator"]
+        let animation = app.buttons["animation.toggle"]
+        XCTAssertTrue(animation.waitForExistence(timeout: 10))
+
+        // Realtime offers starting the animation, and no jump back to itself.
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Realtime"))
+        XCTAssertEqual(animation.label, "Animate")
+        XCTAssertFalse(app.buttons["realtime.goto"].exists)
+
+        // History also offers starting it, beside the jump to realtime. Starting
+        // from history also makes what stopping holds deterministic: stopping
+        // before the first step would still be realtime.
+        slider.adjust(toNormalizedSliderPosition: 0.5)
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+        XCTAssertEqual(animation.label, "Animate")
+        XCTAssertTrue(app.buttons["realtime.goto"].waitForExistence(timeout: 5),
+                      "history must offer the jump to realtime")
+
+        // While it plays, the control stops it.
+        animation.tap()
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "Animation"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForLabel(animation, toEqual: "Stop"), "the control was '\(animation.label)'")
+
+        // Stopping holds history, which offers starting again and the jump back.
+        animation.tap()
+        XCTAssertTrue(waitForLabel(indicator, toEqual: "History"), "mode was '\(indicator.label)'")
+        XCTAssertTrue(waitForLabel(animation, toEqual: "Animate"), "the control was '\(animation.label)'")
+        XCTAssertTrue(app.buttons["realtime.goto"].waitForExistence(timeout: 5),
+                      "history must offer the jump to realtime")
     }
 
     // MARK: - Chrome
@@ -455,10 +575,12 @@ class monitorUITests: XCTestCase {
 
     /// LIVE CHECK: requires network access. Taps the histogram and confirms the
     /// map zooms out to the data area, which the overview's zoom level reflects.
+    /// The overview is a diagnostics aid, so it is switched on for the check.
     func testHistogramTapZoomsOutToTheDataArea() throws {
         try requireLiveBackend()
 
         let app = XCUIApplication()
+        app.launchArguments += ["-diagnosticsEnabled", "YES"]
         app.launch()
 
         openSettings(app)
@@ -664,16 +786,18 @@ class monitorUITests: XCTestCase {
     }
 
     /// LIVE CHECK: needs the backend for the data-area overview that reports the
-    /// zoom level. Zooms the map in, then taps the radar: the mapping either
-    /// keeps that zoom or zooms out to the radar's range, as the stored choice
-    /// says. The launch zoom is left alone because it is already about the
-    /// radar's range, which would make the two choices look the same.
+    /// zoom level, which is a diagnostics aid and so is switched on. Zooms the
+    /// map in, then taps the radar: the mapping either keeps that zoom or zooms
+    /// out to the radar's range, as the stored choice says. The launch zoom is
+    /// left alone because it is already about the radar's range, which would
+    /// make the two choices look the same.
     func testCentringFollowsTheKeepZoomChoice() throws {
         try requireLiveBackend()
 
         let afterTappingTheRadar = { (keepZoom: Bool) -> (before: Double, after: Double) in
             let app = XCUIApplication()
-            app.launchArguments += ["-keepZoomOnCenter", keepZoom ? "YES" : "NO"]
+            app.launchArguments += ["-keepZoomOnCenter", keepZoom ? "YES" : "NO",
+                                    "-diagnosticsEnabled", "YES"]
             app.launch()
 
             let map = app.descendants(matching: .any)["map.view"]
@@ -990,13 +1114,21 @@ class monitorUITests: XCTestCase {
     }
 
     private func openSettings(_ app: XCUIApplication) {
-        let open = app.buttons["settings.open"]
-        XCTAssertTrue(open.waitForExistence(timeout: 15))
-        open.tap()
+        openMenu(app)
+        app.buttons["menu.settings"].tap()
 
         let source = app.segmentedControls["settings.source"]
         scrollTo("settings.source", in: app)
         XCTAssertTrue(source.waitForExistence(timeout: 10))
+    }
+
+    /// Opens the application menu from the status row.
+    private func openMenu(_ app: XCUIApplication) {
+        let open = app.buttons["menu.open"]
+        XCTAssertTrue(open.waitForExistence(timeout: 15))
+        open.tap()
+        XCTAssertTrue(app.buttons["menu.settings"].waitForExistence(timeout: 10),
+                      "the menu did not open")
     }
 
     /// Scrolls the settings screen until the element can be used.

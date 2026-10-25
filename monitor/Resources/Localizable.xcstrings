@@ -47,6 +47,149 @@
         }
       }
     },
+    "appinfo.changelog.empty" : {
+      "comment" : "Change log shown when the file carries no entries",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No change log entries."
+          }
+        }
+      }
+    },
+    "appinfo.changelog.title" : {
+      "comment" : "Change log screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change log"
+          }
+        }
+      }
+    },
+    "appinfo.close" : {
+      "comment" : "Close an information screen",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "appinfo.copyright" : {
+      "comment" : "The copyright line on the information screen",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© 2015–2026 Andreas Würl"
+          }
+        }
+      }
+    },
+    "appinfo.log.empty" : {
+      "comment" : "Application log shown while nothing was recorded",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing has been recorded. Enable diagnostics in the settings to record log entries."
+          }
+        }
+      }
+    },
+    "appinfo.log.send" : {
+      "comment" : "Send the log for support",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send for support"
+          }
+        }
+      }
+    },
+    "appinfo.log.title" : {
+      "comment" : "Application log screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Application log"
+          }
+        }
+      }
+    },
+    "appinfo.name" : {
+      "comment" : "The app's name on the information screen",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blitzortung"
+          }
+        }
+      }
+    },
+    "appinfo.update.available" : {
+      "comment" : "Update available, e.g. Update available: 1.1",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update available: %@"
+          }
+        }
+      }
+    },
+    "appinfo.update.uptodate" : {
+      "comment" : "The installed version is the newest",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to date"
+          }
+        }
+      }
+    },
+    "background.disclosure.confirm" : {
+      "comment" : "Acknowledges the background-location explanation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "background.disclosure.message" : {
+      "comment" : "Explains why background location is used",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lets proximity alerts reach you while the app is in the background."
+          }
+        }
+      }
+    },
+    "background.disclosure.title" : {
+      "comment" : "Title of the background-location explanation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background location"
+          }
+        }
+      }
+    },
     "histogram.rate" : {
       "comment" : "Strike rate shown above the histogram, e.g. 3.0/min",
       "localizations" : {
@@ -120,6 +263,88 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Own location"
+          }
+        }
+      }
+    },
+    "menu.alarms" : {
+      "comment" : "Application menu entry",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alarms"
+          }
+        }
+      }
+    },
+    "menu.cancel" : {
+      "comment" : "Dismiss the application menu",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "menu.changelog" : {
+      "comment" : "Application menu entry",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change log"
+          }
+        }
+      }
+    },
+    "menu.information" : {
+      "comment" : "Application menu entry",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Information"
+          }
+        }
+      }
+    },
+    "menu.log" : {
+      "comment" : "Application menu entry",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Application log"
+          }
+        }
+      }
+    },
+    "menu.open" : {
+      "comment" : "Button opening the application menu",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        }
+      }
+    },
+    "menu.settings" : {
+      "comment" : "Application menu entry",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
@@ -402,6 +627,17 @@
         }
       }
     },
+    "realtime.goto" : {
+      "comment" : "Control returning from history to realtime",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Now"
+          }
+        }
+      }
+    },
     "region.africa" : {
       "comment" : "Region name",
       "localizations" : {
@@ -523,6 +759,138 @@
         }
       }
     },
+    "settings.backgroundPeriod.off" : {
+      "comment" : "Background query period: off",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "off"
+          }
+        }
+      }
+    },
+    "settings.backup.export" : {
+      "comment" : "Export settings action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export settings"
+          }
+        }
+      }
+    },
+    "settings.backup.import" : {
+      "comment" : "Import settings action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import settings"
+          }
+        }
+      }
+    },
+    "settings.backup.reset" : {
+      "comment" : "Reset settings action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset settings"
+          }
+        }
+      }
+    },
+    "settings.cancel" : {
+      "comment" : "Cancel button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "settings.category.alarm" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alarm"
+          }
+        }
+      }
+    },
+    "settings.category.animation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation"
+          }
+        }
+      }
+    },
+    "settings.category.backup" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup"
+          }
+        }
+      }
+    },
+    "settings.category.datasource" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
+          }
+        }
+      }
+    },
+    "settings.category.generic" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generic"
+          }
+        }
+      }
+    },
+    "settings.category.location" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
+          }
+        }
+      }
+    },
+    "settings.category.map" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map"
+          }
+        }
+      }
+    },
     "settings.close" : {
       "comment" : "Close settings button",
       "localizations" : {
@@ -536,6 +904,7 @@
     },
     "settings.colorscheme" : {
       "comment" : "Label for the colour scheme selector",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -545,8 +914,31 @@
         }
       }
     },
+    "settings.distance.km" : {
+      "comment" : "Distance limit in kilometres, e.g. 50 km",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d km"
+          }
+        }
+      }
+    },
+    "settings.distance.off" : {
+      "comment" : "Distance limit: off",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "off"
+          }
+        }
+      }
+    },
     "settings.endpoint" : {
       "comment" : "Label for the service endpoint field",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -558,6 +950,7 @@
     },
     "settings.endpoint.placeholder" : {
       "comment" : "Placeholder for the service endpoint field",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -569,6 +962,7 @@
     },
     "settings.endpoint.resolved" : {
       "comment" : "Shows the endpoint that will be used",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -578,8 +972,460 @@
         }
       }
     },
+    "settings.export.failed" : {
+      "comment" : "Export failed message",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The settings could not be exported."
+          }
+        }
+      }
+    },
+    "settings.export.message" : {
+      "comment" : "Explains what an export contains",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose whether the export carries the credentials the app has stored. They are left behind by default."
+          }
+        }
+      }
+    },
+    "settings.export.title" : {
+      "comment" : "Export settings dialog title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export settings"
+          }
+        }
+      }
+    },
+    "settings.export.withCredentials" : {
+      "comment" : "Export settings including credentials",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export including credentials"
+          }
+        }
+      }
+    },
+    "settings.export.withoutCredentials" : {
+      "comment" : "Export settings without credentials",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export without credentials"
+          }
+        }
+      }
+    },
+    "settings.import.done" : {
+      "comment" : "Import applied message",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The settings were imported."
+          }
+        }
+      }
+    },
+    "settings.import.error.unknown" : {
+      "comment" : "Import error: the file names an unknown setting",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file names a setting this app does not have."
+          }
+        }
+      }
+    },
+    "settings.import.error.unreadable" : {
+      "comment" : "Import error: the file cannot be read",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file could not be read."
+          }
+        }
+      }
+    },
+    "settings.import.error.value" : {
+      "comment" : "Import error: the file carries a value the app does not accept",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file carries a value the app does not accept."
+          }
+        }
+      }
+    },
+    "settings.import.error.version" : {
+      "comment" : "Import error: the file was written by another version",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file was written by a different version of the app."
+          }
+        }
+      }
+    },
+    "settings.import.failed" : {
+      "comment" : "Import failed message",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The settings could not be imported."
+          }
+        }
+      }
+    },
+    "settings.item.alertEnabled" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proximity alerts"
+          }
+        }
+      }
+    },
+    "settings.item.alertSoundSignal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound"
+          }
+        }
+      }
+    },
+    "settings.item.alertVibrationSignal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibration strength"
+          }
+        }
+      }
+    },
+    "settings.item.animationCyclePause" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation cycle pause"
+          }
+        }
+      }
+    },
+    "settings.item.animationStepDuration" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation step duration"
+          }
+        }
+      }
+    },
+    "settings.item.backgroundQueryPeriod" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background query period"
+          }
+        }
+      }
+    },
+    "settings.item.colorScheme" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colour scheme"
+          }
+        }
+      }
+    },
+    "settings.item.dataSource" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data source"
+          }
+        }
+      }
+    },
+    "settings.item.diagnosticsEnabled" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagnostics"
+          }
+        }
+      }
+    },
+    "settings.item.historicTimestep" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historic timestep"
+          }
+        }
+      }
+    },
+    "settings.item.intervalDuration" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interval duration"
+          }
+        }
+      }
+    },
+    "settings.item.keepScreenAwake" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the screen awake"
+          }
+        }
+      }
+    },
+    "settings.item.keepZoomOnCenter" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep zoom on centring"
+          }
+        }
+      }
+    },
+    "settings.item.locationMode" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location mode"
+          }
+        }
+      }
+    },
+    "settings.item.manualLatitude" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latitude"
+          }
+        }
+      }
+    },
+    "settings.item.manualLongitude" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Longitude"
+          }
+        }
+      }
+    },
+    "settings.item.mapFade" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Base map fade"
+          }
+        }
+      }
+    },
+    "settings.item.mapMode" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map type"
+          }
+        }
+      }
+    },
+    "settings.item.measurementUnit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Measurement units"
+          }
+        }
+      }
+    },
+    "settings.item.notificationDistanceLimit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification distance limit"
+          }
+        }
+      }
+    },
+    "settings.item.ownLocationSize" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Own location size"
+          }
+        }
+      }
+    },
+    "settings.item.region" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region"
+          }
+        }
+      }
+    },
+    "settings.item.serviceEndpoint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service URL"
+          }
+        }
+      }
+    },
+    "settings.item.showOwnLocation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show own location"
+          }
+        }
+      }
+    },
+    "settings.item.signalingDistanceLimit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signalling distance limit"
+          }
+        }
+      }
+    },
+    "settings.item.signalingSuppressionTime" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signal suppression time"
+          }
+        }
+      }
+    },
+    "settings.locationmode.gps" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS"
+          }
+        }
+      }
+    },
+    "settings.locationmode.manual" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manual"
+          }
+        }
+      }
+    },
+    "settings.locationmode.network" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network"
+          }
+        }
+      }
+    },
+    "settings.locationmode.passive" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passive"
+          }
+        }
+      }
+    },
     "settings.mapmode" : {
       "comment" : "Label for the map type selector",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -625,50 +1471,6 @@
         }
       }
     },
-    "background.disclosure.confirm" : {
-      "comment" : "Acknowledges the background-location explanation",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue"
-          }
-        }
-      }
-    },
-    "background.disclosure.message" : {
-      "comment" : "Explains why background location is used",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lets proximity alerts reach you while the app is in the background."
-          }
-        }
-      }
-    },
-    "background.disclosure.title" : {
-      "comment" : "Title of the background-location explanation",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Background location"
-          }
-        }
-      }
-    },
-    "settings.backgroundPeriod.off" : {
-      "comment" : "Background query period: off",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "off"
-          }
-        }
-      }
-    },
     "settings.minutes" : {
       "comment" : "Duration in minutes, e.g. 60 min",
       "localizations" : {
@@ -680,13 +1482,13 @@
         }
       }
     },
-    "settings.open" : {
-      "comment" : "Button opening the data source settings",
+    "settings.ok" : {
+      "comment" : "OK button",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data source"
+            "value" : "OK"
           }
         }
       }
@@ -698,6 +1500,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password"
+          }
+        }
+      }
+    },
+    "settings.reset.confirm" : {
+      "comment" : "Confirms resetting settings",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "settings.reset.message" : {
+      "comment" : "Explains what a reset does",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every setting returns to its default. Stored credentials are kept."
+          }
+        }
+      }
+    },
+    "settings.reset.title" : {
+      "comment" : "Reset settings dialog title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset settings"
           }
         }
       }
@@ -749,8 +1584,20 @@
         }
       }
     },
+    "settings.seconds" : {
+      "comment" : "Duration in seconds, e.g. 2 s",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d s"
+          }
+        }
+      }
+    },
     "settings.source" : {
       "comment" : "Label for the data source selector",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -788,7 +1635,29 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data source"
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "settings.unit.imperial" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial"
+          }
+        }
+      }
+    },
+    "settings.unit.metric" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metric"
           }
         }
       }
@@ -899,616 +1768,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "mi"
-          }
-        }
-      }
-    },
-    "settings.category.map" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map"
-          }
-        }
-      }
-    },
-    "settings.category.animation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animation"
-          }
-        }
-      }
-    },
-    "settings.category.datasource" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
-          }
-        }
-      }
-    },
-    "settings.category.location" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Location"
-          }
-        }
-      }
-    },
-    "settings.category.alarm" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alarm"
-          }
-        }
-      }
-    },
-    "settings.category.generic" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Generic"
-          }
-        }
-      }
-    },
-    "settings.category.backup" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Backup"
-          }
-        }
-      }
-    },
-    "settings.item.mapMode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map type"
-          }
-        }
-      }
-    },
-    "settings.item.mapFade" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Base map fade"
-          }
-        }
-      }
-    },
-    "settings.item.colorScheme" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Colour scheme"
-          }
-        }
-      }
-    },
-    "settings.item.showOwnLocation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show own location"
-          }
-        }
-      }
-    },
-    "settings.item.ownLocationSize" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Own location size"
-          }
-        }
-      }
-    },
-    "settings.item.keepZoomOnCenter" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep zoom on centring"
-          }
-        }
-      }
-    },
-    "settings.item.animationStepDuration" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animation step duration"
-          }
-        }
-      }
-    },
-    "settings.item.animationCyclePause" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animation cycle pause"
-          }
-        }
-      }
-    },
-    "settings.item.dataSource" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data source"
-          }
-        }
-      }
-    },
-    "settings.item.serviceEndpoint" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Service URL"
-          }
-        }
-      }
-    },
-    "settings.item.region" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Region"
-          }
-        }
-      }
-    },
-    "settings.item.intervalDuration" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interval duration"
-          }
-        }
-      }
-    },
-    "settings.item.historicTimestep" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Historic timestep"
-          }
-        }
-      }
-    },
-    "settings.item.locationMode" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Location mode"
-          }
-        }
-      }
-    },
-    "settings.item.manualLatitude" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latitude"
-          }
-        }
-      }
-    },
-    "settings.item.manualLongitude" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Longitude"
-          }
-        }
-      }
-    },
-    "settings.item.alertEnabled" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proximity alerts"
-          }
-        }
-      }
-    },
-    "settings.item.backgroundQueryPeriod" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Background query period"
-          }
-        }
-      }
-    },
-    "settings.item.notificationDistanceLimit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notification distance limit"
-          }
-        }
-      }
-    },
-    "settings.item.signalingDistanceLimit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Signalling distance limit"
-          }
-        }
-      }
-    },
-    "settings.item.alertSoundSignal" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sound"
-          }
-        }
-      }
-    },
-    "settings.item.alertVibrationSignal" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vibration strength"
-          }
-        }
-      }
-    },
-    "settings.item.signalingSuppressionTime" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Signal suppression time"
-          }
-        }
-      }
-    },
-    "settings.item.measurementUnit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Measurement units"
-          }
-        }
-      }
-    },
-    "settings.item.keepScreenAwake" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep the screen awake"
-          }
-        }
-      }
-    },
-    "settings.item.diagnosticsEnabled" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diagnostics"
-          }
-        }
-      }
-    },
-    "settings.locationmode.manual" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manual"
-          }
-        }
-      }
-    },
-    "settings.locationmode.network" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network"
-          }
-        }
-      }
-    },
-    "settings.locationmode.gps" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "GPS"
-          }
-        }
-      }
-    },
-    "settings.locationmode.passive" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passive"
-          }
-        }
-      }
-    },
-    "settings.unit.metric" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Metric"
-          }
-        }
-      }
-    },
-    "settings.unit.imperial" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imperial"
-          }
-        }
-      }
-    },
-    "settings.distance.off" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "off"
-          }
-        }
-      }
-    },
-    "settings.distance.km" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d km"
-          }
-        }
-      }
-    },
-    "settings.seconds" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d s"
-          }
-        }
-      }
-    },
-    "settings.backup.export" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export settings"
-          }
-        }
-      }
-    },
-    "settings.backup.import" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import settings"
-          }
-        }
-      }
-    },
-    "settings.backup.reset" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset settings"
-          }
-        }
-      }
-    },
-    "settings.cancel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        }
-      }
-    },
-    "settings.ok" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        }
-      }
-    },
-    "settings.export.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export settings"
-          }
-        }
-      }
-    },
-    "settings.export.message" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose whether the export carries the credentials the app has stored. They are left behind by default."
-          }
-        }
-      }
-    },
-    "settings.export.withoutCredentials" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export without credentials"
-          }
-        }
-      }
-    },
-    "settings.export.withCredentials" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export including credentials"
-          }
-        }
-      }
-    },
-    "settings.export.failed" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The settings could not be exported."
-          }
-        }
-      }
-    },
-    "settings.import.done" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The settings were imported."
-          }
-        }
-      }
-    },
-    "settings.import.failed" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The settings could not be imported."
-          }
-        }
-      }
-    },
-    "settings.import.error.unreadable" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The file could not be read."
-          }
-        }
-      }
-    },
-    "settings.import.error.version" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The file was written by a different version of the app."
-          }
-        }
-      }
-    },
-    "settings.import.error.unknown" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The file names a setting this app does not have."
-          }
-        }
-      }
-    },
-    "settings.import.error.value" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The file carries a value the app does not accept."
-          }
-        }
-      }
-    },
-    "settings.reset.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset settings"
-          }
-        }
-      }
-    },
-    "settings.reset.message" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Every setting returns to its default. Stored credentials are kept."
-          }
-        }
-      }
-    },
-    "settings.reset.confirm" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset"
           }
         }
       }
