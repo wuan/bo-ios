@@ -181,6 +181,58 @@ final class SettingsViewControllerTests: XCTestCase {
         XCTAssertEqual(settings.int(for: .mapFade), 80)
     }
 
+    /// A slider spans its row under the title rather than sitting in the cell's
+    /// trailing accessory slot, where it would be a fraction of the width.
+    func testASliderSpansTheRow() {
+        let controller = makeController()
+        controller.view.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+        controller.view.layoutIfNeeded()
+
+        guard let slider = find("settings.mapFade", in: controller.view) as? UISlider else {
+            return XCTFail("the fade slider is missing")
+        }
+        let frame = slider.convert(slider.bounds, to: controller.view)
+
+        XCTAssertGreaterThan(frame.width, 250,
+                             "the slider must span the row, not the trailing slot (was \(frame.width))")
+        XCTAssertLessThan(frame.minX, 80,
+                          "the slider must start near the row's leading edge (was \(frame.minX))")
+    }
+
+    /// An entry field sits beside its title on the trailing side, never over it,
+    /// which is what the cell's accessory slot got wrong.
+    func testAnEntryFieldSitsBesideItsTitleRatherThanOverIt() {
+        let controller = makeController()
+
+        guard let field = find("settings.manualLatitude", in: controller.view) as? UITextField else {
+            return XCTFail("the latitude field is missing")
+        }
+        let frame = field.convert(field.bounds, to: controller.view)
+
+        XCTAssertGreaterThan(frame.minX, 150,
+                             "the field must sit on the trailing side, not at the leading edge (was \(frame.minX))")
+
+        guard let title = findLabel(text: PreferencesModel.item(.manualLatitude).title,
+                                    in: controller.view) else {
+            return XCTFail("the latitude title is missing")
+        }
+        let titleFrame = title.convert(title.bounds, to: controller.view)
+        XCTAssertLessThanOrEqual(titleFrame.maxX, frame.minX,
+                                 "the title must not run under the field")
+    }
+
+    private func findLabel(text: String, in view: UIView) -> UILabel? {
+        if let label = view as? UILabel, label.text == text {
+            return label
+        }
+        for subview in view.subviews {
+            if let found = findLabel(text: text, in: subview) {
+                return found
+            }
+        }
+        return nil
+    }
+
     func testManualCoordinatesBecomeTheCurrentLocation() {
         let controller = makeController()
         XCTAssertFalse(settings.bool(for: .manualLocationSet))

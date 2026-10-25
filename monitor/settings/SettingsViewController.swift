@@ -245,16 +245,27 @@ public final class SettingsViewController: UIViewController,
     }
 
     private func sliderCell(_ item: PreferenceItem, minimum: Int, maximum: Int) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.selectionStyle = .none
+
+        let titleLabel = UILabel()
+        titleLabel.text = item.title
+        titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.7
+
+        let valueLabel = UILabel()
+        valueLabel.font = .preferredFont(forTextStyle: .footnote)
+        valueLabel.textColor = .secondaryLabel
+        valueLabel.textAlignment = .right
+        valueLabel.accessibilityIdentifier = "\(identifier(for: item)).value"
+        valueLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         let slider = UISlider()
         slider.accessibilityIdentifier = identifier(for: item)
         slider.minimumValue = Float(minimum)
         slider.maximumValue = Float(maximum)
         slider.value = Float(min(max(settings.int(for: item.key!), minimum), maximum))
-
-        let valueLabel = UILabel()
-        valueLabel.font = .preferredFont(forTextStyle: .footnote)
-        valueLabel.textColor = .secondaryLabel
-        valueLabel.accessibilityIdentifier = "\(identifier(for: item)).value"
         valueLabel.text = String(Int(slider.value))
 
         slider.addAction(UIAction { [weak self, weak valueLabel] action in
@@ -265,12 +276,28 @@ public final class SettingsViewController: UIViewController,
             valueLabel?.text = String(value)
         }, for: .valueChanged)
 
-        let group = UIStackView(arrangedSubviews: [slider, valueLabel])
-        group.axis = .horizontal
-        group.spacing = 8
-        group.translatesAutoresizingMaskIntoConstraints = false
-        group.widthAnchor.constraint(equalToConstant: SettingsViewController.inlineControlWidth).isActive = true
-        return inlineCell(item, control: group)
+        // The title and its value share the first line and the slider spans the
+        // row beneath it, so its track is wide enough to aim at; a slider in the
+        // cell's accessory slot would be squeezed to a fraction of the width.
+        let titleRow = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+        titleRow.axis = .horizontal
+        titleRow.spacing = 8
+        titleRow.alignment = .firstBaseline
+
+        let stack = UIStackView(arrangedSubviews: [titleRow, slider])
+        stack.axis = .vertical
+        stack.spacing = 6
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor, constant: 8),
+            stack.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor, constant: -8),
+        ])
+
+        return cell
     }
 
     /// A choice is offered as a segmented control when it fits; a longer one
@@ -343,14 +370,43 @@ public final class SettingsViewController: UIViewController,
     }
 
     /// A cell with the row's title beside its control.
+    ///
+    /// The title and the control are laid out inside the content view rather
+    /// than as the cell's `accessoryView`: an accessory whose
+    /// `translatesAutoresizingMaskIntoConstraints` is off has no constraints
+    /// placing it, so UIKit and Auto Layout disagree and the control lands at
+    /// the leading edge - over the title - on some layout passes.
     private func inlineCell(_ item: PreferenceItem, control: UIView) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.selectionStyle = .none
-        cell.textLabel?.text = item.title
-        cell.textLabel?.font = .preferredFont(forTextStyle: .subheadline)
-        cell.textLabel?.adjustsFontSizeToFitWidth = true
-        cell.textLabel?.minimumScaleFactor = 0.7
-        cell.accessoryView = control
+
+        let titleLabel = UILabel()
+        titleLabel.text = item.title
+        titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.7
+        titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        // The control keeps its own size and the title takes the space that is
+        // left, so a long title shrinks instead of pushing the control off.
+        control.setContentHuggingPriority(.required, for: .horizontal)
+        control.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let stack = UIStackView(arrangedSubviews: [titleLabel, control])
+        stack.axis = .horizontal
+        stack.spacing = 8
+        stack.alignment = .center
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor, constant: 8),
+            stack.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor, constant: -8),
+        ])
+
         return cell
     }
 
