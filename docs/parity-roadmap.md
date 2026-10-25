@@ -43,6 +43,7 @@ implementation, are the contract.
 | 5 - Proximity alerts | [`ios-proximity-alerts`](../openspec/changes/archive/2026-10-23-ios-proximity-alerts/proposal.md) | `proximity-alerts` (modified: gating, limits, signals, suppression, state) and `map-ui-overlays` (modified: the radar's alert mark) |
 | 6 - Background monitoring | [`ios-background-monitoring`](../openspec/changes/archive/2026-10-23-ios-background-monitoring/proposal.md) | `background-monitoring` |
 | 7 - Preferences | [`ios-preferences`](../openspec/changes/archive/2026-10-24-ios-preferences/proposal.md) | `preferences`, and `data-modes` (modified: animation step duration and cycle pause) |
+| 8 - App information | [`ios-app-information`](../openspec/changes/archive/2026-10-25-ios-app-information/proposal.md) | `app-information` |
 
 Delivered foundations that later phases build on:
 
@@ -62,14 +63,18 @@ Delivered foundations that later phases build on:
   `BGTaskScheduler` fetch that reuses the alert decision, a persisted dedup so one
   strike warns once, and the background-location request behind the disclosure.
 - Age-coloured grid tiles with per-tile counts, translucency, base-map fade,
-  three colour schemes with base-map variants, zoom-aware culling, and tap
-  selection with a details popup.
+  three colour schemes with base-map variants, zoom-aware culling, tap
+  selection with a details popup, and a data-area overview behind the
+  diagnostics setting.
 - Localization scaffolding and the documentation pattern under `docs/`.
 - A categorised settings screen whose contents come from one declarative model, with
   every user-facing setting reachable, the settings reference checked against the code,
   and export (credentials opt-in only), validated import, and reset.
 - Animation step duration and cycle pause pacing playback, a keep-awake switch, and a
   bounded diagnostics log behind the diagnostics setting.
+- An application menu reaching settings, alarms, the application log, the change log,
+  and information, with the log shared for support, the change log parsed from a bundled
+  `CHANGELOG.md`, and the installed version checked against the App Store.
 
 Open residual from Phase 2 (still open): the point-strike marker check against the
 HTTP source and the live sweep across history/animation and both grid extremes were
@@ -105,19 +110,18 @@ to choose a destination or a file; and the Phase 2 point-strike marker check, wh
 live HTTP source left unobserved again (it reported no strikes). The Phase 5 and Phase 6
 device-only residuals stand.
 
+Open residual from Phase 8: the menu and each of its surfaces (settings, alarms, the
+application log with its send action, the change log, and information with the version)
+were exercised in the simulator by a UI test, and the version comparison, the change-log
+parser, the log rendering, and the update check are covered by unit tests with stubbed
+version data. Unobserved: the share sheet's destination, which needs a person to choose
+one, and the live App Store lookup, which the app's listing has not been published for, so
+the update line stays unknown. The Phase 2 point-strike marker check over the live HTTP
+source is still unobserved (it reported no strikes again).
+
 ## Remaining phases
 
 Each phase below becomes its own change when it starts.
-
-### Phase 8 - App information
-
-Sketch: [`app-information.md`](parity-capabilities/app-information.md)
-
-- Implement the application menu with settings, alarms, application log, change log, and information entries; verified by a UI test opening each entry.
-- Implement mode-appropriate control states (start animation; start animation + jump to realtime; stop animation); verified by UI tests per mode.
-- Implement the application log view and send-for-support action; verified by manual checks that log content appears and a message is created.
-- Implement the change log view parsed from the change log file; verified by a parser test and a visual check.
-- Implement the information/version display and the update check with available/up-to-date outcomes; verified by unit tests with stubbed version data.
 
 ### Phase 9 - Home-screen widget
 
