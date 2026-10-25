@@ -155,16 +155,20 @@ limits, and its suppression are documented in
 
 ## Data-area overview
 
-`DataAreaOverviewContentBuilder.make(grid:viewport:zoomLevel:)` returns `nil`
-when the displayed result carries no data area, so the view disappears with no
-further logic.
+The overview is a **diagnostics aid**: `DataAreaOverviewContentBuilder.make(...)` returns
+`nil` while the diagnostics setting is off, and the view disappears with no further logic.
+It also returns `nil` when the displayed result carries no data area. Passing the setting
+in keeps the gate in one place; the controller observes it, so toggling Diagnostics shows
+or hides the overview without a relaunch.
 
 | Rule | Value |
 | --- | --- |
+| Gate | Shown only while the diagnostics setting is on |
 | Extent | The area's longitude and latitude ranges, e.g. `-25.0..56.9` and `27.1..72.0` |
 | Cell size | The grid's `longitudeDelta` and `latitudeDelta`, e.g. `0.1 0.1` |
 | Viewport | The visible extent as fractions of the area (`x`, `y`, `width`, `height`), so `0...1` is the whole area; anything outside is clipped |
 | Zoom level | `log2(360 / visible longitude span)` |
+| Box size | Width fixed at 130 pt; height = width × (visible latitude span ÷ longitude span), clamped to 72...240 pt |
 
 ## Manual location
 
@@ -215,7 +219,7 @@ location source, so the marker is the same in every mode.
 | Long press, marker, centring | `ViewControllerLocationTests`, `monitorUITests.testLongPressSetsAndMovesTheOwnLocationMarker` |
 | Ring and sector geometry | `AlertGeometryTests` |
 | Aggregation, window, states, summary | `AlertAggregationTests` |
-| Legend, histogram, radar, overview content | `LegendContentTests`, `HistogramContentTests`, `RadarContentTests`, `DataAreaOverviewContentTests` |
+| Legend, histogram, radar, overview content | `LegendContentTests`, `HistogramContentTests`, `RadarContentTests`, `DataAreaOverviewContentTests`, `DataAreaOverviewViewTests` |
 | Chrome presentation and interaction | `ViewControllerChromeTests` |
 | Histogram parsing | `HistogramParsingTests` |
 | Legend, quick settings, radar interactions | `monitorUITests` (chrome tests) |
@@ -223,5 +227,5 @@ location source, so the marker is the same in every mode.
 ```bash
 xcodebuild test -project monitor.xcodeproj -scheme monitor \
   -destination 'platform=iOS Simulator,name=iPhone 17'
-openspec validate ios-map-ui-overlays --strict
+openspec validate map-ui-overlays --type spec --strict
 ```

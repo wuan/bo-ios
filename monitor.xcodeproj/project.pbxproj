@@ -171,6 +171,7 @@
 		AF0000000000000000000404 /* AvailableVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000504 /* AvailableVersionTests.swift */; };
 		AF0000000000000000000405 /* InformationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000505 /* InformationContentTests.swift */; };
 		AF0000000000000000000406 /* AppInformationScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000506 /* AppInformationScreenTests.swift */; };
+		AF0000000000000000000407 /* DataAreaOverviewViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000507 /* DataAreaOverviewViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -361,6 +362,7 @@
 		AF0000000000000000000504 /* AvailableVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvailableVersionTests.swift; path = AvailableVersionTests.swift; sourceTree = "<group>"; };
 		AF0000000000000000000505 /* InformationContentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InformationContentTests.swift; path = InformationContentTests.swift; sourceTree = "<group>"; };
 		AF0000000000000000000506 /* AppInformationScreenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppInformationScreenTests.swift; path = AppInformationScreenTests.swift; sourceTree = "<group>"; };
+		AF0000000000000000000507 /* DataAreaOverviewViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataAreaOverviewViewTests.swift; path = DataAreaOverviewViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -535,6 +537,7 @@
 				AF0000000000000000000504 /* AvailableVersionTests.swift */,
 				AF0000000000000000000505 /* InformationContentTests.swift */,
 				AF0000000000000000000506 /* AppInformationScreenTests.swift */,
+				AF0000000000000000000507 /* DataAreaOverviewViewTests.swift */,
 				7E7EDA38A3CCFA0C55B79C48 /* ViewControllerChromeTests.swift */,
 				98F414F6E17CFFA774B540E7 /* HistogramParsingTests.swift */,
 				B5AB98F26FEE4BD6C2B25775 /* DataAreaOverviewContentTests.swift */,
@@ -909,6 +912,7 @@
 				AF0000000000000000000404 /* AvailableVersionTests.swift in Sources */,
 				AF0000000000000000000405 /* InformationContentTests.swift in Sources */,
 				AF0000000000000000000406 /* AppInformationScreenTests.swift in Sources */,
+				AF0000000000000000000407 /* DataAreaOverviewViewTests.swift in Sources */,
 				362E500C4D3D16F6F6698502 /* ViewControllerChromeTests.swift in Sources */,
 				38352A9A917FD7867002CD03 /* HistogramParsingTests.swift in Sources */,
 				6CF4EB6C5D388B2F222D358F /* DataAreaOverviewContentTests.swift in Sources */,

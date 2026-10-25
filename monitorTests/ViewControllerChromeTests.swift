@@ -46,6 +46,8 @@ final class ViewControllerChromeTests: XCTestCase {
         suiteName = "ViewControllerChromeTests.\(UUID().uuidString)"
         defaults = UserDefaults(suiteName: suiteName)
         settings = SettingsStore(defaults: defaults)
+        // The overview is a diagnostics aid; this suite exercises it visible.
+        settings.set(true, for: .diagnosticsEnabled)
         source = ManualLocationSource(settings: settings)
         manager = StubLocationManager()
         provider = ChromeRecordingProvider()
@@ -165,6 +167,24 @@ final class ViewControllerChromeTests: XCTestCase {
 
         XCTAssertNotEqual(controller.overviewContent?.viewport, overviewBefore?.viewport)
         XCTAssertEqual(controller.legendContent, legendBefore)
+    }
+
+    // MARK: - Overview (diagnostics gate)
+
+    /// The overview is a diagnostics aid: it appears with the setting and goes
+    /// with it, without a relaunch.
+    func testTheOverviewFollowsTheDiagnosticsSetting() {
+        controller.render(result: result())
+        XCTAssertNotNil(controller.overviewContent, "diagnostics is on in this suite")
+        XCTAssertFalse(controller.overviewView.isHidden)
+
+        settings.set(false, for: .diagnosticsEnabled)
+        XCTAssertNil(controller.overviewContent)
+        XCTAssertTrue(controller.overviewView.isHidden)
+
+        settings.set(true, for: .diagnosticsEnabled)
+        XCTAssertNotNil(controller.overviewContent)
+        XCTAssertFalse(controller.overviewView.isHidden)
     }
 
     // MARK: - Interaction (8.2)

@@ -246,6 +246,7 @@ public class ViewController: UIViewController, MKMapViewDelegate {
         observeRenderingSettings()
         observeSelectableSettings()
         observeAnimationSettings()
+        observeOverviewSettings()
         observeLocation()
         observeLocationDisplay()
         observeAlertSettings()
@@ -973,9 +974,18 @@ public class ViewController: UIViewController, MKMapViewDelegate {
     func refreshOverview() {
         let content = DataAreaOverviewContentBuilder.make(grid: lastResult?.rasterParameters,
                                                           viewport: viewExtent,
-                                                          zoomLevel: currentZoomLevel)
+                                                          zoomLevel: currentZoomLevel,
+                                                          diagnosticsEnabled: settings.bool(for: .diagnosticsEnabled))
         overviewContent = content
         overviewView.configure(content: content)
+    }
+
+    /// Shows or hides the data-area overview when the diagnostics setting, which
+    /// gates it, changes.
+    private func observeOverviewSettings() {
+        settingsObservers.append(settings.observe(.diagnosticsEnabled) { [weak self] in
+            self?.refreshOverview()
+        })
     }
 
     /// The aggregation of the displayed activity around the current location.

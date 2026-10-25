@@ -24,8 +24,15 @@ final class DataAreaOverviewView: UIView {
 
     static let accessibilityIdentifier = "overview.view"
 
-    /// The drawn size, in points.
-    static let size = CGSize(width: 130, height: 90)
+    /// The drawn width, in points, and the fallback size used before content
+    /// arrives.
+    static let width: CGFloat = 130
+    static let size = CGSize(width: width, height: 90)
+
+    /// The usable height range: the text needs room to be read, and an extreme
+    /// extent must not balloon the panel.
+    static let minimumHeight: CGFloat = 72
+    static let maximumHeight: CGFloat = 240
 
     private let padding: CGFloat = 6
     private(set) var content: DataAreaOverviewContent?
@@ -48,16 +55,25 @@ final class DataAreaOverviewView: UIView {
         accessibilityLabel = NSLocalizedString("overview.title", comment: "Data area overview accessibility label")
     }
 
-    /// Draws the given content; a result without a data area hides the view.
+    /// Draws the given content; no content hides the view.
     func configure(content: DataAreaOverviewContent?) {
         self.content = content
         isHidden = content == nil
         accessibilityValue = content.map { "\($0.longitudeText) \($0.latitudeText) \($0.zoomText)" }
+        // The box's height follows the extent's proportions, so the size is
+        // resolved again whenever the content changes.
+        invalidateIntrinsicContentSize()
         setNeedsDisplay()
     }
 
+    /// The fixed width with the height the visible extent's ratio asks for,
+    /// clamped so the panel stays readable.
     override var intrinsicContentSize: CGSize {
-        return DataAreaOverviewView.size
+        guard let content = content else { return DataAreaOverviewView.size }
+        let requested = DataAreaOverviewView.width * CGFloat(content.aspectRatio)
+        let height = min(max(requested, DataAreaOverviewView.minimumHeight),
+                         DataAreaOverviewView.maximumHeight)
+        return CGSize(width: DataAreaOverviewView.width, height: height)
     }
 
     override func draw(_ rect: CGRect) {

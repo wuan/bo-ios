@@ -29,24 +29,49 @@ final class DataAreaOverviewContentTests: XCTestCase {
                                       latitudeDelta: 1,
                                       latitudeCount: 20)
 
-    private func extent(center: Location,
+    private func extent(center: Location = Location(latitude: 50, longitude: 0),
                         latitudeSpan: Double,
                         longitudeSpan: Double) -> ViewExtent {
         return ViewExtent(center: center, latitudeSpan: latitudeSpan, longitudeSpan: longitudeSpan)
     }
 
+    /// Builds content with diagnostics on, which is what the overview needs.
+    private func make(viewport: ViewExtent?,
+                      zoomLevel: Double = 7,
+                      diagnosticsEnabled: Bool = true) -> DataAreaOverviewContent? {
+        return DataAreaOverviewContentBuilder.make(grid: grid,
+                                                   viewport: viewport,
+                                                   zoomLevel: zoomLevel,
+                                                   diagnosticsEnabled: diagnosticsEnabled)
+    }
+
+    // MARK: - The diagnostics gate
+
     func testNoOverviewWithoutADataArea() {
         let content = DataAreaOverviewContentBuilder.make(grid: nil,
                                                           viewport: nil,
-                                                          zoomLevel: 7)
+                                                          zoomLevel: 7,
+                                                          diagnosticsEnabled: true)
 
         XCTAssertNil(content)
     }
 
+    /// The overview is a diagnostics aid, so it produces nothing while the
+    /// setting is off, data area or not.
+    func testNoOverviewWhileDiagnosticsIsOff() {
+        XCTAssertNil(make(viewport: nil, diagnosticsEnabled: false))
+        XCTAssertNil(make(viewport: extent(latitudeSpan: 5, longitudeSpan: 5),
+                          diagnosticsEnabled: false))
+    }
+
+    func testOverviewAppearsWhileDiagnosticsIsOn() {
+        XCTAssertNotNil(make(viewport: nil, diagnosticsEnabled: true))
+    }
+
+    // MARK: - The shown values
+
     func testAreaExtentAndCellSizeAreShown() throws {
-        let content = try XCTUnwrap(DataAreaOverviewContentBuilder.make(grid: grid,
-                                                                       viewport: nil,
-                                                                       zoomLevel: 7))
+        let content = try XCTUnwrap(make(viewport: nil))
 
         XCTAssertEqual(content.longitudeText, "-10.0..10.0")
         XCTAssertEqual(content.latitudeText, "40.0..60.0")
@@ -55,12 +80,7 @@ final class DataAreaOverviewContentTests: XCTestCase {
     }
 
     func testViewportFullyInsideTheDataArea() throws {
-        let content = try XCTUnwrap(DataAreaOverviewContentBuilder.make(
-            grid: grid,
-            viewport: extent(center: Location(latitude: 50, longitude: 0),
-                             latitudeSpan: 5,
-                             longitudeSpan: 5),
-            zoomLevel: 7))
+        let content = try XCTUnwrap(make(viewport: extent(latitudeSpan: 5, longitudeSpan: 5)))
 
         XCTAssertEqual(content.viewport.x, 0.375, accuracy: 1e-9)
         XCTAssertEqual(content.viewport.y, 0.375, accuracy: 1e-9)
@@ -70,12 +90,7 @@ final class DataAreaOverviewContentTests: XCTestCase {
     }
 
     func testViewportPartlyOutsideTheDataArea() throws {
-        let content = try XCTUnwrap(DataAreaOverviewContentBuilder.make(
-            grid: grid,
-            viewport: extent(center: Location(latitude: 50, longitude: 0),
-                             latitudeSpan: 30,
-                             longitudeSpan: 30),
-            zoomLevel: 7))
+        let content = try XCTUnwrap(make(viewport: extent(latitudeSpan: 30, longitudeSpan: 30)))
 
         XCTAssertEqual(content.viewport.x, -0.25, accuracy: 1e-9)
         XCTAssertEqual(content.viewport.width, 1.5, accuracy: 1e-9)
@@ -83,21 +98,34 @@ final class DataAreaOverviewContentTests: XCTestCase {
     }
 
     func testViewportFallsBackToTheWholeAreaBeforeTheMapReportsOne() throws {
-        let content = try XCTUnwrap(DataAreaOverviewContentBuilder.make(grid: grid,
-                                                                       viewport: nil,
-                                                                       zoomLevel: 7))
+        let content = try XCTUnwrap(make(viewport: nil))
 
         XCTAssertEqual(content.viewport, OverviewViewport(x: 0, y: 0, width: 1, height: 1))
     }
 
     func testAZoomLevelIsAlwaysShown() throws {
-        let content = try XCTUnwrap(DataAreaOverviewContentBuilder.make(
-            grid: grid,
-            viewport: extent(center: Location(latitude: 50, longitude: 0),
-                             latitudeSpan: 5,
-                             longitudeSpan: 5),
-            zoomLevel: 12.5))
+        let content = try XCTUnwrap(make(viewport: extent(latitudeSpan: 5, longitudeSpan: 5),
+                                         zoomLevel: 12.5))
 
         XCTAssertEqual(content.zoomText, "Zoom 12.5")
+    }
+
+    // MARK: - The box's ratio
+
+    /// A wide extent asks for a flatter box, a tall one for a taller box.
+    func testTheBoxRatioFollowsTheVisibleExtent() throws {
+        let wide = try XCTUnwrap(make(viewport: extent(latitudeSpan: 5, longitudeSpan: 20)))
+        XCTAssertEqual(wide.aspectRatio, 0.25, accuracy: 1e-9)
+
+        let tall = try XCTUnwrap(make(viewport: extent(latitudeSpan: 20, longitudeSpan: 5)))
+        XCTAssertEqual(tall.aspectRatio, 4, accuracy: 1e-9)
+    }
+
+    func testTheBoxRatioFallsBackToTheFixedShapeBeforeTheMapReportsAnExtent() throws {
+        let content = try XCTUnwrap(make(viewport: nil))
+
+        XCTAssertEqual(content.aspectRatio,
+                       DataAreaOverviewContent.defaultAspectRatio,
+                       accuracy: 1e-9)
     }
 }

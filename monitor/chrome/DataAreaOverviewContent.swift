@@ -46,6 +46,9 @@ public struct OverviewViewport: Equatable {
 /// What the data-area overview displays.
 public struct DataAreaOverviewContent: Equatable {
 
+    /// The box's original fixed shape, used until the map reports an extent.
+    public static let defaultAspectRatio: Double = 90.0 / 130.0
+
     /// The area's longitude range as shown, e.g. `-10.0..10.0`.
     public let longitudeText: String
     /// The area's latitude range as shown, e.g. `40.0..60.0`.
@@ -56,24 +59,29 @@ public struct DataAreaOverviewContent: Equatable {
     public let viewport: OverviewViewport
     /// The zoom level as shown, e.g. `Zoom 7.0`.
     public let zoomText: String
+    /// The box's height over its width, from the visible extent's proportions.
+    public let aspectRatio: Double
 
     public init(longitudeText: String,
                 latitudeText: String,
                 cellSizeText: String,
                 viewport: OverviewViewport,
-                zoomText: String) {
+                zoomText: String,
+                aspectRatio: Double = DataAreaOverviewContent.defaultAspectRatio) {
         self.longitudeText = longitudeText
         self.latitudeText = latitudeText
         self.cellSizeText = cellSizeText
         self.viewport = viewport
         self.zoomText = zoomText
+        self.aspectRatio = aspectRatio
     }
 }
 
 /// Builds the data-area overview's content.
 ///
-/// The overview is drawn only while the displayed result carries a data area;
-/// a result without one produces no content and no view.
+/// The overview is drawn only while the diagnostics setting is on and the
+/// displayed result carries a data area; either being false produces no content
+/// and no view.
 public enum DataAreaOverviewContentBuilder {
 
     /// Builds the overview content.
@@ -83,10 +91,13 @@ public enum DataAreaOverviewContentBuilder {
     ///   - viewport: the visible map extent, or `nil` before the map reports
     ///     one.
     ///   - zoomLevel: the map's current zoom level.
+    ///   - diagnosticsEnabled: whether the diagnostics setting is on; the
+    ///     overview is a diagnostics aid and shows nothing while it is off.
     public static func make(grid: GridParameters?,
                             viewport: ViewExtent?,
-                            zoomLevel: Double) -> DataAreaOverviewContent? {
-        guard let grid = grid else { return nil }
+                            zoomLevel: Double,
+                            diagnosticsEnabled: Bool) -> DataAreaOverviewContent? {
+        guard diagnosticsEnabled, let grid = grid else { return nil }
 
         let longitudeText = String(format: NSLocalizedString("overview.range",
                                                             comment: "Data area range, e.g. -10.0..10.0"),
@@ -108,7 +119,18 @@ public enum DataAreaOverviewContentBuilder {
                                        latitudeText: latitudeText,
                                        cellSizeText: cellSizeText,
                                        viewport: viewportBox(grid: grid, viewport: viewport),
-                                       zoomText: zoomText)
+                                       zoomText: zoomText,
+                                       aspectRatio: aspectRatio(for: viewport))
+    }
+
+    /// The box's height over its width: the visible extent's latitude span over
+    /// its longitude span, so the panel keeps the map's proportions. The fixed
+    /// shape is kept until the map reports an extent.
+    private static func aspectRatio(for viewport: ViewExtent?) -> Double {
+        guard let viewport = viewport, viewport.longitudeSpan > 0 else {
+            return DataAreaOverviewContent.defaultAspectRatio
+        }
+        return viewport.latitudeSpan / viewport.longitudeSpan
     }
 
     /// The visible extent as fractions of the data area.
